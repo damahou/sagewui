@@ -1,1 +1,0 @@
-../../smtpsend.py

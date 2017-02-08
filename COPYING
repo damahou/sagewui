@@ -1,5 +1,6 @@
-sagenb - a web interface for the Sage mathematical software system
-Copyright (c) 2009-2013, sagenb contributors (see `git log`)
+sagewui - a web interface for the Sage mathematical software system
+Copyright (c) 2009-2017, sagewui contributors
+(see https://github.com/damahou/sagewui/graphs/contributors)
 
 
 This program is free software: you can redistribute it and/or modify it

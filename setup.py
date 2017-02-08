@@ -48,18 +48,16 @@ install_requires = [
     'tornado',  # this is optional
     ]
 
-
 setup(
-    name='sagenb',
-    version='0.13',
-    description='The Sage Notebook',
+    name='sagewui',
+    version='0.0.0',
+    description='SageWui',
     license='GNU General Public License (GPL) v3+',
-    author='William Stein et al.',
-    author_email='sage-notebook@googlegroups.com',
-    url='http://github.com/sagemath/sagenb',
+    author='J Miguel Farto et al.',
+    author_email='jmfarto@gmail.com',
+    url='http://github.com/damahou/sagewui',
     install_requires=install_requires,
     dependency_links=[],
-    test_suite='sagenb.testing.run_tests.all_tests',
     packages=[
         'sagewui',
         'sagewui.blueprints',
@@ -67,12 +65,6 @@ setup(
         'sagewui.sage_server',
         'sagewui.storage',
         'sagewui.util',
-        'sagewui.compress',
-        'sagenb',
-        'sagenb.notebook',
-        'sagenb.testing',
-        'sagenb.testing.tests',
-        'sagenb.testing.selenium',
         ],
     scripts=['sagewui/static/sage3d/sage3d'],
     package_data={
