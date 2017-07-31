@@ -510,7 +510,7 @@ class Notebook(object):
         if id_number == -1:  # need to initialize
             id_numbers = [w.id_number for w in self.user_wsts(username)]
             id_numbers.append(-1)
-            id_number = max(id_numbers)
+            id_number = max(id_numbers) + 1
         u['next_worksheet_id_number'] = id_number + 1
         return id_number
 
