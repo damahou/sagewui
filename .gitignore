@@ -8,7 +8,11 @@
 *.patch
 *.pyc
 *.pyo
+__pycache__/
+py/
+pydev/
 /*.gitk-tmp*
+*.*.swp
 
 # sage files to ignore:
 /build
