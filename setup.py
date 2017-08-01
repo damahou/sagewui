@@ -50,7 +50,7 @@ install_requires = [
 
 setup(
     name='sagewui',
-    version='0.0.0',
+    version='0.0.1',
     description='SageWui',
     license='GNU General Public License (GPL) v3+',
     author='J Miguel Farto et al.',
