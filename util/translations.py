@@ -75,8 +75,8 @@ class Paths(object):
         #: and executed from other location. Symlinking is fine.
         self.command_name = pth.basename(__file__)
         self.src = pth.dirname(pth.dirname(pth.realpath(__file__)))
-        self.trans = pth.join(self.src, 'sagenb', 'translations')
-        self.pot = pth.join(self.src, 'sagenb', 'message.pot')
+        self.trans = pth.join(self.src, 'sagewui', 'translations')
+        self.pot = pth.join(self.src, 'sagewui', 'message.pot')
 
     def lang(self, lang_id):
         """Returns the path of the language `lang_id` in the source tree.
@@ -87,7 +87,7 @@ class Paths(object):
 
 
 class LocalData(object):
-    """Stores information about the sage notebook. You can subclass
+    """Stores information about sagewui. You can subclass
     this and override the `get_data` method accordingly with the source tree of
     your project.
 
@@ -148,20 +148,18 @@ class LocalData(object):
         }
         #: Source files to extract messages
         self.method_map = [
-            ('sagenb/notebook/**.py', 'python'),
-            ('sagenb/flask_version/**.py', 'python'),
-            ('sagenb/data/sage/html/**.html', 'jinja2'),
-            ('sagenb/data/sage/js/**.js', 'jinja2')]
+            ('sagewui/**.py', 'python'),
+            ('sagewui/templates/html/**.html', 'jinja2'),
+            ('sagewui/templates/js/**.js', 'jinja2')]
         #: Some configuration for each type of file
         self.options_map = {
-            'sagenb/data/sage/html/**.html': {
+            'sagewui/templates/html/**.html': {
                 'encoding': 'utf-8',
                 'extensions': 'jinja2.ext.autoescape,jinja2.ext.with_'},
-            'sagenb/data/sage/js/**.js': {
+            'sagewui/templates/js/**.js': {
                 'encoding': 'utf-8',
                 'extensions': 'jinja2.ext.autoescape,jinja2.ext.with_'},
-            'sagenb/flask_version/**.py': {},
-            'sagenb/notebook/**.py': {}}
+            'sagewui/**.py': {}}
 
         #: Some defaults for babel package
         self.charset = 'utf-8'
