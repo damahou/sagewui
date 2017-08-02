@@ -1,6 +1,6 @@
 
 SageWui
--------
+=======
 
 SageWui is a major refactor/rewrite of the [Sage Notebook](https://github.com/sagemath/sagenb) (Sagenb).
 
