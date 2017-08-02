@@ -81,11 +81,6 @@
 						{% endif %}
 					</div>
 				</form>
-
-				{% if openid %}
-					<form method="post" action="/loginoid" id="openid" class="well"></form>
-				{% endif %}
-
 				<div>
 					<a href="/pub"><strong>{{ gettext('Browse published Sage worksheets (no login required)') }}</strong></a>
 				</div>
@@ -104,31 +99,9 @@
 {% block after_container %}{% endblock after_container %}
 
 {% block extra_javascript %}
-	<link rel="stylesheet" href="{{ theme_static('openid-realselector/css/style.css') }}" />
-		<style type="text/css">
+    <style type="text/css">
 		body {
 			background-color: #fafafa;
 		}
-		#openid {
-			width: auto;
-			height: inherit;
-			margin-bottom: 20px;
-			background-color: whiteSmoke;
-		}
 	</style>
-
-	<script type="text/javascript" src="{{ theme_static('openid-realselector/js/jquery.openid.js') }}"></script>
-	<script type="text/javascript">
-		$(function() {
-			$('#openid').openid({
-				img_path: '{{ theme_static("openid-realselector/img/openid/") }}',
-				txt: {
-					label: '<strong>{provider}</strong> {username}',
-					username: '{{ gettext('username') }}',
-					// title: '{{ gettext('Select an OpenID provider') }}',
-					sign: '{{ gettext('Sign in') }}'
-				}
-			});
-		});
-	</script>
 {% endblock %}

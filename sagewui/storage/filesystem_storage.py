@@ -14,7 +14,6 @@ Sage notebook server::
     sagewui/db/default
          conf.pickle
          users.pickle
-         openid.pickle (optional)
          readonly.txt (optional)
          home/
              username0/
@@ -502,19 +501,6 @@ class FilesystemDatastore(Datastore):
         basic = self._server_conf_to_basic(server_conf)
         self._save(basic, 'conf.pickle')
         self._permissions('conf.pickle')
-
-    def load_openid(self):
-        """
-        Loads an open_id dict read from the disk.
-        """
-        return self._load('openid.pickle')
-
-    def save_openid(self, openid_dict):
-        """
-        Saves an open_id dict to the disk.
-        """
-        self._save(openid_dict, 'openid.pickle')
-        self._permissions('openid.pickle')
 
     def load_users(self, user_manager):
         """

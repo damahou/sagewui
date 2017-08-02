@@ -115,7 +115,6 @@ util.cell.TextCell.html *                             notebook/text_cell
 None                                                  base
 blueprints.base.history                               base -> history
 blueprints.authentication.(login, register)           base -> login
-blueprints.base.set_profiles                          base -> accounts/openid_profile
 blueprints.worksheet.html_ratings_info                base -> worksheet/ratings_info
                                                
 None                                                  base -> accounts/base
@@ -228,9 +227,7 @@ P   base.index                                      /                           
 I   base.keyboard_js                                /javascript/dynamic/keyboard/[browser_os]            GET
 L   base.live_history                               /live_history                                        GET
 I   base.localization_js                            /javascript/dynamic/localization.js                  GET
-F   base.loginoid                                   /loginoid                                            GET,POST
 I   base.mathjax_js                                 /javascript/dynamic/mathjax_sage.js                  GET
-    base.set_profiles                               /openid_profiles                                     GET,POST
     
 P   doc.help                                        /doc/help                                            GET
 P   doc.live                                        /doc/live/                                           GET

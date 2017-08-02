@@ -69,8 +69,6 @@ app_defaults = {
 
     'accounts': False,
 
-    'openid': False,
-
     'challenge': False,
     'challenge_type': 'simple',
     'recaptcha_public_key': '',
@@ -176,12 +174,6 @@ app_gui_hints = {
         CHOICES: THEMES,
     },
 
-    'openid': {
-        POS: 1,
-        DESC: _('Allow OpenID authentication (requires python ssl module)'),
-        GROUP: G_AUTH,
-        TYPE: T_BOOL,
-    },
     'accounts': {
         POS: 2,
         DESC: _('Enable user registration'),

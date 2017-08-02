@@ -243,8 +243,6 @@ class UserManager(dict):
                 ),
         }
 
-        self._openid = {}
-
     def __missing__(self, username):
         """
         Check all auth methods that are enabled in the notebook's config.
@@ -345,62 +343,6 @@ class UserManager(dict):
         if a is not None and self._auth_methods[a].enabled:
             return self._auth_methods[a].check_password(username, password)
         return False
-
-    # openID
-
-    def load(self, datastore):
-        """
-        Loads required data from a given datastore.
-        """
-        self._openid = datastore.load_openid()
-
-    def save(self, datastore):
-        """
-        Saves persistent data to a given datastore.
-        """
-        datastore.save_openid(self._openid)
-
-    def get_username_from_openid(self, identity_url):
-        """
-        Return the username corresponding ot a given identity_url
-        EXAMPLES:
-            sage: from sagenb.notebook.user_manager import OpenIDUserManager
-            sage: UM = OpenIDUserManager()
-            sage: UM.create_default_users('passpass')
-            sage: UM.create_new_openid(
-                'https://www.google.com/accounts/o8/id?'
-                'id=AItdaWgzjV1HJTa552549o1csTDdfeH6_bPxF14', 'thedude')
-            sage: UM.get_username_from_openid(
-                'https://www.google.com/accounts/o8/id?'
-                'id=AItdaWgzjV1HJTa552549o1csTDdfeH6_bPxF14')
-            'thedude'
-        """
-        try:
-            return self._openid[identity_url]
-        except KeyError:
-            raise KeyError("no openID identity '{}'".format(identity_url))
-
-    def create_new_openid(self, identity_url, username):
-        """
-        Create a new identity_url -- username pairing
-        EXAMPLES:
-            sage: from sagenb.notebook.user_manager import OpenIDUserManager
-            sage: UM = OpenIDUserManager()
-            sage: UM.create_default_users('passpass')
-            sage: UM.create_new_openid('https://www.google.com/accounts/o8/id?'
-            'id=AItdaWgzjV1HJTa552549o1csTDdfeH6_bPxF14', 'thedude')
-            sage: UM.get_username_from_openid(
-                'https://www.google.com/accounts/o8/id?'
-                'id=AItdaWgzjV1HJTa552549o1csTDdfeH6_bPxF14')
-            'thedude'
-        """
-        self._openid[identity_url] = username
-
-    def get_user_from_openid(self, identity_url):
-        """
-        Return the user object corresponding ot a given identity_url
-        """
-        return self[self.get_username_from_openid(identity_url)]
 
 
 class Worksheet(object):

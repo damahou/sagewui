@@ -1,22 +1,6 @@
 {% extends "html/base.html" %}
 
 {% block javascript %}
-<link rel="stylesheet" href="/javascript/openid-realselector/css/style.css" />
-<script type="text/javascript" src="/javascript/openid-realselector/js/jquery.openid.js"></script>
-<script type="text/javascript">
-    $(function() {
-      $('#openid').openid({
-        img_path: '/javascript/openid-realselector/img/openid/',
-        txt: {
-          label: '{username} for <b>{provider}</b>',
-          username: '{{ gettext('username') }}',
-          title: '{{ gettext('Select an OpenID provider') }}',
-          sign: '{{ gettext('Send') }}'
-        }
-      });
-    });
-</script>
-
 {% endblock %}
 
 {% block title %}{{ gettext('Sign in') }}{% endblock %}
@@ -94,21 +78,9 @@
         <a href="/forgotpass"><strong>{{ gettext('Forgot password') }}</strong></a>
     </div>
     {% endif %}
-    {% if openid %}
-    <form method="post" action="/loginoid" id="openid"></form>
-    <div style="display: block; text-align: justify; color: #333;
-               border: 1px solid #333; border-radius: 3px;">
-        <strong>Note: </strong>
-        If you are a returning user, please use the exact same URL for
-        this notebook server as you used to log in previously. For example,
-        do not use www.sagenb.org if you used sagenb.org earlier.
-    </div>
-    {% endif %}
     {% if creation_error %}
     <span style="color:red">{{ gettext('Error') }}: </span>{{ gettext('Creating new users is disabled by the administrator.') }}
     {% endif %}
     <noscript style="color:red">{{ gettext('Error') }}: {{ gettext('Javascript must be enabled in order to use the Sage Notebook.') }}</noscript>
 </div>
 {% endblock %}
-
-

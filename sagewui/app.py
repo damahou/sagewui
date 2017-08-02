@@ -32,8 +32,6 @@ from .util.templates import message as message_template
 from .util.templates import render_template
 from .util.templates import join_max
 
-from .blueprints.base import oid
-
 from .blueprints.admin import admin
 from .blueprints.authentication import authentication
 from .blueprints.base import base
@@ -100,9 +98,6 @@ def create_app(notebook, startup_token=None, debug=False):
     app.register_blueprint(worksheet_listing)
 
     # # Extensions
-    # Open id
-    oid.init_app(app)
-
     # Babel
     babel = Babel(app, default_locale='en_US')
 

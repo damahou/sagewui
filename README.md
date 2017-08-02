@@ -78,7 +78,7 @@ Standalone mode
 1. Populate de virtual environment
 
    ```bash
-   pip install twisted flask flask-openid flask-autoindex flask-babel flask-themes2 future pexpect docutils jsmin pyopenssl service_identity appdirs
+   pip install twisted flask flask-autoindex flask-babel flask-themes2 future pexpect docutils jsmin pyopenssl service_identity appdirs
    ```
 
 1. SageWui related stuff
@@ -132,7 +132,7 @@ Standalone development mode
 1. Populate de virtual environment
 
    ```bash
-   pip install twisted flask flask-openid flask-autoindex flask-babel flask-themes2 future pexpect docutils jsmin pyopenssl service_identity appdirs
+   pip install twisted flask flask-autoindex flask-babel flask-themes2 future pexpect docutils jsmin pyopenssl service_identity appdirs
    ```
 
 1. SageWui related stuff
@@ -204,7 +204,7 @@ A `ssh` server must be running.
 1. Populate de virtual environment
 
    ```bash
-   pip install twisted flask flask-openid flask-autoindex flask-babel flask-themes2 future pexpect docutils jsmin pyopenssl service_identity appdirs
+   pip install twisted flask flask-autoindex flask-babel flask-themes2 future pexpect docutils jsmin pyopenssl service_identity appdirs
    ```
 
 1. SageWui related stuff
@@ -326,17 +326,20 @@ TODO
 Notes
 =====
 
-* The dependencies for `sagewui` are: `twisted`, `flask`,
-  `flask-openid`, `flask-autoindex`, `flask-babel`,
-  `flask-themes2`, `future`, `smtpsend`, `pexpect`, `docutils`, `jsmin`,
-  `pyopenssl`, `service_identity`, `appdirs`.
+* The dependencies for `sagewui` are: `twisted`, `flask`, `flask-autoindex`,
+  `flask-babel`, `flask-themes2`, `future`, `smtpsend`, `pexpect`, `docutils`,
+  `jsmin`, `pyopenssl`, `service_identity`, `appdirs`.
   All of them, but `smtpsend`
   which is in the source tree, are installable from pipy in an virtual
   python environment.
-
-* `send_mail` disabled under py3. Twisted.mail port needed.
 
 * Backward compatibility is not a goal, but at this moment this version
   can be used as a replacement of the current Sage Notebook.
 
 * Some Notebook features could be removed.
+
+* Removed features:
+
+    * `send_mail` disabled under py3. Twisted.mail port needed.
+
+    * Openid authentication.

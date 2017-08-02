@@ -195,12 +195,6 @@ class Notebook(object):
                         print("Warning: problem loading %s/%s: %s" % (
                             UN_PUB, int(id_number), traceback.format_exc()))
 
-        # Set the openid-user dict
-        try:
-            self.user_manager.load(S)
-        except IOError:
-            pass
-
         # Old stuff
         self.updater = NotebookUpdater(self)
 
@@ -252,7 +246,6 @@ class Notebook(object):
         S = self._storage
         S.save_users(self.user_manager)
         S.save_server_conf(self.conf)
-        self.user_manager.save(S)
         # Save the non-doc-browser worksheets.
         for n, W in self.__worksheets.items():
             if not n.startswith('doc_browser'):

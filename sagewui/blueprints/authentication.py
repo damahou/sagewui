@@ -55,7 +55,6 @@ def login(template_dict={}):
                           'recovery': nb_conf['email'],
                           'next': request.values.get('next', ''),
                           'sage_version': SAGE_VERSION,
-                          'openid': nb_conf['openid'],
                           'username_error': False,
                           'password_error': False})
 

@@ -189,11 +189,6 @@ class NotebookFrontend(object):
             dest='accounts',
             action='store_true',
             )
-        parser.add_argument(
-            '--openid',
-            dest='openid',
-            action='store_true',
-            )
 
         parser.add_argument(
             '--server_pool',
@@ -324,8 +319,6 @@ class NotebookFrontend(object):
             nb.conf['idle_timeout'] = C['timeout']
         if C['doc_timeout'] is not None:
             nb.conf['doc_timeout'] = C['doc_timeout']
-
-        nb.conf['openid'] = C['openid']
 
         if C['accounts'] is not None:
             nb.conf['accounts'] = (C['accounts'])
