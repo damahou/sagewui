@@ -1,14 +1,11 @@
-
-SageWui
-=======
+# SageWui
 
 SageWui is a major refactor/rewrite of the [Sage Notebook](https://github.com/sagemath/sagenb) (Sagenb).
 
 We intend a smooth transition from Sagenb to SageWui to get _something
 completely different_.
 
-Status
-======
+## Status
 
 * SageWui is independent from Sage, so that it can be launched from
   an independent python interpreter. A SageMath installation and the `sage`
@@ -31,8 +28,7 @@ Status
 * A lot of reformatting, bug fixing and simplification of code done, with
   respect to Sagenb.
 
-Install
-=======
+## Install
 
 Only for testing purposes.
 
@@ -45,8 +41,7 @@ Previously to the instructions below, install a recent version of
 [SageMath](http://sagemath.org). Make `sage` command available in your PATH.
 
 
-Standalone mode
----------------
+### Standalone mode
 
 1. In the command line, set a variable with your installation dir
 
@@ -102,8 +97,7 @@ cd /path/where/you/installed/sagewui
 sagewui
 ```
 
-Standalone development mode
----------------------------
+### Standalone development mode
 
 1. In the command line, set a variable with your installation dir
 
@@ -159,8 +153,7 @@ Standalone development mode
 1. Edit code in $INSTALLDIR/sagewui. every time you change python code, the
    application is reloaded.
 
-Server mode
------------
+### Server mode
 
 This instructions are based on https://wiki.sagemath.org/SageServer.
 
@@ -307,8 +300,7 @@ A `ssh` server must be running.
    Open your browser and navigate accordingly with the host and port selected.
    Note that SageWui runs in secure mode, so `https://` must be used.
 
-TODO
-=====
+## TODO
 
 * Break SageWui in more packages (WebApp, sage_server interface,
   model, controller, ...) useful to develop other independent software.
@@ -323,8 +315,7 @@ TODO
 * ...
 
 
-Notes
-=====
+## Notes
 
 * The dependencies for `sagewui` are: `twisted`, `flask`, `flask-autoindex`,
   `flask-babel`, `flask-themes2`, `future`, `smtpsend`, `pexpect`, `docutils`,
