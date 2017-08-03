@@ -327,7 +327,6 @@ mathjax_sage.js MathJax.Ajax.loadComplete("[MathJax]/config/../../dynamic/mathja
 jmol_lib.js // Turn off the JSmolCore.js: synchronous binary file transfer is
 notebook_dynamic.js {% include "js/async_lib.js" %}
 notebook_dynamic.js {% include "js/canvas3d_lib.js" %}
-notebook_dynamic.js {% include "js/jmol_lib.js" %}
 notebook_dynamic.js {% include "js/debug.js" %}
 
 sagewui/templates/html/
