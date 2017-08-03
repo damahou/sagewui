@@ -1,0 +1,191 @@
+TODO:
+
+See http://wiki.sagemath.org/SageTasks for a related list.
+
+[ ] admin should *NOT* see all users worksheets.  This is not good, e.g., 
+when there are 50,000 worksheets!
+
+[ ] Clicking publish should update the "last changed" time.  E.g.,
+take an old worksheet and publish it -- should always make it new.
+
+[ ] change number word wrap columns in notebook settings has no immediate
+impact, though it does after restarting the server. 
+
+[ ] implement base_url
+
+[ ] make communication between twist.py and notebook_lib.js use JSON
+instead of encode_list and response_text.split.
+
+[ ] Get peter.jipsen's "canvas3d_lib.js + Pre3d does shaded surfaces" into Sage
+
+[ ] codenode's engine/interpreter.py has a function with this comment:
+        """input_string could contain multiple lines, multiple commands, or
+        multiple multiline commands. This method builds a compiled command
+        line by line until a complete command has been compiled. Once it
+        has a complete command, it execs it in the username space and the
+        output is stored in the output trap. There may be more than one
+        command; the number of complete commands is counted
+        (Based off of ipython1.core.shell.InteractiveShell._runlines)"""
+This approach means that in codenode we would have
+{{{
+a = 5; b = 7
+a+b
+a-b
+print a*b
+///
+12
+-2
+35
+}}}
+which is more natural, since it mimics the command line.   We should change
+Sage so it does the same.  I think this would simply involving changing the
+interfaces/* stuff a little.  This is probably easy, and is now high priority
+since it is something that has bugged me for a long time. 
+
+[ ] idea from codenode: in their revisions log they label each
+ revision with two columns, one being the last changed input in that
+ worksheet (meant to jar ones memory), and second the total number of
+ cells.
+
+[ ] "shift-enter to save tinymce cell" on safari goes "beep", which is
+annoying
+
+[ ] make it possible to set the default font in tinymce
+
+[ ] The startup of the notebook involves reading all the directories
+and creating worksheets.  This takes anywhere from 5 minutes to an
+*hour* with sagenb.org.  So this *must* be fixed to be massively
+faster.  This is a top optimization priority.
+
+[ ] download just the text version of the worksheet
+
+[ ] "untitled renaming".  Make it an option in the user confs, which
+is on by default, by you can turn it off.
+
+
+[ ] get coverage to 100%.
+
+
+[ ] we can make it so that if worksheet.html file changes on disk but
+not currently open, then when reopen it uses the new version from
+disk.  More precisely, make it so "save and quit" deletes body of
+worksheet, so if user opens that worksheet again it'll grab the
+content from disk.
+
+[ ] page through list of worksheets (don't show hundreds at once)
+
+[ ] do something about this in worksheet.py
+    def autosave(self, username):
+        return
+
+[ ] add info about when user last logged in to user.py.
+
+[ ] way to send all registered users an email
+
+[ ] instructions about running a daemon sage server with conf scripts:
+http://groups.google.com/group/sage-support/browse_thread/thread/b0d15b82eea3d652
+
+[ ] "data" link appears in reference implementation in output of every cell
+
+[ ] filesize limit -- option so that any computation that produces a
+file that exceeds a certain size would get deleted and replaced by a
+message.  This would limit (though not prevent) damages.
+
+[ ] Jonathan Gutow -- redo how jmol works
+
+
+
+[ ] maybe get rid of list of 'Sage Users' when publishing worksheets --
+that's not appropriate given how sage has grown.
+
+[ ] notebook(default_mode="python") way to make the notebook default
+to use python instead of sage.
+
+[ ] fulltext -- when output long, make it all available with a link
+even before computation finishes, and definitely if it is interrupted!
+
+[ ] write an overview of how the sage notebook works:
+http://wiki.sagemath.org/SageNotebook
+
+[ ] switch from twisted.web2 to twisted.web.  Alex Clemesha says
+"Pretty easily actually... the Resource object is pretty similar, the
+main difference is that the Web2 Resource object has the "locateChild"
+method, where as the Web Resource has "getChild" - and even those are
+pretty similar.  Also, there's some subtle differences in the way you
+doing "rendering"... i.e. with Web2 you subclass
+Resource/PostableResource and then you use the "render" method, where
+are with Web you just subclass Resource and implemented either
+"render_GET" or "render_POST".  Probably just looking through the
+examples here: http://jcalderone.livejournal.com/tag/sixty+seconds
+would be good enough to do the switch."
+
+[ ] move is_valid_username (etc.) out of twist.py, which is definitely *not*
+where it belongs
+
+[ ] ldap support (see, eg., http://math.univ-lyon1.fr/~tdumont/sage)  but make
+sure to first abstract away authentication first so it is much CLEARER.
+
+
+[ ] find a way to provide same info as data directory but without making it
+super-permissive.  Maybe I can make an api for getting files from a data
+location or something...
+
+[ ] control-c doesn't quite work for reference implementation quitting notebook
+server
+
+
+[ ] make it so uploading a worksheet does not lock the server like it does now.
+
+[ ] secure mode outside of sage -- fix it to work with openssl, etc.
+
+[ ] more stress testing, etc., using mechanize:
+http://wwwsearch.sourceforge.net/mechanize/
+
+[ ] have a worksheet export screen and the option to save just certain
+parts (e.e., images, DATA, etc.) with checkboxes.
+
+[ ] change api for notebook command; in particular enable capability
+    to have different sage command on remote machine
+
+[ ] worksheet processes using named pipes
+
+[ ] code to benchmark notebook externally
+
+[ ] implement %cython mode outside sage (and as a full mode?)
+
+[ ] worksheet processes using server on remote machine
+
+[ ] worksheet processes using fork
+
+[ ] worksheet process using multiprocessing 
+
+[ ] genuine infinite undo implemented not using stupid snapshots but a revision
+log
+
+[ ] @interact: make it so docstring of function is somehow nicely typeset and
+accessible
+
+[ ] @interact's that can be included with sage
+
+[ ] "browse your computer" field of upload is not editable.  fix that.
+
+[ ] improve tracebacks of % modes, e.g., %python then 1/0 is ugly.
+
+[ ] and small hint about google accounts: in gmail at the bottom is a
+"last account activity" line and if you click on details, you can see
+what has happened recently. login IPs, type and time. you can also
+invalidate all other sessions on other PCs where cookies are stored.
+
+[ ] somehow connect http://qwebirc.org with Sage?
+
+[ ] statistics of notebooks, e.g., how many per user, names of all
+users, how many users?
+
+[ ] a way to put a code block between two text blocks that lie one
+right after the other.
+
+[ ] component architecture (??): see Brickenstein sage-devel email 
+  that mentions http://python-rum.org/browser/rum/component.py
+
+[ ] use memory mapped files for worksheet processes??
+http://docs.python.org/library/mmap.html
