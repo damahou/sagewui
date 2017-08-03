@@ -148,18 +148,20 @@ class LocalData(object):
         }
         #: Source files to extract messages
         self.method_map = [
-            ('sagewui/**.py', 'python'),
+            ('sagewui/*.py', 'python'),
+            ('sagewui/blueprints/**.py', 'python'),
+            ('sagewui/util/**.py', 'python'),
+            ('sagewui/gui/**.py', 'python'),
             ('sagewui/templates/html/**.html', 'jinja2'),
             ('sagewui/templates/js/**.js', 'jinja2')]
         #: Some configuration for each type of file
-        self.options_map = {
-            'sagewui/templates/html/**.html': {
+        opts = {
+            'jinja2': {
                 'encoding': 'utf-8',
                 'extensions': 'jinja2.ext.autoescape,jinja2.ext.with_'},
-            'sagewui/templates/js/**.js': {
-                'encoding': 'utf-8',
-                'extensions': 'jinja2.ext.autoescape,jinja2.ext.with_'},
-            'sagewui/**.py': {}}
+            'python': {},
+            }
+        self.options_map = dict((m[0], opts[m[1]]) for m in self.method_map)
 
         #: Some defaults for babel package
         self.charset = 'utf-8'
