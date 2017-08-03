@@ -696,14 +696,13 @@ def worksheet_system(worksheet, system):
 
 @worksheet_command('pretty_print/<enable>')
 def worksheet_pretty_print(worksheet, enable):
-    enable = False if enable == 'false' or enable is False else True
-    worksheet.pretty_print = enable
+    worksheet.pretty_print = enable == 'true'
     return 'success'
 
 
 @worksheet_command('live_3D/<enable>')
 def worksheet_live_3D(worksheet, enable):
-    worksheet.set_live_3D = enable == 'true'
+    worksheet.live_3D = enable == 'true'
     return 'success'
 
 
