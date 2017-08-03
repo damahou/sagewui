@@ -12,7 +12,6 @@
 // Other libraries.
 {% include "js/async_lib.js" %}
 {% include "js/canvas3d_lib.js" %}
-{% include "js/jmol_lib.js" %}
 
 {%- if debug_mode %}
 {% include "js/debug.js" %}

@@ -15,13 +15,19 @@ INPUT:
 {% block javascript %}
 
 <!-- trying to work around JSmol collisions with jquery--->
-<script type="text/javascript" src="/javascript/jquery/jquery-1.11.0.min.js"></script>
+<script type="text/javascript"
+  src="/javascript/jquery/jquery-1.11.0.min.js">
+</script>
 <!-- jQuery UI - interacts, widgets, drag-drop, etc. -->
-<link rel="stylesheet" href="/javascript/jqueryui/css/sage/jquery-ui-1.10.4.custom.css" />
-<script type="text/javascript" src="/javascript/jqueryui/js/jquery-ui-1.10.4.custom.min.js"></script>
+<link rel="stylesheet"
+  href="/javascript/jqueryui/css/sage/jquery-ui-1.10.4.custom.css">
+<script type="text/javascript"
+  src="/javascript/jqueryui/js/jquery-ui-1.10.4.custom.min.js">
+</script>
 
 <!-- jQuery plugins - color pickers, shift-click, AJAX forms, IE fixes, notifications -->
-<link rel="stylesheet" href="/javascript/jquery/plugins/farbtastic/farbtastic.css" type="text/css" />
+<link rel="stylesheet"
+  href="/javascript/jquery/plugins/farbtastic/farbtastic.css" type="text/css">
 <script type="text/javascript" src="/javascript/jquery/plugins/farbtastic/farbtastic.min.js"></script>
 <script type="text/javascript" src="/javascript/jquery/plugins/extendedclick/jquery.event.extendedclick.min.js"></script>
 <script type="text/javascript" src="/javascript/jquery/plugins/form/jquery.form.min.js"></script>
@@ -38,6 +44,7 @@ INPUT:
 {% if not worksheet.is_published or notebook.conf['pub_interact'] %}
 <script type="text/javascript" src="/javascript/sage/js/notebook_lib.js"></script>
 <script type="text/javascript" src="/javascript/dynamic/notebook_dynamic.js"></script>
+<script type="text/javascript" src="/javascript/sage/js/jmol_lib.js"></script>
 {% elif worksheet.is_published %}
 <script type="text/javascript" src="/javascript/sage/js/jmol_lib.js"></script>
 {% endif %}
@@ -149,11 +156,6 @@ INPUT:
         <input id="3D_check", type="checkbox" title="{{ gettext('Load 3-D Live. Not recommended for worksheets with > 2 3-D Plots.') }}"
                onchange="live_3D_check(this.checked);"
                class="worksheet" value="live_3D" {{ "checked" if worksheet.live_3D else "" }} />
-        </p>
-        <p>
-        {{ gettext('Use java for 3-D') }}
-        <input id="3D_use_java", type="checkbox" title="{{ gettext('Use java for 3-D. Only applies to this running of worksheet.') }}"
-               class="worksheet" value="3D_use_java"/>
         </p>
          {% endif %}
     {% endif %} 
