@@ -311,3 +311,105 @@ J   worksheet_listing.send_worksheet_to_trash       /send_to_trash              
 LJ  worksheet_listing.upload                        /upload                                              GET
 F   worksheet_listing.upload_worksheet              /upload_worksheet                                    GET,POST
 A   worksheet_listing.worksheet_list                /worksheet_list                                      GET
+
+
+
+Javascript
+
+sagewui/templates/js/
+
+debug.js // sed -nre "s/^function\s+(\w+)\s*\(.*/\1/p" notebook_lib.js
+debug.js m = re.findall(s, open('notebook_lib.js').read(), re.MULTILINE)
+debug.js // just the methods we use in notebook_lib.js.
+mathjax_sage.js extensions: ["jsMath2jax.js"],
+mathjax_sage.js extensions: ["color.js"]
+mathjax_sage.js MathJax.Ajax.loadComplete("[MathJax]/config/../../dynamic/mathjax_sage.js")
+jmol_lib.js // Turn off the JSmolCore.js: synchronous binary file transfer is
+notebook_dynamic.js {% include "js/async_lib.js" %}
+notebook_dynamic.js {% include "js/canvas3d_lib.js" %}
+notebook_dynamic.js {% include "js/jmol_lib.js" %}
+notebook_dynamic.js {% include "js/debug.js" %}
+
+sagewui/templates/html/
+
+base    /javascript/dynamic/localization.js
+        /javascript/jquery/jquery-1.11.0.min.js
+        /javascript/json/json2.min.js
+        /javascript/sage/js/master.js
+        /javascript/sage/js/ws_list.js
+docs    /javascript/sage/js/ws_list.js
+history    /javascript/sage/js/ws_list.js
+notebook/base    /javascript/dynamic/notebook_dynamic.js
+                 /javascript/jquery/jquery-1.11.0.min.js
+                 /javascript/jquery/plugins/achtung/ui.achtung-mod.min.js
+                 /javascript/jquery/plugins/colorpicker/js/colorpicker.min.js
+                 /javascript/jquery/plugins/extendedclick/jquery.event.extendedclick.min.js
+                 /javascript/jquery/plugins/farbtastic/farbtastic.min.js
+                 /javascript/jquery/plugins/form/jquery.form.min.js
+                 /javascript/jquery/plugins/jeditable/jquery.jeditable.mini.js" charset="utf-8
+                 /javascript/jquery/plugins/jpicker/jpicker-1.1.6.min.js
+                 /javascript/jquery/plugins/jquery.bgiframe.min.js
+                 /javascript/jqueryui/js/jquery-ui-1.10.4.custom.min.js
+                 /javascript/mathjax/MathJax.js?config=TeX-AMS_HTML-full,../../dynamic/mathjax_sage.js
+                 /javascript/sage/js/jmol_lib.js
+                 /javascript/sage/js/notebook_lib.js
+                 /javascript/sage/js/tinymce.js
+                 /javascript/sage3d/sage3d.js
+                 /javascript/tiny_mce/plugins/media/js/embed.js
+                 /javascript/tiny_mce/tiny_mce.js
+                 /jsmol/JSmol.min.nojq.js
+notebook/download_or_delete_datafile    /javascript/codemirror/js/codemirror.js
+notebook/download_or_delete_datafile    parserfile: "../contrib/python/js/parsepython.js",
+notebook/guest_worksheet_page    /javascript/sage/js/published_worksheet.js
+settings/notebook_settings    /javascript/jquery/plugins/farbtastic/farbtastic.min.js
+                              /javascript/sage/js/ws_list.js
+source_code    /javascript/highlight/prettify.js
+worksheet_listing    /javascript/dynamic/notebook_dynamic.js
+                     /javascript/jquery/plugins/form/jquery.form.min.js
+                     /javascript/jquery/plugins/jquery.bgiframe.min.js
+                     /javascript/jqueryui/js/jquery-ui-1.10.4.custom.min.js
+                     /javascript/sage/js/notebook_lib.js
+                     /javascript/sage/js/ws_list.js                                                                    
+
+
+/javascript/dynamic/localization.js        base
+/javascript/dynamic/notebook_dynamic.js    notebook/base
+                                           worksheet_listing
+/javascript/dynamic/mathjax_sage.js        notebook/base
+
+/javascript/sage/js/jmol_lib.js               notebook/base
+/javascript/sage/js/master.js                 base
+/javascript/sage/js/notebook_lib.js           notebook/base
+                                              worksheet_listing
+/javascript/sage/js/published_worksheet.js    notebook/guest_worksheet_page
+/javascript/sage/js/tinymce.js                notebook/base
+/javascript/sage/js/ws_list.js                base
+                                              docs
+                                              history
+                                              settings/notebook_settings
+                                              worksheet_listing
+/javascript/sage3d/sage3d.js                  notebook/base
+
+/javascript/codemirror/js/codemirror.js                    notebook/download_or_delete_datafile
+/javascript/codemirror/contrib/python/js/parsepython.js    notebook/download_or_delete_datafile
+/javascript/highlight/prettify.js    source_code
+/javascript/jquery/jquery-1.11.0.min.js    base
+                                           notebook/base
+/javascript/jquery/plugins/achtung/ui.achtung-mod.min.js                    notebook/base
+/javascript/jquery/plugins/colorpicker/js/colorpicker.min.js                notebook/base
+/javascript/jquery/plugins/extendedclick/jquery.event.extendedclick.min.js  notebook/base
+/javascript/jquery/plugins/farbtastic/farbtastic.min.js                     notebook/base
+                                                                            settings/notebook_settings
+/javascript/jquery/plugins/form/jquery.form.min.js                          notebook/base
+                                                                            worksheet_listing
+/javascript/jquery/plugins/jeditable/jquery.jeditable.mini.js" charset="utf-8  notebook/base
+/javascript/jquery/plugins/jpicker/jpicker-1.1.6.min.js                     notebook/base
+/javascript/jquery/plugins/jquery.bgiframe.min.js                           notebook/base
+                                                                            worksheet_listing
+/javascript/jqueryui/js/jquery-ui-1.10.4.custom.min.js                      notebook/base
+                                                                            worksheet_listing
+/javascript/json/json2.min.js    base
+/javascript/mathjax/MathJax.js?config=TeX-AMS_HTML-full,../../dynamic/mathjax_sage.js  notebook/base
+/javascript/tiny_mce/tiny_mce.js                  notebook/base
+/javascript/tiny_mce/plugins/media/js/embed.js    notebook/base
+/jsmol/JSmol.min.nojq.js     notebook/base
