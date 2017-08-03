@@ -98,11 +98,8 @@ html Templates
 <- Included by
 <= imported by
 *  caller is not a view
-? to be removed 
 
 Callers                                               Extensions
-
-sagenb.testing.HTMLTestRunner ?                       test_report
 
 None                                                  notebook/worksheet <- notebook/{worksheet_page, print_worksheet, guest_worksheet_page, specific_revision}
 None                                                  worksheet/time <= worksheet_listing, notebook/{base, guest_worksheet_page}
@@ -199,7 +196,7 @@ SPF settings.settings_page                          /settings                   
 
 SPF      admin.notebook_settings                    /notebooksettings                                    GET,POST
 
-SP       admin.users                                 /users                                               GET
+SP       admin.users                                /users                                               GET
 
 OL          admin.reset_user                        /users/reset/[user]                                  GET
 NJ          admin.reset_user_password               /reset_user_password                                 POST
