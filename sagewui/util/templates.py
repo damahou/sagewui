@@ -9,7 +9,6 @@ import datetime
 import time
 import re
 
-from collections import defaultdict
 from hashlib import sha1
 
 from jsmin import jsmin
@@ -27,7 +26,6 @@ from . import nN_
 from .keymaps_js import get_keyboard
 
 from ..config import mathjax_macros
-from ..config import KEYS
 from ..config import SAGE_VERSION
 from flask import json
 
@@ -181,41 +179,6 @@ class DynamicJs(object):
         self.__localization = {}
         self.__keyboard = {}
 
-    @cached_property()
-    def javascript(self):
-        """
-        Return javascript library for the Sage Notebook.  This is done by
-        reading the template ``notebook_lib.js`` where all of the
-        javascript code is contained and replacing a few of the values
-        specific to the running session.
-
-        Before the code is returned (as a string), it is run through a
-        JavascriptCompressor to minimize the amount of data needed to be
-        sent to the browser.
-
-        The code and a hash of the code is returned.
-
-        .. note::
-
-           This the output of this function is cached so that it only
-           needs to be generated once.
-
-        EXAMPLES::
-
-            sage: from sagenb.notebook.js import javascript
-            sage: s = javascript()
-            sage: s[0][:30]
-            '/* JavaScriptCompressor 0.1 [w'
-
-        """
-        keyhandler = JSKeyHandler()
-        for k in KEYS:
-            keyhandler.add(*k)
-
-        data = render_template('js/notebook_dynamic.js',
-                               KEY_CODES=keyhandler.all_tests())
-        return self._prepare_data(data)
-
     @property
     def localization(self):
         locale = repr(get_locale())
@@ -230,74 +193,23 @@ class DynamicJs(object):
                                theme_mathjax_macros=mathjax_macros)
         return self._prepare_data(data)
 
+    def keyboard(self, browser_os):
+        if self.__keyboard.get(browser_os, None) is None:
+            data = get_keyboard(browser_os)
+            self.__keyboard[browser_os] = self._prepare_data(data)
+
+        return self.__keyboard[browser_os]
+
     def _prepare_data(self, data):
         if not self.debug:
             data = jsmin(data)
         return (data, sha1(repr(data).encode('utf-8')).hexdigest())
-
-    def keyboard(self, browser_os):
-        if self.__keyboard.get(browser_os, None) is None:
-            data = get_keyboard(browser_os)
-            self.__keyboard[browser_os] = (
-                data, sha1(repr(data).encode('utf-8')).hexdigest())
-
-        return self.__keyboard[browser_os]
 
     def clear_cache(self):
         del self.javascript
         del self.mathjax
         self.__localization = {}
         self.__keyboard = {}
-
-
-class JSKeyHandler(object):
-    """
-    This class is used to make javascript functions to check
-    for specific keyevents.
-    """
-    def __init__(self):
-        self.key_codes = defaultdict(list)
-
-    def set(self, name, key='', mod=0):
-        """
-        Add a named keycode to the handler.  When built by
-        ``all_tests()``, it can be called in javascript by
-        ``key_<key_name>(event_object)``.  The function returns
-        true if the keycode numbered by the ``key`` parameter was
-        pressed with the appropriate modifier keys, false otherwise.
-        """
-        self.key_codes[name] = [JSKeyCode(key, mod)]
-
-    def add(self, name, key='', mod=0):
-        """
-        Similar to ``set_key(...)``, but this instead checks if
-        there is an existing keycode by the specified name, and
-        associates the specified key combination to that name in
-        addition.  This way, if different browsers don't catch one
-        keycode, multiple keycodes can be assigned to the same test.
-        """
-        self.key_codes[name].append(JSKeyCode(key, mod))
-
-    def all_tests(self):
-        """
-        Builds all tests currently in the handler.  Returns a string
-        of javascript code which defines all functions.
-        """
-        tests = ''
-        for name, keys in self.key_codes.items():
-            value = "\n||".join([k.js_test() for k in keys])
-            tests += " function key_%s(e) {\n  return %s;\n}" % (name, value)
-        return tests
-
-
-class JSKeyCode(object):
-    def __init__(self, key, mod):
-        global key_codes
-        self.key = key
-        self.mod = mod
-
-    def js_test(self):
-        return "((e.m=={})&&(e.v=={}))".format(self.key, self.mod)
 
 
 # json responses

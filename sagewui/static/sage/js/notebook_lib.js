@@ -1047,7 +1047,7 @@ function input_keyup(id, event) {
         return;
     }
 
-    if (key_enter(e)) {
+    if (Sagewui.keys.enter(e)) {
         cell = get_cell(id);
         /* Warning!  Very subtle regular expression (for non-JAPHs):
 
@@ -1108,7 +1108,7 @@ function handle_introspection(id, cell_input, event) {
 
         // TODO: Embed the total number of rows and columns in a
         // completions menu.
-        if (key_menu_up(event)) {
+        if (Sagewui.keys.menu_up(event)) {
             // Up arrow pressed.
             row -= 1;
             // Wrap around vertically.
@@ -1119,19 +1119,19 @@ function handle_introspection(id, cell_input, event) {
                 }
                 row -= 1;
             }
-        } else if (key_menu_down(event)) {
+        } else if (Sagewui.keys.menu_down(event)) {
             // Down arrow pressed.
             row += 1;
             if (!replacement_element_exists(id, row, col)) {
                 row = 0;
             }
-        } else if (key_menu_right(event)) {
+        } else if (Sagewui.keys.menu_right(event)) {
             // Right arrow pressed.
             col += 1;
             if (!replacement_element_exists(id, row, col)) {
                 col = 0;
             }
-        } else if (key_menu_left(event)) {
+        } else if (Sagewui.keys.menu_left(event)) {
             // Left arrow pressed.
             col -= 1;
             // Wrap around horizontally.
@@ -1149,7 +1149,7 @@ function handle_introspection(id, cell_input, event) {
             select_replacement_element(id, row, col);
             return false;
         }
-        if (key_menu_pick(event)) {
+        if (Sagewui.keys.menu_pick(event)) {
             // Enter pressed.  Do the replacement.
             do_replacement(id, intr.replacement_word, true);
             skip_keyup = true;
@@ -1157,7 +1157,7 @@ function handle_introspection(id, cell_input, event) {
         }
     }
 
-    if (key_request_introspections(event)) {
+    if (Sagewui.keys.request_introspections(event)) {
         // We start over if the input has changed.
         if (intr.changed) {
             intr.changed = false;
@@ -1197,7 +1197,7 @@ function handle_introspection(id, cell_input, event) {
             return false;
         }
 
-    } else if (key_close_helper(event)) {
+    } else if (Sagewui.keys.close_helper(event)) {
         // ESC pressed.  Stop introspecting.
         halt_introspection(id);
         return false;
@@ -2508,7 +2508,7 @@ function cell_input_key_event(id, e) {
 
     // Record that just the control key was pressed.  We do this since
     // on Opera it is the only way to catch control + key.
-    if (key_control(e)) {
+    if (Sagewui.keys.control(e)) {
         control_key_pressed = 1;
         return;
     }
@@ -2516,21 +2516,21 @@ function cell_input_key_event(id, e) {
     id = toint(id);
     // Check for the split and join keystrokes.  The extra
     // control_key_pressed cases are needed for Safari.
-    if (key_split_cell(e) ||
-        (key_split_cell_noctrl(e) && control_key_pressed)) {
+    if (Sagewui.keys.split_cell(e) ||
+        (Sagewui.keys.split_cell_noctrl(e) && control_key_pressed)) {
         doing_split_eval = false;
         split_cell(id);
         return false;
-    } else if (key_spliteval_cell(e) ||
-               (key_enter(e) && control_key_pressed)) {
+    } else if (Sagewui.keys.spliteval_cell(e) ||
+               (Sagewui.keys.enter(e) && control_key_pressed)) {
         doing_split_eval = true;
         jump_to_cell(id, 1);
         control_key_pressed = 0;
         split_cell(id);
         return false;
-    } else if (key_join_cell(e) ||
-               (key_delete_cell(e) && control_key_pressed) ||
-               (key_delete_cell(e) && is_whitespace(get_cell(id).value))) {
+    } else if (Sagewui.keys.join_cell(e) ||
+               (Sagewui.keys.delete_cell(e) && control_key_pressed) ||
+               (Sagewui.keys.delete_cell(e) && is_whitespace(get_cell(id).value))) {
         control_key_pressed = 0;
         join_cell(id);
         return false;
@@ -2554,7 +2554,7 @@ function cell_input_key_event(id, e) {
     selection_is_empty = (selection_range[0] === selection_range[1]);
 
     // Will need IE version... if possible.
-    if (!in_slide_mode && key_up_arrow(e) && selection_is_empty) {
+    if (!in_slide_mode && Sagewui.keys.up_arrow(e) && selection_is_empty) {
         before = cell_input.value.substring(0, selection_range[0]);
         i = before.indexOf('\n');
         if (i === -1 || before === '') {
@@ -2563,7 +2563,7 @@ function cell_input_key_event(id, e) {
         } else {
             return true;
         }
-    } else if (!in_slide_mode && key_down_arrow(e) && selection_is_empty) {
+    } else if (!in_slide_mode && Sagewui.keys.down_arrow(e) && selection_is_empty) {
         after = cell_input.value.substring(selection_range[0]);
         i = after.indexOf('\n');
         if ((i === -1 || after === '') && id !== extreme_compute_cell(-1)) {
@@ -2572,54 +2572,54 @@ function cell_input_key_event(id, e) {
         } else {
             return true;
         }
-    } else if (key_send_input(e)) {
+    } else if (Sagewui.keys.send_input(e)) {
         // User pressed shift-enter (or whatever the submit key is).
         doing_split_eval = false;
         evaluate_cell(id, false);
         return false;
-    } else if (key_send_input_newcell(e)) {
+    } else if (Sagewui.keys.send_input_newcell(e)) {
         doing_split_eval = false;
         evaluate_cell(id, true);
         return false;
-    } else if (key_comment(e) && !selection_is_empty) {
+    } else if (Sagewui.keys.comment(e) && !selection_is_empty) {
         return comment_cell(cell_input);
-    } else if (key_uncomment(e) && !selection_is_empty) {
+    } else if (Sagewui.keys.uncomment(e) && !selection_is_empty) {
         return uncomment_cell(cell_input);
-    } else if (key_unindent(e)) {
+    } else if (Sagewui.keys.unindent(e)) {
         // Unfortunately, shift-tab needs to get caught before
         // not-shift tab.
         unindent_cell(cell_input);
         return false;
-    } else if (key_request_introspections(e) && selection_is_empty) {
+    } else if (Sagewui.keys.request_introspections(e) && selection_is_empty) {
         // Introspection: tab completion, ?, ??.
         evaluate_cell_introspection(id, null, null);
         return false;
-    } else if (key_indent(e) && !selection_is_empty) {
+    } else if (Sagewui.keys.indent(e) && !selection_is_empty) {
         indent_cell(cell_input);
         return false;
-    } else if (key_interrupt(e)) {
+    } else if (Sagewui.keys.interrupt(e)) {
         interrupt();
         return false;
-    } else if (key_page_down(e)) {
+    } else if (Sagewui.keys.page_down(e)) {
         if (in_slide_mode) {
             slide_next();
         } else {
             jump_to_cell(id, 5);
         }
         return false;
-    } else if (key_page_up(e)) {
+    } else if (Sagewui.keys.page_up(e)) {
         if (in_slide_mode) {
             slide_prev();
         } else {
             jump_to_cell(id, -5);
         }
         return false;
-    } else if (key_request_history(e)) {
+    } else if (Sagewui.keys.request_history(e)) {
         history_window();
-    } else if (key_request_log(e)) {
+    } else if (Sagewui.keys.request_log(e)) {
         // TODO: Write a function text_log_window or do ...?
         text_log_window(worksheet_filename);
-    } else if (key_fix_paren(e)) {
+    } else if (Sagewui.keys.fix_paren(e)) {
         paren_match(cell_input);
         return false;
     }
@@ -2629,8 +2629,8 @@ function cell_input_key_event(id, e) {
     // this to know to send the changed version back to the server.
     // We do still have to account for the arrow keys which don't
     // change the text.
-    if (! (key_up_arrow(e) || key_down_arrow(e) ||
-           key_menu_right(e) || key_menu_left(e))) {
+    if (! (Sagewui.keys.up_arrow(e) || Sagewui.keys.down_arrow(e) ||
+           Sagewui.keys.menu_right(e) || Sagewui.keys.menu_left(e))) {
         cell_has_changed = true;
         introspect[id].changed = true;
     }
