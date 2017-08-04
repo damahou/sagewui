@@ -5,17 +5,17 @@
         _lru_names: [],      // most recently used (uncovered) applet name
         _limit: 3,           // allow at most app many active jmols.
 
-        _prepare_jmol: function() {
+        _prepare_jmol() {
             // Turn off the JSmolCore.js: synchronous binary file transfer is
             // requested but not available" warning
             Jmol._alertNoBinary = false;
         },
 
-        default_info: function() {
+        default_info() {
             // Before adding anything here make sure it is not overwritten in
             // add_applet()
             return {
-                // actual size is controlled by the parent <div id='#sage_jmol_N'>
+                //actual size is controlled by the parent <div id='#sage_jmol_N'>
                 width: "95%", //This allows the jquery resize to work do not set to 100%
                 height: "95%",
                 // debug=true will pop up alert boxes
@@ -27,10 +27,11 @@
                 coverTitle: 
                     'Click on 3-D image to make it live. ' + 
                     'Right-click on live image for a control menu.',
-                deferApplet: true,                  // wait to load applet until click
-                deferUncover: true,                 // wait to uncover applet until script completed
-                //The paths below assume your server is set up with standard JSmol directory.  If not
-                //they will need modification for the page to work.
+                deferApplet: true,  //wait to load applet until click
+                deferUncover: true, //wait to uncover applet until script completed
+                //The paths below assume your server is set up with standard
+                //JSmol directory.  If not they will need modification for the
+                //page to work.
                 jarPath: "/jsmol/java", //path to applet .jar files on server.
                 j2sPath: "/jsmol/j2s",//path to javascript version.
                 makeLiveImg:"/jsmol/j2s/img/play_make_live.jpg",  //path to activate 3-D image.
@@ -42,12 +43,13 @@
                 z: 5,
                 zIndexBase: 5,
                 menuFile: "/java/jmol/appletweb/SageMenu.mnu", //special sagemenu
-                //platformSpeed: 6, does not work have to do it in the ready function
-                //or set to 7 or 8 for additional rotation graphics capabilities
+                //platformSpeed: 6, does not work have to do it in the ready
+                //function or set to 7 or 8 for additional rotation graphics
+                //capabilities
             };
         },
 
-        ready_callback: function (name, applet) {
+        ready_callback(name, applet) {
             console.log('Jmol applet has launched ' + name);
             this._applets[name] = applet;
             this._lru_names.push(name);
@@ -61,7 +63,7 @@
         /* Remove duplicate and stale applet names from this._lru_names as a
          * side effect
          */
-        most_recently_used: function () {
+        most_recently_used() {
             var result = [];
             for (i = this._lru_names.length-1; i >= 0; i--) {
                 var name = this._lru_names[i];
@@ -78,7 +80,7 @@
         },
 
         // Make sure that there are not too many active applets
-        enforce_limit: function() {
+        enforce_limit() {
             var applet_names = this.most_recently_used();
             for (i = 0; i < applet_names.length - this._limit; i++) {
                 var name = applet_names[i];
@@ -89,7 +91,7 @@
             }
         },
 
-        add_applet: function (size, image, script, server_url, cell_num) {
+        add_applet(size, image, script, server_url, cell_num) {
             // The id of the container div holding the applet html, use this
             // to query the dom later to see if the applet is stil there.
             var applet_name = 'jmolApplet' + this._count;
@@ -117,13 +119,13 @@
         },
 
         // Callback for Action -> Delete all Output
-        delete_all_callback: function() {
+        delete_all_callback() {
             // console.log('jmol: delete_all');
             this.delete_callback();
         },
 
         // Callback for deleting single cell (may not contain jmol)
-        delete_callback: function() {
+        delete_callback() {
             // console.log('jmol: delete_check');
             var applet_names = Object.keys(this._applets);
             for (i = 0; i < applet_names.length; i++) {
@@ -133,7 +135,7 @@
             };
         },
 
-        activator: function () {
+        activator() {
             if (document.getElementById("loadJmol")) {
                 var parentdiv = jQuery("#loadJmol").parent();
                 // This div contains the ID number
