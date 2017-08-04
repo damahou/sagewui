@@ -115,7 +115,7 @@ function worksheet_list_button_callback(status, response_text) {
             alert(response_text);
         }
     } else {
-        alert(translations["Error applying function to worksheet(s)."] + response_text);
+        alert(Sagewui.translations["Error applying function to worksheet(s)."] + response_text);
     }
     window.location.reload(true);
 }
@@ -195,7 +195,7 @@ function delete_worksheet_callback(status, response_text) {
     if (status === 'success') {
         window.location.replace('/?typ=trash');
     } else {
-        alert(translations['Possible failure deleting worksheet.']);
+        alert(Sagewui.translations['Possible failure deleting worksheet.']);
     }
 }
 
@@ -237,7 +237,7 @@ function empty_trash() {
       server goes by accessing the url /emptytrash.  After that finishes, the
       empty trash folder is displayed.
     */
-    if (confirm(translations['Emptying the trash will permanently delete all items in the trash. Continue?'])) {
+    if (confirm(Sagewui.translations['Emptying the trash will permanently delete all items in the trash. Continue?'])) {
         window.location.replace('/emptytrash');
     }
 }

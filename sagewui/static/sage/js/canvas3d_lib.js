@@ -344,7 +344,7 @@
         var canvas_id = "canvas3d-viewer" + (viewer_count++);
         cell_writer.write(('<canvas style="border: 2px solid black" id="' + canvas_id +
                            '" width="' + CANVAS_SIZE + '" height="' + CANVAS_SIZE +'">') +
-                          translations["Sorry, but you need a browser that supports the &lt;canvas&gt; tag."] +
+                          Sagewui.translations["Sorry, but you need a browser that supports the &lt;canvas&gt; tag."] +
                           '</canvas>');
         // Send an XHR to get the JSON model data stored at the URL
         var xhr = new XMLHttpRequest();
@@ -364,4 +364,4 @@
     app.canvas3d = {
         viewer: viewer
     };
-})(Sagewui || (Sagewui = {}));
+})(window.Sagewui || (window.Sagewui = {}));

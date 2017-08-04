@@ -31,7 +31,7 @@ function interrupt_callback(status, response) {
     if (response === 'failed') {
         if (!is.count) {
             is.count = 1;
-            message = translations['Unable to interrupt calculation.'] + " " + translations['Trying again in %(num)d second...'](timeout) + ' ' + translations['Close this box to stop trying.'];
+            message = Sagewui.translations['Unable to interrupt calculation.'] + " " + Sagewui.translations['Trying again in %(num)d second...'](timeout) + ' ' + Sagewui.translations['Close this box to stop trying.'];
 
             is.alert = $.achtung({
                 className: 'interrupt-fail-notification',
@@ -50,9 +50,9 @@ function interrupt_callback(status, response) {
         }
 
         is.count += 1;
-        message = translations['Interrupt attempt'] + " " + is.count;
+        message = Sagewui.translations['Interrupt attempt'] + " " + is.count;
         if (is.count > 5) {
-            message += ". " + translations["<a href='javascript:restart_sage();'>Restart</a>, instead?"];
+            message += ". " + Sagewui.translations["<a href='javascript:restart_sage();'>Restart</a>, instead?"];
         }
         is.alert.achtung('update', {
             message: message,

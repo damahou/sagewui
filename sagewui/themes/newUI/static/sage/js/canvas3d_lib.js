@@ -362,4 +362,4 @@
     app.canvas3d = {
         viewer: viewer
     };
-})(Sagewui || (Sagewui = {}));
+})(window.Sagewui || (window.Sagewui = {}));

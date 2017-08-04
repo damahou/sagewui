@@ -453,7 +453,7 @@ function get_keyboard() {
     }
 
     if (!b || !o || warn) {
-        alert(translations['Your browser / OS combination is not supported.\\nPlease use Firefox or Opera under Linux, Windows, or Mac OS X, or Safari.']);
+        alert(Sagewui.translations['Your browser / OS combination is not supported.\\nPlease use Firefox or Opera under Linux, Windows, or Mac OS X, or Safari.']);
     }
 
     $.getScript('/javascript/dynamic/keyboard/' + b + o);
@@ -672,7 +672,7 @@ function hide_java_applets() {
         })
         me.after(
             $('<table><tbody><tr><td align="center" valign="middle">' + 
-              translations["Java Applet Hidden"] + '</td></tr></tbody></table>').css({
+              Sagewui.translations["Java Applet Hidden"] + '</td></tr></tbody></table>').css({
                 marginTop: '-' + height.toString() + 'px',
                 width: width.toString() + 'px',
                 height: height.toString() + 'px',
@@ -1298,7 +1298,7 @@ function update_introspection_text(id, text) {
             introspect_div.html('Error typesetting mathematics' + introspect_div.html());
         }
 
-        introspect_div.find('.docstring').prepend('<div class="click-message" style="cursor: pointer">' + translations["Click here to pop out"] + '</div><div class="unprinted-note">' + translations["unprinted"] + '</div>');
+        introspect_div.find('.docstring').prepend('<div class="click-message" style="cursor: pointer">' + Sagewui.translations["Click here to pop out"] + '</div><div class="unprinted-note">' + Sagewui.translations["unprinted"] + '</div>');
 
         if (intr.replacing && !intr.docstring) {
             select_replacement_element(id, intr.replacement_row,
@@ -1568,7 +1568,7 @@ function worksheet_list_button_callback(status, response) {
             alert(response);
         }
     } else {
-        alert(translations['Error applying function to worksheet(s).'] + response);
+        alert(Sagewui.translations['Error applying function to worksheet(s).'] + response);
     }
     window.location.reload(true);
 }
@@ -1653,7 +1653,7 @@ function download_worksheet() {
     INPUT:
         base_filename
     */
-    var title = prompt(translations['Title of saved worksheet'], worksheet_name), winref;
+    var title = prompt(Sagewui.translations['Title of saved worksheet'], worksheet_name), winref;
     if (title) {
         winref = open(worksheet_command("download/" + title + '.sws'));
     }
@@ -1706,7 +1706,7 @@ function save_worksheet_callback(status, response) {
     Verify that saving the current worksheet worked.
     */
     if (status !== 'success') {
-        alert(translations['Failed to save worksheet.']);
+        alert(Sagewui.translations['Failed to save worksheet.']);
         return;
     }
 }
@@ -1773,10 +1773,10 @@ function rename_worksheet() {
         }
     }, {
         id: "rename_prompt",
-        title: translations["Rename worksheet"],
-        message: translations['Please enter a name for this worksheet.'],
+        title: Sagewui.translations["Rename worksheet"],
+        message: Sagewui.translations['Please enter a name for this worksheet.'],
         'default': worksheet_name,
-        submit: translations["Rename"]
+        submit: Sagewui.translations["Rename"]
     });
 }
 
@@ -1870,7 +1870,7 @@ function delete_worksheet_callback(status, response) {
     if (status === "success") {
         window.location.replace("/?typ=trash");
     } else {
-        alert(translations['Possible failure deleting worksheet.']);
+        alert(Sagewui.translations['Possible failure deleting worksheet.']);
     }
 }
 
@@ -1932,10 +1932,10 @@ function list_rename_worksheet(filename, curname) {
     modal_prompt(function (form, prompt) {
         callback($(':text', form).attr('value'));
     }, {
-        title: translations["Rename worksheet"],
-        message: translations["Please enter a name for this worksheet."],
+        title: Sagewui.translations["Rename worksheet"],
+        message: Sagewui.translations["Please enter a name for this worksheet."],
         'default': curname,
-        submit: translations["Rename"]
+        submit: Sagewui.translations["Rename"]
     });
 }
 
@@ -2183,7 +2183,7 @@ function evaluate_text_cell_callback(status, response) {
     if (X.id === -1) {
         // Something went wrong, e.g., the requested cell doesn't
         // exist.
-        alert(translations['You requested to evaluate a cell that, for some reason, the server is unaware of.']);
+        alert(Sagewui.translations['You requested to evaluate a cell that, for some reason, the server is unaware of.']);
         return;
     }
 
@@ -3049,7 +3049,7 @@ function evaluate_cell(id, newcell) {
     var cell_input;
 
     if (worksheet_locked) {
-        alert(translations['This worksheet is read only. Please make a copy or contact the owner to change it.']);
+        alert(Sagewui.translations['This worksheet is read only. Please make a copy or contact the owner to change it.']);
         return;
     }
 
@@ -3463,7 +3463,7 @@ function check_for_cell_update_callback(status, response) {
             cancel_update_check();
             halt_queued_cells();
             elapsed_time = update_error_count * update_error_delta / 1000;
-            msg = translations['Error updating cell output after '] + " " + elapsed_time + translations['s (canceling further update checks).'];
+            msg = Sagewui.translations['Error updating cell output after '] + " " + elapsed_time + Sagewui.translations['s (canceling further update checks).'];
             
             /* alert(msg); */
             return;
@@ -4158,11 +4158,11 @@ function insert_new_cell_after_callback(status, response) {
     var X;
 
     if (status === "failure") {
-        alert(translations['Problem inserting new input cell after current input cell.\\n'] + response);
+        alert(Sagewui.translations['Problem inserting new input cell after current input cell.\\n'] + response);
         return;
     }
     if (response === "locked") {
-        alert(translations['Worksheet is locked. Cannot insert cells.']);
+        alert(Sagewui.translations['Worksheet is locked. Cannot insert cells.']);
         return;
     }
 
@@ -4206,11 +4206,11 @@ function insert_new_text_cell_after_callback(status, response) {
     */
     var X;
     if (status === "failure") {
-        alert(translations['Problem inserting new text cell before current input cell.'] );
+        alert(Sagewui.translations['Problem inserting new text cell before current input cell.'] );
         return;
     }
     if (response === "locked") {
-        alert(translations['Worksheet is locked. Cannot insert cells.']);
+        alert(Sagewui.translations['Worksheet is locked. Cannot insert cells.']);
         return;
     }
 
@@ -4289,11 +4289,11 @@ function insert_new_cell_before_callback(status, response) {
     */
     var X;
     if (status === "failure") {
-        alert(translations['Problem inserting new input cell before current input cell.\\n'] + response);
+        alert(Sagewui.translations['Problem inserting new input cell before current input cell.\\n'] + response);
         return;
     }
     if (response === "locked") {
-        alert(translations['Worksheet is locked. Cannot insert cells.']);
+        alert(Sagewui.translations['Worksheet is locked. Cannot insert cells.']);
         return;
     }
 
@@ -4330,11 +4330,11 @@ function insert_new_text_cell_before_callback(status, response) {
     */
     var X;
     if (status === "failure") {
-        alert(translations['Problem inserting new text cell before current input cell.\\n'] + response);
+        alert(Sagewui.translations['Problem inserting new text cell before current input cell.\\n'] + response);
         return;
     }
     if (response === "locked") {
-        alert(translations['Worksheet is locked. Cannot insert cells.']);
+        alert(Sagewui.translations['Worksheet is locked. Cannot insert cells.']);
         return;
     }
 
@@ -4764,7 +4764,7 @@ function empty_trash() {
       allowed by the server.
 
     */
-    if(confirm(translations["Emptying the trash will permanently delete all items in the trash. Continue?"])) {
+    if(confirm(Sagewui.translations["Emptying the trash will permanently delete all items in the trash. Continue?"])) {
         $('#empty-trash-form').submit();
     }
 }
