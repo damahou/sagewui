@@ -1,7 +1,7 @@
 /* This JavaScript library implements a software 3D renderer drawing to a
  * canvas context, which makes up the 'canvas3d' backend used in 3D plotting. */
 
-canvas3d = (function() {
+(function(app) {
     var CANVAS_SIZE = 400;
     // The focal length is used to compute the projection transformation.
     var FOCAL_LENGTH = 300;
@@ -359,9 +359,9 @@ canvas3d = (function() {
         }
         xhr.open('GET', url, true);
         xhr.send(null);
-    }
+    };
 
-    return {
+    app.canvas3d = {
         viewer: viewer
     };
-})();
+})(Sagewui || (Sagewui = {}));

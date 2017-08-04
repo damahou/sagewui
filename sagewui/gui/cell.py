@@ -1926,7 +1926,7 @@ class ComputeCell(Cell):
                 pass
             elif F.endswith('.canvas3d'):
                 script = (
-                    '<div><script>canvas3d.viewer("%s?%s");</script></div>' % (
+                    '<div><script>Sagewui.canvas3d.viewer("%s?%s");</script></div>' % (
                         url, time.time()))
                 images.append(script)
             else:
