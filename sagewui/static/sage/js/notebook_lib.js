@@ -176,6 +176,42 @@ var modal_prompt_element =
 
 
 ///////////////////////////////////////////////////////////////////
+// ajax async requests
+//
+// Generic callback function signature:
+// function generic_callback(status, response_text) {}
+//
+///////////////////////////////////////////////////////////////////
+
+function async_request(url, callback, postvars) {
+    var settings = {
+        url : url,
+        async : true,
+        cache : false,
+        dataType: "text"
+    };
+
+    if ($.isFunction(callback)) {
+        settings.error = function (XMLHttpRequest, textStatus, errorThrown) {
+            callback("failure", errorThrown);
+        };
+        settings.success = function (data, textStatus) {
+            callback("success", data);
+        };
+    }
+
+    if (postvars) {
+        settings.type = "POST";
+        settings.data = postvars;
+    } else {
+        settings.type = "GET";
+    }
+
+    $.ajax(settings);
+}
+ 
+
+///////////////////////////////////////////////////////////////////
 // Cross-Browser Stuff
 ///////////////////////////////////////////////////////////////////
 function toint(x) {
@@ -4398,6 +4434,58 @@ function interrupt() {
         return;
     }
     async_request(worksheet_command('interrupt'), interrupt_callback);
+}
+
+
+function interrupt_callback(status, response) {
+    /*
+    Callback called after we send the interrupt signal to the server.
+    If the interrupt succeeds, we change the CSS/DOM to indicate that
+    no cells are currently computing.  If it fails, we display/update
+    a alert and repeat after a timeout.  If the signal doesn't make
+    it, we just reset any alerts.
+    */
+    var is = interrupt_state, message;
+    var timeout = 5;
+
+    if (response === 'failed') {
+        if (!is.count) {
+            is.count = 1;
+            message = Sagewui.translations['Unable to interrupt calculation.'] +
+                " " +
+                Sagewui.translations['Trying again in %(num)d second...'](timeout) +
+                ' ' + Sagewui.translations['Close this box to stop trying.'];
+
+            is.alert = $.achtung({
+                className: 'interrupt-fail-notification',
+                message: message,
+                timeout: timeout,
+                hideEffects: false,
+                showEffects: false,
+                onCloseButton: function () {
+                    reset_interrupts();
+                },
+                onTimeout: function () {
+                    interrupt();
+                }
+            });
+            return;
+        }
+
+        is.count += 1;
+        message = Sagewui.translations['Interrupt attempt'] + " " + is.count;
+        if (is.count > 5) {
+            message += ". " + Sagewui.translations["<a href='javascript:restart_sage();'>Restart</a>, instead?"];
+        }
+        is.alert.achtung('update', {
+            message: message,
+            timeout: timeout
+        });
+    } else if (status === 'success') {
+        halt_queued_cells();
+    } else {
+        reset_interrupts();
+    }
 }
 
 
