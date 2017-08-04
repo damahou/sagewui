@@ -26,6 +26,7 @@ from .config import UAT_GUEST
 from .util.decorators import guest_or_login_required
 from .util.templates import css_escape
 from .util.templates import convert_time_to_string
+from .util.templates import DynamicJs
 from .util.templates import prettify_time_ago
 from .util.templates import number_of_rows
 from .util.templates import message as message_template
@@ -57,9 +58,12 @@ def create_app(notebook, startup_token=None, debug=False):
         'SECRET_KEY': os.urandom(24),
         })
 
+    dynamic_javascript = DynamicJs(debug=debug)
+
     @app.before_request
     def set_notebook_object():
         g.notebook = notebook
+        g.dynamic_javascript = dynamic_javascript
 
     # Handles all uncaught exceptions if not debug activated
     @app.errorhandler(500)

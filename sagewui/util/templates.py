@@ -176,8 +176,8 @@ def message(msg, cont='/', username=None, **kwds):
 # Dynamic javascript
 
 class DynamicJs(object):
-    def __init__(self, debug_mode=False):
-        self.debug_mode = debug_mode
+    def __init__(self, debug=False):
+        self.debug = debug
         self.__localization = {}
         self.__keyboard = {}
 
@@ -212,28 +212,28 @@ class DynamicJs(object):
         for k in KEYS:
             keyhandler.add(*k)
 
-        s = render_template('js/notebook_dynamic.js',
-                            KEY_CODES=keyhandler.all_tests(),
-                            debug_mode=self.debug_mode)
-        s = jsmin(s)
-        return (s, sha1(s.encode('utf-8')).hexdigest())
+        data = render_template('js/notebook_dynamic.js',
+                               KEY_CODES=keyhandler.all_tests())
+        return self._prepare_data(data)
 
     @property
     def localization(self):
         locale = repr(get_locale())
         if self.__localization.get(locale, None) is None:
             data = render_template('js/localization.js', N_=N_, nN_=nN_)
-            self.__localization[locale] = (
-                data, sha1(repr(data).encode('utf-8')).hexdigest())
-
+            self.__localization[locale] = self._prepare_data(data)
         return self.__localization[locale]
 
     @cached_property()
     def mathjax(self):
         data = render_template('js/mathjax_sage.js',
                                theme_mathjax_macros=mathjax_macros)
-        return (
-            data, sha1(repr(data).encode('utf-8')).hexdigest())
+        return self._prepare_data(data)
+
+    def _prepare_data(self, data):
+        if not self.debug:
+            data = jsmin(data)
+        return (data, sha1(repr(data).encode('utf-8')).hexdigest())
 
     def keyboard(self, browser_os):
         if self.__keyboard.get(browser_os, None) is None:

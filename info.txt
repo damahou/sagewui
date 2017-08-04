@@ -326,13 +326,13 @@ mathjax_sage.js extensions: ["color.js"]
 mathjax_sage.js MathJax.Ajax.loadComplete("[MathJax]/config/../../dynamic/mathjax_sage.js")
 jmol_lib.js // Turn off the JSmolCore.js: synchronous binary file transfer is
 notebook_dynamic.js {% include "js/async_lib.js" %}
-notebook_dynamic.js {% include "js/debug.js" %}
 
 sagewui/templates/html/
 
 base    /javascript/dynamic/localization.js
         /javascript/jquery/jquery-1.11.0.min.js
         /javascript/json/json2.min.js
+        /javascript/sage/js/debug.js
         /javascript/sage/js/master.js
         /javascript/sage/js/ws_list.js
 docs    /javascript/sage/js/ws_list.js
@@ -376,7 +376,8 @@ worksheet_listing    /javascript/dynamic/notebook_dynamic.js
                                            worksheet_listing
 /javascript/dynamic/mathjax_sage.js        notebook/base
 
-/javascript/sage/js/canvas3d_lib.js               notebook/base
+/javascript/sage/js/canvas3d_lib.js           notebook/base
+/javascript/sage/js/debug.js                  base
 /javascript/sage/js/jmol_lib.js               notebook/base
 /javascript/sage/js/master.js                 base
 /javascript/sage/js/notebook_lib.js           notebook/base

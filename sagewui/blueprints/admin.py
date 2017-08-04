@@ -12,8 +12,6 @@ from flask import redirect
 from flask import url_for
 from flask_babel import gettext
 
-from . import base
-
 from ..config import SAGE_VERSION
 from ..config import UN_ADMIN
 
@@ -305,7 +303,7 @@ def notebook_settings():
     if 'theme' in request.values:
         # Invalidate dynamic js caches so that all the themes can be
         # changed without restarting
-        base.dynamic_javascript.clear_cache()
+        g.dynamic_javascript.clear_cache()
         new_theme = request.values['theme']
         if new_theme not in current_app.theme_manager.themes:
             g.notebook.conf['theme'] = current_app.config['DEFAULT_THEME']

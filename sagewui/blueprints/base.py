@@ -17,19 +17,10 @@ from flask import make_response
 from flask import current_app
 from flask_babel import gettext
 
-from ..config import UAT_USER
 from ..config import UN_ADMIN
-from ..config import UN_GUEST
-from ..util.templates import DynamicJs
 
-from ..util.auth import challenge
 from ..util.decorators import login_required
-from ..util.decorators import guest_or_login_required
-from ..util.decorators import with_lock
 from ..util.templates import render_template
-from ..util.text import is_valid_email
-from ..util.text import is_valid_username
-from ..util.text import trunc_invalid_username_chars
 from .worksheet import url_for_worksheet
 
 base = Blueprint('base', __name__)
@@ -68,34 +59,32 @@ def index():
 
     return redirect(url_for('authentication.login'))
 
+
 ######################
 # Dynamic Javascript #
 ######################
 
-dynamic_javascript = DynamicJs()
-
-
 @base.route('/javascript/dynamic/notebook_dynamic.js')
 def dynamic_js():
-    data, datahash = dynamic_javascript.javascript
+    data, datahash = g.dynamic_javascript.javascript
     return render_js(data, datahash)
 
 
 @base.route('/javascript/dynamic/localization.js')
 def localization_js():
-    data, datahash = dynamic_javascript.localization
+    data, datahash = g.dynamic_javascript.localization
     return render_js(data, datahash)
 
 
 @base.route('/javascript/dynamic/mathjax_sage.js')
 def mathjax_js():
-    data, datahash = dynamic_javascript.mathjax
+    data, datahash = g.dynamic_javascript.mathjax
     return render_js(data, datahash)
 
 
 @base.route('/javascript/dynamic/keyboard/<browser_os>')
 def keyboard_js(browser_os):
-    data, datahash = dynamic_javascript.keyboard(browser_os)
+    data, datahash = g.dynamic_javascript.keyboard(browser_os)
     return render_js(data, datahash)
 
 

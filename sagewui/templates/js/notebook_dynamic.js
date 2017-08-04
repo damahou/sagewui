@@ -12,10 +12,6 @@
 // Other libraries.
 {% include "js/async_lib.js" %}
 
-{%- if debug_mode %}
-{% include "js/debug.js" %}
-{% endif %}
-
 function interrupt_callback(status, response) {
     /*
     Callback called after we send the interrupt signal to the server.
