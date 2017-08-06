@@ -336,8 +336,7 @@ base    /javascript/dynamic/localization.js
         /javascript/sage/js/ws_list.js
 docs    /javascript/sage/js/ws_list.js
 history    /javascript/sage/js/ws_list.js
-notebook/base    /javascript/dynamic/notebook_dynamic.js
-                 /javascript/jquery/jquery-1.11.0.min.js
+notebook/base    /javascript/jquery/jquery-1.11.0.min.js
                  /javascript/jquery/plugins/achtung/ui.achtung-mod.min.js
                  /javascript/jquery/plugins/colorpicker/js/colorpicker.min.js
                  /javascript/jquery/plugins/extendedclick/jquery.event.extendedclick.min.js
@@ -350,6 +349,7 @@ notebook/base    /javascript/dynamic/notebook_dynamic.js
                  /javascript/mathjax/MathJax.js?config=TeX-AMS_HTML-full,../../dynamic/mathjax_sage.js
                  /javascript/sage/js/canvas3d_lib.js
                  /javascript/sage/js/jmol_lib.js
+                 /javascript/sage/js/keys.js
                  /javascript/sage/js/notebook_lib.js
                  /javascript/sage/js/tinymce.js
                  /javascript/sage3d/sage3d.js
@@ -362,23 +362,23 @@ notebook/guest_worksheet_page    /javascript/sage/js/published_worksheet.js
 settings/notebook_settings    /javascript/jquery/plugins/farbtastic/farbtastic.min.js
                               /javascript/sage/js/ws_list.js
 source_code    /javascript/highlight/prettify.js
-worksheet_listing    /javascript/dynamic/notebook_dynamic.js
-                     /javascript/jquery/plugins/form/jquery.form.min.js
+worksheet_listing    /javascript/jquery/plugins/form/jquery.form.min.js
                      /javascript/jquery/plugins/jquery.bgiframe.min.js
                      /javascript/jqueryui/js/jquery-ui-1.10.4.custom.min.js
+                     /javascript/sage/js/keys.js
                      /javascript/sage/js/notebook_lib.js
                      /javascript/sage/js/ws_list.js                                                                    
 
 
 /javascript/dynamic/localization.js        base
-/javascript/dynamic/notebook_dynamic.js    notebook/base
-                                           worksheet_listing
 /javascript/dynamic/mathjax_sage.js        notebook/base
 
 /javascript/sage/js/canvas3d_lib.js           notebook/base
 /javascript/sage/js/debug.js                  base
 /javascript/sage/js/jmol_lib.js               notebook/base
 /javascript/sage/js/master.js                 base
+/javascript/sage/js/keys.js                   notebook/base
+                                              worksheet_listing
 /javascript/sage/js/notebook_lib.js           notebook/base
                                               worksheet_listing
 /javascript/sage/js/published_worksheet.js    notebook/guest_worksheet_page
