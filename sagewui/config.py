@@ -66,7 +66,7 @@ HOME_PATH = BASE_PATH
 PID_FILE_TEMPLATE = 'sagewui-{}.pid'
 
 # paths for static urls
-DOC_PATH = os.path.join(SAGE_ENV['SAGE_DOC'], 'output', 'html', 'en')
+DOC_PATH = os.path.join(SAGE_ENV['SAGE_DOC'], 'html', 'en')
 SRC_PATH = os.path.join(SAGE_ENV['SAGE_SRC'], 'sage')
 JMOL_PATH = os.path.join(SAGE_ENV['SAGE_SHARE'], 'jmol')
 JSMOL_PATH = os.path.join(SAGE_ENV['SAGE_SHARE'], 'jsmol')
