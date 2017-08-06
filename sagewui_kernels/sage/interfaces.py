@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*
 """
-sage_server interfaces
+sagewui_kernels.sage interfaces
 
 AUTHORS:
 

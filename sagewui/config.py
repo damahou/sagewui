@@ -12,7 +12,7 @@ from appdirs import user_data_dir
 from flask_babel import lazy_gettext
 from pexpect.exceptions import ExceptionPexpect
 
-from .sage_server.workers import sage
+from sagewui_kernels.sage.workers import sage
 from .util import sage_browser
 
 # Global variables across the application

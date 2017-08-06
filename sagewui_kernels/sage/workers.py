@@ -1,5 +1,5 @@
 """
-sage_server workers
+sagewui_kernels.sage workers
 
 AUTHORS:
 

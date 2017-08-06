@@ -32,11 +32,11 @@ import sys
 
 from docutils.core import publish_parts
 
+from sagewui_kernels.sage.workers import sage
 from .. import config
 from ..config import SYSTEMS
 from ..config import UN_PUB
 from ..config import UN_SAGE
-from ..sage_server.workers import sage
 from ..storage import FilesystemDatastore
 from ..util import cached_property
 from ..util import make_path_relative

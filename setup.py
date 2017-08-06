@@ -61,9 +61,11 @@ setup(
         'sagewui',
         'sagewui.blueprints',
         'sagewui.gui',
-        'sagewui.sage_server',
         'sagewui.storage',
         'sagewui.util',
+
+        'sagewui_kernels',
+        'sagewui_kernels.sage',
         ],
     scripts=['sagewui/static/sage3d/sage3d'],
     package_data={
