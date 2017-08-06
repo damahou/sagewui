@@ -4,6 +4,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 from builtins import range
+from builtins import filter
 
 import errno
 import os
@@ -19,8 +20,8 @@ import time
 from importlib import import_module
 from itertools import chain
 from itertools import count
-from itertools import filterfalse
-from itertools import zip_longest
+from future.moves.itertools import filterfalse
+from future.moves.itertools import zip_longest
 
 
 def grouper(iterable, n, fillvalue=None):
