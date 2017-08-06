@@ -248,16 +248,13 @@ class Worksheet(object):
             sage: cmp(W2, W1)
             -1
         """
-        try:
-            return self.filename == other.filename
-        except AttributeError:
-            return type(self) == type(other)
+        return self.filename == other.filename
 
     def __ne__(self, other):
-        try:
-            return self.filename != other.filename
-        except AttributeError:
-            return type(self) != type(other)
+        return self.filename != other.filename
+
+    def __lt__(self, other):
+        return self.filename < other.filename
 
     def __repr__(self):
         r"""
