@@ -35,8 +35,7 @@ from sage.repl.preparse import preparse_file
 from sage.symbolic.all import Expression
 from sage.symbolic.all import SR
 
-from sphinxify import sphinxify
-from sphinxify import is_sphinx_markup
+from sage.misc.sphinxify import sphinxify
 
 
 sys.displayhook = DisplayHook()
@@ -273,11 +272,10 @@ def docstring(obj_name, globs, system='sage'):
 
 
 def html_markup(s):
-    if is_sphinx_markup(s):
-        try:
-            return sphinxify(s)
-        except:
-            pass
+    try:
+        return sphinxify(s)
+    except:
+        pass
     # Not in ReST format, so use docutils
     # to process the preamble ("**File:**" etc.)  and put
     # everything else in a <pre> block.
