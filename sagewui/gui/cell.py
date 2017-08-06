@@ -508,9 +508,6 @@ class ComputeCell(Cell):
 
     @introspect.setter
     def introspect(self, value):
-        if value:
-            print('\n{1}\n{0}\n{1}\n'.format(value[0], '='*80))
-            print('\n{1}\n{0}\n{1}\n'.format(value[1], '='*80))
         self.__introspect = value
 
     def __repr__(self):
