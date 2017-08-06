@@ -206,7 +206,6 @@ class DynamicJs(object):
         return (data, sha1(repr(data).encode('utf-8')).hexdigest())
 
     def clear_cache(self):
-        del self.javascript
         del self.mathjax
         self.__localization = {}
         self.__keyboard = {}
