@@ -71,6 +71,7 @@ SRC_PATH = os.path.join(SAGE_ENV['SAGE_SRC'], 'sage')
 JMOL_PATH = os.path.join(SAGE_ENV['SAGE_SHARE'], 'jmol')
 JSMOL_PATH = os.path.join(SAGE_ENV['SAGE_SHARE'], 'jsmol')
 J2S_PATH = os.path.join(JSMOL_PATH, 'j2s')
+THREEJS_PATH = os.path.join(SAGE_ENV['SAGE_SHARE'], 'threejs')
 
 # DB
 DEFAULT_NB_NAME = 'default'

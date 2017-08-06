@@ -318,8 +318,11 @@ class FilesystemDatastore(Datastore):
     #########################################################################
     def _makepath(self, path):
         p = self._abspath(path)
-        if not os.path.exists(p):
+        try:
             os.makedirs(p)
+        except OSError:
+            if not os.path.isdir(p):
+                raise
         return path
 
     def _deep_user_path(self, username):
@@ -337,17 +340,26 @@ class FilesystemDatastore(Datastore):
         # There are also some cases where the username could have unicode in
         # it.
         username = str(username)
-        path = self._abspath(os.path.join(self._home_path, username))
+
+        home = self._abspath(self._home_path)
+        path = os.path.join(home, username)
         if not os.path.islink(path):
-            if not os.path.exists(path):
-                self._makepath(path)
+            self._makepath(home)
 
             old_dir = os.getcwd()
-            os.chdir(self._abspath(self._home_path))
+            os.chdir(home)
             new_path = self._deep_user_path(username)
 
-            # Move the directory to the __store__ directory
-            os.rename(path, new_path)
+            # Ensure that new_path exists:
+            if os.path.exists(path):
+                # If the old path exists, move it to the new path.
+                # If both the old and new path exist, that's an error
+                # and this will raise an exception.
+                os.rename(path, new_path)
+            else:
+                # Otherwise, simply create the new path.
+                self._makepath(os.path.join(home, new_path))
+            
 
             # new_path now points to the actual directory
             os.symlink(new_path, username)
@@ -423,9 +435,12 @@ class FilesystemDatastore(Datastore):
             ....:     alarm(1)
             ....:     while True:
             ....:         D._save(s, fn)
-            ....: except (AlarmInterrupt, OSError):
+            ....: except (AlarmInterrupt, OSError, AttributeError):
             ....:     # OSError could happen due to a double close() in
             ....:     # Python's tempfile module.
+            ....:     # AttributeError could happen due to interrupting
+            ....:     # in _TemporaryFileWrapper.__init__
+            ....:     # (see https://trac.sagemath.org/ticket/22423
             ....:     pass
             sage: len(D._load(fn))
             100000

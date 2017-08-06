@@ -16,6 +16,7 @@ from flask.helpers import send_from_directory
 from ..config import JMOL_PATH
 from ..config import JSMOL_PATH
 from ..config import J2S_PATH
+from ..config import THREEJS_PATH
 
 
 static_paths = Blueprint('static_paths', __name__)
@@ -53,3 +54,8 @@ def jsmol(filename):
 @static_paths.route('/j2s/<path:filename>')
 def j2s(filename):
     return send_from_directory(J2S_PATH, filename)
+
+
+@static_paths.route('/threejs/<path:filename>')
+def threejs(filename):
+    return send_from_directory(THREEJS_PATH, filename)
