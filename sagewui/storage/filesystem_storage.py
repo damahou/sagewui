@@ -504,7 +504,7 @@ class FilesystemDatastore(Datastore):
     #########################################################################
 
     def load_server_conf(self):
-        return self._basic_to_server_conf(self._load('conf.pickle'))
+        return self._basic_to_server_conf(self._load(self._conf_filename))
 
     def save_server_conf(self, server_conf):
         """
@@ -513,8 +513,8 @@ class FilesystemDatastore(Datastore):
             - ``server`` --
         """
         basic = self._server_conf_to_basic(server_conf)
-        self._save(basic, 'conf.pickle')
-        self._permissions('conf.pickle')
+        self._save(basic, self._conf_filename)
+        self._permissions(self._conf_filename)
 
     def load_users(self, user_manager):
         """
@@ -539,7 +539,7 @@ class FilesystemDatastore(Datastore):
             {'admin': admin, 'wstein': wstein}
         """
         for username, user in self._basic_to_users(
-                self._load('users.pickle')).items():
+                self._load(self._users_filename)).items():
             user_manager[username] = user
         return user_manager
 
@@ -565,8 +565,8 @@ class FilesystemDatastore(Datastore):
             sage: U
             {'admin': admin, 'wstein': wstein}
         """
-        self._save(self._users_to_basic(users), 'users.pickle')
-        self._permissions('users.pickle')
+        self._save(self._users_to_basic(users), self._users_filename)
+        self._permissions(self._users_filename)
 
     def load_user_history(self, username):
         """
