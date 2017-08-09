@@ -76,7 +76,6 @@ def render_ws_list_template(args, pub, username):
     search = args['search'] if 'search' in args else None
     sort = args['sort'] if 'sort' in args else 'last_edited'
     reverse = (args['reverse'] == 'True') if 'reverse' in args else False
-    readonly = g.notebook.readonly_user(g.username)
     try:
         if not pub:
             worksheets = g.notebook.user_selected_wsts(
@@ -126,7 +125,6 @@ def worksheet_list():
     r = {}
 
     pub = UN_PUB in request.args
-    nb.readonly_user(g.username)
     typ = request.args['type'] if 'type' in request.args else 'active'
     search = request.args['search'] if 'search' in request.args else None
     sort = request.args['sort'] if 'sort' in request.args else 'last_edited'

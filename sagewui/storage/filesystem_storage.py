@@ -359,7 +359,6 @@ class FilesystemDatastore(Datastore):
             else:
                 # Otherwise, simply create the new path.
                 self._makepath(os.path.join(home, new_path))
-            
 
             # new_path now points to the actual directory
             os.symlink(new_path, username)
