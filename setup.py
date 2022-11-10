@@ -34,10 +34,10 @@ install_requires = [
     'twisted>=11.0.0',
     'flask>=0.10.1',
     'flask-autoindex',
-    'flask-babel'
+    'flask-babel',
     'flask-themes2',
     'future',
-    'smtpsend',
+    # 'smtpsend',
     'pexpect',
     'docutils',
     'jsmin',
