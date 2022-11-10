@@ -26,7 +26,7 @@ import re
 import shutil
 import textwrap
 import time
-from cgi import escape
+from html import escape
 from random import randint
 from sys import maxsize
 
@@ -1353,7 +1353,7 @@ class ComputeCell(Cell):
             <head></head><body>Test</body>'
         """
         def format(x):
-            x = word_wrap(escape(x), ncols)
+            x = word_wrap(escape(x, quote=False), ncols)
             if pre_wrapping:
                 x = '<pre class="shrunk">{}</pre>'.format(x)
             return x

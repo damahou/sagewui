@@ -14,7 +14,7 @@ import os
 import re
 import threading
 import time
-from cgi import escape
+from html import escape
 from collections import defaultdict
 from functools import wraps
 
@@ -518,7 +518,7 @@ def html_plain_text_window(worksheet, username):
         '...pre class="plaintext"...cell_intext...textfield...'
     """
     plain_text = worksheet.plain_text
-    plain_text = escape(plain_text).strip()
+    plain_text = escape(plain_text, quote=False).strip()
 
     return render_template(
         base_url.format('plain_text_window'),
