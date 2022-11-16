@@ -95,8 +95,9 @@ def login(template_dict={}):
                 # Valid user, everything is okay
                 session['username'] = username
                 session.modified = True
+                next_url = request.values.get('next')
                 return redirect(
-                    request.values.get('next', url_for('base.index')))
+                    next_url if next_url else url_for('base.index'))
         else:
             template_dict['password_error'] = True
 
