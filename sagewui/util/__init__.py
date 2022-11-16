@@ -145,7 +145,7 @@ def sage_browser(sage_root):
                 os.environ['SYSTEMROOT'].replace(':', '/').replace('\\', '')))
         return next(filter(None, brs))
 
-    brs = ('xdg-open', os.environ.get('BROWSER', ''), 'firefox',
+    brs = (os.environ.get('BROWSER', ''), 'xdg-open', 'firefox',
            'google-chrome', 'mozilla', 'mozilla-firefox', 'konqueror')
     # : Does nothing in shell
     browser = next(filter(None, map(which, brs)), ':')
