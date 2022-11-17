@@ -25,7 +25,7 @@ from pydoc import resolve
 import sage.server.support
 from sage.misc import sageinspect
 from sage.misc.cython import cython
-from sage.misc.displayhook import DisplayHook
+from displayhook import DisplayHook
 from sage.misc.inline_fortran import InlineFortran
 from sage.misc.sagedoc import format_src
 from sage.misc.session import init as session_init
