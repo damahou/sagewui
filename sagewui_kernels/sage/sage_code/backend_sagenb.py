@@ -69,7 +69,7 @@ import os
 import stat
 from sage.misc.cachefunc import cached_method
 from sage.misc.html import html
-from sage.misc.temporary_file import graphics_filename
+from temporary_file import graphics_filename
 from sage.repl.rich_output.backend_base import BackendBase
 from sage.repl.rich_output.output_catalog import *
 from sage.repl.rich_output.output_video import OutputVideoBase
@@ -469,4 +469,3 @@ class BackendSageNB(BackendBase):
         """
         from sage.repl.rich_output import get_display_manager
         return get_display_manager().threejs_scripts(online=True)
-
