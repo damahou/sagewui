@@ -26,3 +26,4 @@ release_notes.txt
 sagenb/data/jsmath/fonts
 /setup.cfg
 .ropeproject
+/tmp
