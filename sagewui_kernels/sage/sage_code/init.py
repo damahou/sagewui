@@ -49,7 +49,6 @@ sage.plot.plot.EMBEDDED_MODE = True
 sage.misc.latex.EMBEDDED_MODE = True
 
 try:
-    load(os.path.join(os.environ["DOT_SAGE"], "init.sage"),
-         globals())
+    load(os.path.join(os.environ["DOT_SAGE"], "init.sage"))
 except (KeyError, IOError):
     pass
