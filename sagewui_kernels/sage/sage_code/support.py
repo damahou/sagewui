@@ -783,7 +783,7 @@ def displayhook_hack(brk_code):
         i -= 1
     code0 = ''.join(code[:i])
     code1 = ''.join(code[i:])
-    code1 = "exec compile({!r}, '', 'single')".format(code1 if code1 else '')
+    code1 = "exec(compile({!r}, '', 'single'))".format(code1 if code1 else '')
     return ''.join((code0, code1))
 
 
