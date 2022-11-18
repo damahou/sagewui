@@ -268,7 +268,7 @@ def docstring(obj_name, globs, system='sage'):
     s += newline
     s += sageinspect.sage_getdoc(obj, obj_name)
     s = s.rstrip()
-    return html_markup(s.decode('utf-8'))
+    return html_markup(s)
 
 
 def html_markup(s):
