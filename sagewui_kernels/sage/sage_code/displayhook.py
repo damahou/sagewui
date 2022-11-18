@@ -6,14 +6,14 @@ Just for compatibility with the notebook, you should not use this any
 more. Look into ``sage/repl/`` instead.
 """
 
-#*****************************************************************************
+# *****************************************************************************
 #       Copyright (C) 2015 Volker Braun <vbraun.name@gmail.com>
 #
 #  Distributed under the terms of the GNU General Public License (GPL)
 #  as published by the Free Software Foundation; either version 2 of
 #  the License, or (at your option) any later version.
 #                  http://www.gnu.org/licenses/
-#*****************************************************************************
+# *****************************************************************************
 
 from sage.repl.rich_output import get_display_manager
 from backend_sagenb import BackendSageNB
@@ -32,7 +32,7 @@ def DisplayHook():
         sage: from sage.misc.displayhook import DisplayHook
         sage: d = DisplayHook()
         sage: d
-        <bound method DisplayManager.displayhook of The 
+        <bound method DisplayManager.displayhook of The
         Sage display manager using the SageNB backend>
 
         sage: d(set([1, 2, 3]))       # Sage commandline output
@@ -46,4 +46,3 @@ def DisplayHook():
     backend = BackendSageNB()
     display_manager.switch_backend(backend)
     return display_manager.displayhook
-

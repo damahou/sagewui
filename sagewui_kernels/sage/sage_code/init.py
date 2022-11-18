@@ -8,7 +8,12 @@ from support import help, automatic_names
 
 sage_mode = 'notebook'
 
-from sage.misc.latex import Latex, pretty_print_default, MathJax
+from sage.misc.latex import Latex
+try:
+    from sage.misc.latex import pretty_print_default, MathJax
+except ImportError:
+    from sage.misc.html import pretty_print_default, MathJax
+
 latex = Latex(density=130)
 latex_debug = Latex(debug=True, density=130)
 slide = Latex(slide=True, density=256)

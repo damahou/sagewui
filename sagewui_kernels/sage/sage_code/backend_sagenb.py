@@ -55,14 +55,14 @@ Tables are typeset as html in SageNB::
     </div></html>
 """
 
-#*****************************************************************************
+# *****************************************************************************
 #       Copyright (C) 2015 Volker Braun <vbraun.name@gmail.com>
 #
 #  Distributed under the terms of the GNU General Public License (GPL)
 #  as published by the Free Software Foundation; either version 2 of
 #  the License, or (at your option) any later version.
 #                  https://www.gnu.org/licenses/
-#*****************************************************************************
+# *****************************************************************************
 
 import io
 import os
@@ -71,7 +71,15 @@ from sage.misc.cachefunc import cached_method
 from sage.misc.html import html
 from temporary_file import graphics_filename
 from sage.repl.rich_output.backend_base import BackendBase
-from sage.repl.rich_output.output_catalog import *
+from sage.repl.rich_output.output_catalog import (
+    OutputPlainText, OutputAsciiArt, OutputLatex,
+    OutputHtml,
+    OutputImagePng, OutputImageGif, OutputImageJpg,
+    OutputImagePdf, OutputImageSvg,
+    OutputSceneThreejs,
+    OutputSceneCanvas3d,
+    OutputVideoOgg, OutputVideoWebM, OutputVideoMp4,
+    OutputSceneJmol)
 from sage.repl.rich_output.output_video import OutputVideoBase
 
 
@@ -90,7 +98,8 @@ def world_readable(filename):
     the user, but not by others in the group or total strangers::
 
         sage: mode = os.stat(f).st_mode
-        sage: bool(mode & stat.S_IRUSR), bool(mode & stat.S_IRGRP), bool(mode & stat.S_IROTH)   # random output
+        sage: bool(mode & stat.S_IRUSR), bool(mode & stat.S_IRGRP),
+              bool(mode & stat.S_IROTH)   # random output
         (True, False, False)
 
     This function disables that protection::
@@ -98,7 +107,8 @@ def world_readable(filename):
         sage: from sage.repl.rich_output.backend_sagenb import world_readable
         sage: world_readable(f)
         sage: mode = os.stat(f).st_mode
-        sage: bool(mode & stat.S_IRUSR), bool(mode & stat.S_IRGRP), bool(mode & stat.S_IROTH)
+        sage: bool(mode & stat.S_IRUSR), bool(mode & stat.S_IRGRP),
+              bool(mode & stat.S_IROTH)
         (True, True, True)
     """
     os.chmod(filename, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
@@ -113,7 +123,8 @@ class SageNbOutputSceneJmol(OutputSceneJmol):
 
     EXAMPLES::
 
-        sage: from sage.repl.rich_output.backend_sagenb import SageNbOutputSceneJmol
+        sage: from sage.repl.rich_output.backend_sagenb import
+              SageNbOutputSceneJmol
         sage: SageNbOutputSceneJmol.example()
         SageNbOutputSceneJmol container
     """
@@ -129,7 +140,8 @@ class SageNbOutputSceneJmol(OutputSceneJmol):
 
         EXAMPLES::
 
-            sage: from sage.repl.rich_output.backend_sagenb import SageNbOutputSceneJmol
+            sage: from sage.repl.rich_output.backend_sagenb import
+                  SageNbOutputSceneJmol
             sage: j = SageNbOutputSceneJmol.example()
             sage: j.sagenb_launch_script_filename()
             'sage0-size32.jmol'
@@ -150,11 +162,13 @@ class SageNbOutputSceneJmol(OutputSceneJmol):
 
         EXAMPLES::
 
-            sage: from sage.repl.rich_output.backend_sagenb import SageNbOutputSceneJmol
+            sage: from sage.repl.rich_output.backend_sagenb import
+                  SageNbOutputSceneJmol
             sage: j = SageNbOutputSceneJmol.example()
             sage: j._base_filename()
             'sage0-size32'
-            sage: j.sagenb_launch_script_filename().startswith(j._base_filename())
+            sage: j.sagenb_launch_script_filename().startswith(
+                  j._base_filename())
             True
             sage: j.scene_zip_filename().startswith(j._base_filename())
             True
@@ -175,7 +189,8 @@ class SageNbOutputSceneJmol(OutputSceneJmol):
 
         EXAMPLES::
 
-            sage: from sage.repl.rich_output.backend_sagenb import SageNbOutputSceneJmol
+            sage: from sage.repl.rich_output.backend_sagenb import
+                  SageNbOutputSceneJmol
             sage: j = SageNbOutputSceneJmol.example()
             sage: j.scene_zip_filename()
             'sage0-size32-....jmol.zip'
@@ -197,7 +212,8 @@ class SageNbOutputSceneJmol(OutputSceneJmol):
 
         EXAMPLES::
 
-            sage: from sage.repl.rich_output.backend_sagenb import SageNbOutputSceneJmol
+            sage: from sage.repl.rich_output.backend_sagenb import
+                  SageNbOutputSceneJmol
             sage: j = SageNbOutputSceneJmol.example()
             sage: j.preview_filename()
             './.jmol_images/sage0-size32.jmol.png'
@@ -215,12 +231,13 @@ class SageNbOutputSceneJmol(OutputSceneJmol):
 
         EXAMPLES::
 
-            sage: from sage.repl.rich_output.backend_sagenb import SageNbOutputSceneJmol
+            sage: from sage.repl.rich_output.backend_sagenb import
+                  SageNbOutputSceneJmol
             sage: j = SageNbOutputSceneJmol.example()
             sage: os.path.exists('sage0-size32.jmol')
             False
             sage: j.save_launch_script()  # py2 # optional -- sagenb
-            sage: os.path.exists('sage0-size32.jmol')  # py2 # optional -- sagenb
+            sage: os.path.exists('sage0-size32.jmol')  # py2 # optional--sagenb
             True
         """
         from sagenb.notebook.interact import SAGE_CELL_ID
@@ -240,7 +257,8 @@ class SageNbOutputSceneJmol(OutputSceneJmol):
 
         EXAMPLES::
 
-            sage: from sage.repl.rich_output.backend_sagenb import SageNbOutputSceneJmol
+            sage: from sage.repl.rich_output.backend_sagenb import
+                  SageNbOutputSceneJmol
             sage: j = SageNbOutputSceneJmol.example()
             sage: import shutil
             sage: shutil.rmtree('.jmol_images', ignore_errors=True)
@@ -263,12 +281,13 @@ class SageNbOutputSceneJmol(OutputSceneJmol):
 
             sage: os.chdir(tmp_dir())
 
-            sage: from sage.repl.rich_output.backend_sagenb import SageNbOutputSceneJmol
+            sage: from sage.repl.rich_output.backend_sagenb import
+                  SageNbOutputSceneJmol
             sage: j = SageNbOutputSceneJmol.example()
             sage: j.embed()  # py2 # optional -- sagenb
             sage: sorted(os.listdir('.'))  # py2 # optional -- sagenb
             ['.jmol_images', 'sage0-size32-....jmol.zip', 'sage0-size32.jmol']
-            sage: sorted(os.listdir('.jmol_images'))  # py2 # optional -- sagenb
+            sage: sorted(os.listdir('.jmol_images'))  # py2 # optional--sagenb
             ['sage0-size32.jmol.png']
         """
         self.save_preview()
@@ -278,7 +297,7 @@ class SageNbOutputSceneJmol(OutputSceneJmol):
 
 
 IFRAME_TEMPLATE = \
-"""
+    """
 <iframe src="{html}"
         width="{width}"
         height="{height}"
@@ -299,7 +318,8 @@ class BackendSageNB(BackendBase):
 
         EXAMPLES::
 
-            sage: from sage.repl.rich_output.backend_sagenb import BackendSageNB
+            sage: from sage.repl.rich_output.backend_sagenb import
+                  BackendSageNB
             sage: backend = BackendSageNB()
             sage: backend._repr_()
             'SageNB'
@@ -318,12 +338,14 @@ class BackendSageNB(BackendBase):
 
         EXAMPLES::
 
-            sage: from sage.repl.rich_output.backend_sagenb import BackendSageNB
+            sage: from sage.repl.rich_output.backend_sagenb import
+                  BackendSageNB
             sage: backend = BackendSageNB()
             sage: supp = backend.supported_output();  supp     # random output
-            set([<class 'sage.repl.rich_output.output_graphics.OutputPlainText'>,
+            set([
+            <class 'sage.repl.rich_output.output_graphics.OutputPlainText'>,
                  ...,
-                 <class 'sage.repl.rich_output.output_graphics.OutputCanvas3d'>])
+            <class 'sage.repl.rich_output.output_graphics.OutputCanvas3d'>])
             sage: from sage.repl.rich_output.output_basic import OutputLatex
             sage: OutputLatex in supp
             True
@@ -363,13 +385,15 @@ class BackendSageNB(BackendBase):
 
             sage: import sage.repl.rich_output.output_catalog as catalog
             sage: plain_text = catalog.OutputPlainText.example()
-            sage: from sage.repl.rich_output.backend_sagenb import BackendSageNB
+            sage: from sage.repl.rich_output.backend_sagenb import
+                  BackendSageNB
             sage: backend = BackendSageNB()
             sage: backend.display_immediately(plain_text, plain_text)
             Example plain text output
             sage: latex = catalog.OutputLatex.example()
             sage: backend.display_immediately(plain_text, latex)
-            <html><script type="math/tex; mode=display">\newcommand{\Bold}[1]{\mathbf{#1}}\int \sin\left(x\right)\,{d x}</script></html>
+            <html><script type="math/tex; mode=display">\newcommand{\Bold}[1]{
+                \mathbf{#1}}\int \sin\left(x\right)\,{d x}</script></html>
         """
         if isinstance(rich_output, (OutputPlainText, OutputAsciiArt)):
             rich_output.print_to_stdout()
@@ -405,7 +429,8 @@ class BackendSageNB(BackendBase):
         elif isinstance(rich_output, OutputVideoBase):
             self.embed_video(rich_output)
         else:
-            raise TypeError('rich_output type not supported, got {}'.format(rich_output))
+            raise TypeError('rich_output type not supported, got {}'.format(
+                rich_output))
 
     def embed_image(self, output_buffer, file_ext):
         """
@@ -462,7 +487,8 @@ class BackendSageNB(BackendBase):
 
         EXAMPLES::
 
-            sage: from sage.repl.rich_output.backend_sagenb import BackendSageNB
+            sage: from sage.repl.rich_output.backend_sagenb import
+                  BackendSageNB
             sage: backend = BackendSageNB()
             sage: backend.threejs_offline_scripts()
             '...<script ...</script>...'
