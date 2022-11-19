@@ -68,11 +68,6 @@ def init(object_directory=None, globs={}):
     setup_systems(globs)
     session_init(globs)
 
-    # Ugly cruft.  Initialize the embedded mode of the old Sage
-    # notebook, which is going to be included in old copies of Sage
-    # forever.
-    sage.server.support.EMBEDDED_MODE = True
-
 
 def setup_systems(globs):
     fortran = InlineFortran(globs)
