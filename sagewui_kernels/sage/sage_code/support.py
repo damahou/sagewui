@@ -72,9 +72,6 @@ def init(object_directory=None, globs={}):
     # notebook, which is going to be included in old copies of Sage
     # forever.
     sage.server.support.EMBEDDED_MODE = True
-    # Also initialize EMBEDDED_MODE in Sage's misc.sageinspect module,
-    # which is used to format docstrings in the notebook.
-    sageinspect.EMBEDDED_MODE = True
 
 
 def setup_systems(globs):
