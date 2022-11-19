@@ -48,7 +48,7 @@ from interact import color_selector
 import interact as _interact_ # for setting current cell id
 
 import support as _support_
-_support_.init(None, globals())
+_support_.init(globals())
 
 try:
     load(os.path.join(os.environ["DOT_SAGE"], "init.sage"))

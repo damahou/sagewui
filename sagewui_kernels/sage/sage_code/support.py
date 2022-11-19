@@ -22,7 +22,6 @@ from pydoc import describe
 from pydoc import html
 from pydoc import resolve
 
-import sage.server.support
 from sage.misc import sageinspect
 from sage.misc.cython import cython
 from displayhook import DisplayHook
@@ -44,26 +43,17 @@ sys.displayhook = DisplayHook()
 ######################################################################
 # Initialization
 ######################################################################
-EMBEDDED_MODE = False
 sage_globals = None
-globals_at_init = None
-global_names_at_init = None
 
 
-def init(object_directory=None, globs={}):
+def init(globs={}):
     r"""
     Initialize Sage for use with the web notebook interface.
     """
-    global sage_globals, globals_at_init, global_names_at_init
-    global EMBEDDED_MODE
+    global sage_globals
+    sage_globals = globs
 
     os.environ['PAGER'] = 'cat'
-
-    sage_globals = globs
-    # globals_at_init = set(globs.keys())
-    globals_at_init = globs.values()
-    global_names_at_init = set(globs.keys())
-    EMBEDDED_MODE = True
 
     setup_systems(globs)
     session_init(globs)
