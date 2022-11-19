@@ -50,8 +50,6 @@ import interact as _interact_ # for setting current cell id
 import support as _support_
 _support_.init(None, globals())
 
-sage.plot.plot.EMBEDDED_MODE = True
-
 try:
     load(os.path.join(os.environ["DOT_SAGE"], "init.sage"))
 except (KeyError, IOError):
