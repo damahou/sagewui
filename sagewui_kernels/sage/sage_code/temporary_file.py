@@ -1,6 +1,15 @@
 import os
 
 
+def tmp_filename(prefix='sage', ext='png'):
+    i = 0
+    filename = '{}{}{}'.format(prefix, i, ext)
+    while os.path.exists(filename):
+        i += 1
+        filename = '{}{}{}'.format(prefix, i, ext)
+    return filename
+
+
 def graphics_filename(ext='.png'):
     """
     Return the next available canonical
@@ -35,8 +44,8 @@ def graphics_filename(ext='.png'):
         sage: fn.endswith('.jpeg')
         True
     """
-    i = 0
-    while os.path.exists('sage{}{}'.format(i, ext)):
-        i += 1
-    filename = 'sage{}{}'.format(i, ext)
-    return filename
+    return tmp_filename(prefix='sage', ext=ext)
+
+
+def doc_filename(ext='.html'):
+    return tmp_filename(prefix='docs-', ext=ext)

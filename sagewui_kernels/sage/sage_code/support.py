@@ -19,6 +19,7 @@ import os
 import sys
 from itertools import chain
 
+from docutils.core import publish_parts
 from importlib import import_module
 from pydoc import describe
 from pydoc import html
@@ -37,6 +38,8 @@ from sage.symbolic.all import Expression
 from sage.symbolic.all import SR
 
 from sage.misc.sphinxify import sphinxify
+
+from temporary_file import doc_filename
 
 
 sys.displayhook = DisplayHook()
@@ -105,13 +108,11 @@ def help(obj):
     object, name = resolve(obj)
     page = html.page(describe(object), html.document(object, name))
     page = page.replace('<a href', '<a ')
-    n = 0
-    while True:
-        filename = 'docs-%s.html' % n
-        if not os.path.exists(filename):
-            break
-        n += 1
-    open(filename, 'w').write(page)
+    filename = doc_filename()
+
+    with open(filename, 'w') as f:
+        f.write(page)
+
     print("&nbsp;&nbsp;&nbsp;<a target='_new' href='cell://%s'>"
           "Click to open help window</a>&nbsp;&nbsp;&nbsp;" % filename)
     print('<br></font></tr></td></table></html>')
@@ -213,54 +214,46 @@ def docstring(obj_name, globs, system='sage'):
         sage: D = docstring("r.lm", globs=globals())
     """
     if system not in ['sage', 'python']:
-        obj_name = system + '.' + obj_name
+        obj_name = '{}.{}'.format(system, obj_name)
+
     try:
         obj = eval(obj_name, globs)
-    except (AttributeError, NameError, SyntaxError):
-        return "No object '%s' currently defined." % obj_name
+    except Exception:
+        return "No object '{}' currently defined.".format(obj_name)
+
     s = ''
     newline = "\n\n"  # blank line to start new paragraph
     try:
         filename = sageinspect.sage_getfile(obj)
-        # i = filename.find('site-packages/sage/')
-        # if i == -1:
-        s += '**File:** %s' % filename
-        s += newline
-        # else:
-        #    file = filename[i+len('site-packages/sage/'):]
-        #    s += (
-        #        'File:        <html><a href="src_browser?%s">%s</a>'
-        #        '</html>\n'%(file,file))
+        s = '{}**File:** {}{}'.format(s, filename, newline)
     except TypeError:
         pass
-    s += '**Type:** %s' % type(obj)
-    s += newline
-    s += '**Definition:** %s' % sageinspect.sage_getdef(obj, obj_name)
-    s += newline
-    s += '**Docstring:**'
-    s += newline
-    s += sageinspect.sage_getdoc(obj, obj_name)
-    s = s.rstrip()
+
+    s = newline.join((
+        '{}**Type:** {}'.format(s, type(obj)),
+        '**Definition:** {}'.format(sageinspect.sage_getdef(obj, obj_name)),
+        '**Docstring:**',
+        sageinspect.sage_getdoc(obj, obj_name),
+    )).rstrip()
+
     return html_markup(s)
 
 
 def html_markup(s):
     try:
         return sphinxify(s)
-    except:
+    except Exception:
         pass
     # Not in ReST format, so use docutils
     # to process the preamble ("**File:**" etc.)  and put
     # everything else in a <pre> block.
     i = s.find("**Docstring:**")
     if i != -1:
-        preamble = s[:i + 14]
-        from docutils.core import publish_parts
         preamble = publish_parts(s[:i + 14], writer_name='html')['body']
         s = s[i + 14:]
     else:
         preamble = ""
-    return '<div class="docstring">' + preamble + '<pre>' + s + '</pre></div>'
+    return '<div class="docstring">{}<pre>{}</pre></div>'.format(preamble, s)
 
 
 def source_code(s, globs, system='sage'):
@@ -290,39 +283,42 @@ def source_code(s, globs, system='sage'):
     - Nick Alexander: extensions
     """
     if system not in ['sage', 'python']:
-        s = system + '.' + s
+        s = '{}.{}'.format(system, s)
 
     try:
         obj = eval(s, globs)
-    except NameError:
+    except Exception:
         return html_markup("No object %s" % s)
 
     try:
         try:
             return html_markup(obj._sage_src_())
-        except:
+        except Exception:
             pass
+
         newline = "\n\n"  # blank line to start new paragraph
         indent = "    "   # indent source code to mark it as a code block
 
         filename = sageinspect.sage_getfile(obj)
+
         try:
             lines, lineno = sageinspect.sage_getsourcelines(obj)
         except IOError as msg:
             return html_markup(str(msg))
-        src = indent.join(lines)
-        src = indent + format_src(src)
-        if lineno is not None:
-            output = "**File:** %s" % filename
-            output += newline
-            output += "**Source Code** (starting at line %s)::" % lineno
-            output += newline
-            output += src
-        return html_markup(output)
 
-    except (TypeError, IndexError) as msg:
-        return html_markup("Source code for {} is not available.".format(s) +
-                           "\nUse {}? to see the documentation.".format(s))
+        src = indent.join(lines)
+        src = '{}{}'.format(indent, format_src(src))
+        if lineno is not None:
+            output = newline.join((
+                "**File:** {}".format(filename),
+                "**Source Code** (starting at line {})::".format(lineno),
+                src,
+            ))
+        return html_markup(output)
+    except (TypeError, IndexError):
+        return html_markup(
+            "Source code for {0} is not available.\n"
+            "Use {0}? to see the documentation.".format(s))
 
 
 def syseval(system, cmd, dir=None):
@@ -363,8 +359,8 @@ def syseval(system, cmd, dir=None):
     if dir:
         if hasattr(system.__class__, 'chdir'):
             system.chdir(dir)
-    if isinstance(cmd, unicode):
-        cmd = cmd.encode('utf-8', 'ignore')
+    # if isinstance(cmd, unicode):
+    #     cmd = cmd.encode('utf-8', 'ignore')
     return system.eval(cmd, sage_globals, locals=sage_globals)
 
 
@@ -415,7 +411,7 @@ def cython_import_all(filename, globals, verbose=False, compile_message=False,
                       compile_message=compile_message,
                       use_cache=use_cache,
                       create_local_c_file=create_local_c_file)
-    for k, x in vars(m).iteritems():
+    for k, x in vars(m).items():
         if not k.startswith('_'):
             globals[k] = x
 
@@ -469,7 +465,7 @@ class AutomaticVariable(Expression):
 def automatic_name_eval(s, globals, max_names=10000):
     """
     Exec the string ``s`` in the scope of the ``globals``
-    dictionary, and if any :exc:`NameError`\ s are raised, try to
+    dictionary, and if any :exc:`NameError` are raised, try to
     fix them by defining the variable that caused the error to be
     raised, then eval again.  Try up to ``max_names`` times.
 

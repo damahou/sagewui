@@ -1086,7 +1086,6 @@ def worksheet_introspect(worksheet):
     cell.evaluate(introspect=[before_cursor, after_cursor])
 
     r['command'] = 'introspect'
-    print(r)
     return encode_response(r)
 
 ########################################################
