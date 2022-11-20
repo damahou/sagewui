@@ -17,6 +17,8 @@ import ast
 import base64
 import os
 import sys
+from itertools import chain
+
 from importlib import import_module
 from pydoc import describe
 from pydoc import html
@@ -115,7 +117,7 @@ def help(obj):
     print('<br></font></tr></td></table></html>')
 
 
-def completions(s, globs, format=False, width=90, system="None"):
+def completions(s, globs, system="None"):
     """
     Return a list of completions in the given context.
 
@@ -124,66 +126,55 @@ def completions(s, globs, format=False, width=90, system="None"):
     - ``globs`` - a string:object dictionary; context in which to
       search for completions, e.g., :func:`globals()`
 
-    - ``format`` - a bool (default: False); whether to tabulate the
-      list
-
-    - ``width`` - an int; character width of the table
-
     - ``system`` - a string (default: 'None'); system prefix for the
       completions
 
     OUTPUT:
 
-    - a list of strings, if ``format`` is False, or a string
+    - a list of strings
     """
-    if system not in ['sage', 'python']:
-        prepend = system + '.'
-        s = prepend + s
-    else:
-        prepend = ''
-    n = len(s)
-    if n == 0:
+    prepend = '{}.'.format(system) if system not in ['sage', 'python'] else ''
+    s = '{}{}'.format(prepend, s)
+    if s == '':
         return '(empty string)'
-    try:
-        if '.' not in s and '(' not in s:
-            v = [x for x in globs.keys() if x[:n] == s] + \
-                [x for x in __builtins__.keys() if x[:n] == s]
-        else:
-            if ')' not in s:
-                i = s.rfind('.')
-                method = s[i + 1:]
-                obj = s[:i]
-                n = len(method)
-            else:
-                obj = preparse(s)
-                method = ''
+
+    if '.' not in s and '(' not in s:
+        v = [x for x in chain(globs.keys(), __builtins__.keys())
+             if x.startswith(s)]
+    else:
+        if ')' not in s:
             try:
-                O = eval(obj, globs)
-                D = dir(O)
-                try:
-                    D += O.trait_names()
-                except (AttributeError, TypeError):
-                    pass
-                if method == '':
-                    v = [obj + '.' + x for x in D if x and x[0] != '_']
-                else:
-                    v = [obj + '.' + x for x in D if x[:n] == method]
-            except Exception:
-                v = []
-        v = list(set(v))   # make unique
-        v.sort()
-    except Exception:
-        v = []
+                obj, method = s.rsplit('.', 1)
+            except ValueError:
+                obj = s
+                method = ''
+
+        else:
+            obj = preparse(s)
+            method = ''
+
+        try:
+            obj_eval = eval(obj, globs)
+        except Exception:
+            return []
+
+        D = dir(obj_eval)
+        try:
+            D.extend(obj_eval.trait_names())
+        except (AttributeError, TypeError):
+            pass
+
+        if method == '':
+            v = ['{}.{}'.format(obj, x) for x in D if not x.startswith('_')]
+        else:
+            v = ['{}.{}'.format(obj, x) for x in D if x.startswith(method)]
+
+    v = sorted(set(v))
 
     if prepend:
         i = len(prepend)
         v = [x[i:] for x in v]
 
-    if format:
-        if len(v) == 0:
-            return "No completions of '%s' currently defined" % s
-        else:
-            return tabulate(v, width)
     return v
 
 
@@ -332,32 +323,6 @@ def source_code(s, globs, system='sage'):
     except (TypeError, IndexError) as msg:
         return html_markup("Source code for {} is not available.".format(s) +
                            "\nUse {}? to see the documentation.".format(s))
-
-
-def tabulate(v, width=90, ncols=3):
-    e = len(v)
-    if e == 0:
-        return ''
-    while True:
-        col_widths = []
-        nrows = e // ncols + 1
-        for c in range(ncols):
-            m = max([0] + [len(v[r + c * nrows])
-                           for r in range(nrows) if r + c * nrows < e])
-            col_widths.append(m + 3)
-        if ncols > 1 and max(col_widths + [0]) > width // ncols:
-            ncols -= 1
-        else:
-            break
-    s = ''
-    for r in range(nrows):
-        for c in range(ncols):
-            i = r + c * nrows
-            if i < e:
-                w = v[i]
-                s += w + ' ' * (col_widths[c] - len(w))
-        s += '\n'
-    return s
 
 
 def syseval(system, cmd, dir=None):

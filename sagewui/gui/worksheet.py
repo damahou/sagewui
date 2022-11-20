@@ -2498,33 +2498,24 @@ class Worksheet(object):
 
     def preparse_introspection_input(self, input, C, introspect):
         before_prompt, after_prompt = introspect
-        i = 0
-        while i < len(after_prompt):
-            if after_prompt[i] == '?':
-                if i < len(after_prompt) - 1 and after_prompt[i + 1] == '?':
-                    i += 1
-                before_prompt += after_prompt[:i + 1]
-                after_prompt = after_prompt[i + 1:]
-                C.introspect = [before_prompt, after_prompt]
-                break
-            elif after_prompt[i] in ['"', "'", ' ', '\t', '\n']:
-                break
-            i += 1
-        if before_prompt.endswith('??'):
-            input = self._last_identifier.search(before_prompt[:-2]).group()
-            input = (
-                'print(_support_.source_code("%s", globals(), system="%s"))' %
-                (input, self.system))
-        elif before_prompt.endswith('?'):
-            input = self._last_identifier.search(before_prompt[:-1]).group()
-            input = (
-                'print(_support_.docstring("%s", globals(), system="%s"))' % (
-                    input, self.system))
-        else:
-            input = self._last_identifier.search(before_prompt).group()
+        parts = re.split(r'(\?{1,2})', after_prompt)
+        if re.search(r'["\'\n\t]', parts[0]) is None:
+            before_prompt = '{}{}'.format(before_prompt, ''.join(parts[:2]))
+            after_prompt = ''.join(parts[2:])
+            C.introspect = [before_prompt, after_prompt]
+
+        options = {
+            '??': 'print(_support_.source_code("{}", globals(), system="{}"))',
+            '?': 'print(_support_.docstring("{}", globals(), system="{}"))',
+            '': 'print("\\n".join(_support_.completions('
+                '"{}", globals(), system="{}")))'
+        }
+        start, end = re.match(r'(.*?)(\?{0,2})$', before_prompt).groups()
+        input = self._last_identifier.search(start).group()
+        if end == '':
             C._word_being_completed = input
-            input = ('print("\\n".join(_support_.completions("%s", '
-                     'globals(), system="%s")))' % (input, self.system))
+        input = options[end].format(input, self.system)
+
         return input
 
     # Loading and attaching files

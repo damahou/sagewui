@@ -10,7 +10,7 @@ import time
 import re
 
 from hashlib import sha1
-
+from itertools import islice
 from jsmin import jsmin
 
 from flask import g
@@ -20,7 +20,6 @@ from flask_babel import ngettext
 from flask_themes2 import render_theme_template
 
 from . import cached_property
-from . import grouper
 from . import N_
 from . import nN_
 from .keymaps_js import get_keyboard
@@ -287,9 +286,8 @@ def completions_html(cell_id, s, cols=3):
     if len(s) <= 1:
         return ''  # don't show a window, just replace it
 
-    completions = enumerate(grouper(s, (len(s) + cols - 1) // cols, ''))
+    completions = enumerate(islice(s, i, None, cols) for i in range(cols))
     return render_template(
         'html/worksheet/completions.html',
         cell_id=cell_id,
-        # Transpose and enumerate completions to column-major
         completions_enumerated=completions)
