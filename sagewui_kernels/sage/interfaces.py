@@ -219,11 +219,11 @@ class SageServerExpect(SageServerABC):
     def __del__(self):
         try:
             self._cleanup_tempfiles()
-        except:
+        except Exception:
             pass
         try:
             self._cleanup_data_dir()
-        except:
+        except Exception:
             pass
 
     def _cleanup_data_dir(self):
@@ -234,7 +234,7 @@ class SageServerExpect(SageServerABC):
         for X in self._all_tempdirs:
             try:
                 shutil.rmtree(X, ignore_errors=True)
-            except:
+            except Exception:
                 pass
 
     def __repr__(self):
@@ -253,7 +253,7 @@ class SageServerExpect(SageServerABC):
             return
         try:
             self._expect.sendline(chr(3))
-        except:
+        except Exception:
             pass
 
     def quit(self):
@@ -265,7 +265,7 @@ class SageServerExpect(SageServerABC):
         try:
             self._expect.sendline(chr(3))  # send ctrl-c
             self._expect.sendline('quit_sage()')
-        except:
+        except Exception:
             pass
         try:
             os.killpg(self._expect.pid, 9)
@@ -406,7 +406,7 @@ class SageServerExpect(SageServerABC):
             print("got EOF subprocess must have crashed...")
             print(self._expect.before)
             self.quit()
-        except:
+        except Exception:
             pass
 
     def output_status(self):
