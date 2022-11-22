@@ -395,16 +395,7 @@ class Worksheet(object):
 
         INPUT:
 
-        -  ``check`` - string (default: 'false'); either 'true'
-           or 'false'.
-
-        .. note::
-
-           The reason the input is a string and lower case instead of
-           a Python bool is because this gets called indirectly from
-           JavaScript. (And, Jason Grout wrote this and didn't realize
-           how unpythonic this design is - it should be redone to use
-           True/False.)
+        -  ``check`` - bool (default: False); either True or False.
 
         EXAMPLES::
 
@@ -573,16 +564,14 @@ class Worksheet(object):
                 Whether or not this worksheet should automatically be
                 republished when changed.
             'pretty_print'
-                Appearance
-                default
+                Appearance default
             'live_3D'
                 Whether to load 3-D live.  Should only be set to
                 true by the user as worksheets with more than 1 or 2
                 live (interactive) 3-D plots may bog down because of
                 javascript overload.
             'ratings'
-                what other users think of this worksheet
-                triples
+                what other users think of this worksheet triples
                       (username, rating, comment)
             'saved_by_info'
                 saved snapshots database. Who saved what snapshot.
