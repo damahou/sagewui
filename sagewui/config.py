@@ -15,74 +15,18 @@ from pexpect.exceptions import ExceptionPexpect
 from sagewui_kernels.sage.workers import sage
 from .util import sage_browser
 
-# Global variables across the application
-# TODO: remove this. Previously in notebook.misc
-APP_NAME = 'sagewui'
-notebook = None
-
-try:
-    sage_conf = sage()
-except ExceptionPexpect:
-    raise OSError('Install sage and ensure that "sage" is in system PATH')
-
-sage_conf.execute('\n'.join((
-    'from sage.env import SAGE_ENV',
-    'from sage.misc.latex_macros import sage_mathjax_macros',
-    '[',
-    '    SAGE_ENV,',
-    '    sage_mathjax_macros(),',
-    '    {',
-    '         "UPDATE_PREFIX": _interact_.INTERACT_UPDATE_PREFIX,',
-    '         "RESTART": _interact_.INTERACT_RESTART,',
-    '         "START": _interact_.INTERACT_START,',
-    '         "TEXT": _interact_.INTERACT_TEXT,',
-    '         "HTML": _interact_.INTERACT_HTML,',
-    '         "END": _interact_.INTERACT_END,',
-    '         },',
-    ' ]',
-    )))
-while True:
-    sconf = sage_conf.output_status()
-    if sconf.done:
-        break
-sage_conf.quit()
-
-exec('sage_conf = ' + sconf.output.strip())
-SAGE_ENV, mathjax_macros, INTERACT_CONF = sage_conf
-SAGE_VERSION = SAGE_ENV['SAGE_VERSION']
-
-# sage paths
-BROWSER_PATH = sage_browser(SAGE_ENV['SAGE_ROOT'])
+app_name = 'sagewui'
 
 # sagewui paths
-# TODO: This must be in sync with flask app base path. Should be removed from
-# here
 APP_PATH = resource_filename(__name__, '')
-BASE_PATH = user_data_dir(APP_NAME)
-DB_PATH = os.path.join(BASE_PATH, 'db')
-SSL_PATH = os.path.join(BASE_PATH, 'ssl')
-PID_PATH = os.path.join(BASE_PATH, 'run')
-HOME_PATH = BASE_PATH
+HOME_PATH = user_data_dir(app_name)
+DB_PATH = os.path.join(HOME_PATH, 'db')
+SSL_PATH = os.path.join(HOME_PATH, 'ssl')
+PID_PATH = os.path.join(HOME_PATH, 'run')
 PID_FILE_TEMPLATE = 'sagewui-{}.pid'
-
-# paths for static urls
-DOC_PATH = os.path.join(SAGE_ENV['SAGE_DOC'], 'html', 'en')
-SRC_PATH = os.path.join(SAGE_ENV['SAGE_SRC'], 'sage')
-JMOL_PATH = os.path.join(SAGE_ENV['SAGE_SHARE'], 'jmol')
-JSMOL_PATH = os.path.join(SAGE_ENV['SAGE_SHARE'], 'jsmol')
-J2S_PATH = os.path.join(JSMOL_PATH, 'j2s')
-THREEJS_PATH = os.path.join(SAGE_ENV['SAGE_SHARE'], 'threejs')
 
 # DB
 DEFAULT_NB_NAME = 'default'
-
-# Interact markers
-INTERACT_UPDATE_PREFIX = INTERACT_CONF['UPDATE_PREFIX']
-INTERACT_RESTART = INTERACT_CONF['RESTART']
-INTERACT_START = INTERACT_CONF['START']
-INTERACT_TEXT = INTERACT_CONF['TEXT']
-INTERACT_HTML = INTERACT_CONF['HTML']
-INTERACT_END = INTERACT_CONF['END']
 
 # Gui config
 CHOICES = 'choices'
@@ -177,26 +121,17 @@ WARN_THRESHOLD = 100   # The number of seconds, so if there was no
 
 # themes
 THEME_PATHS = [
-    tp for tp in (os.path.join(d, 'themes') for d in [APP_PATH, BASE_PATH])
+    tp for tp in (os.path.join(d, 'themes') for d in [APP_PATH, HOME_PATH])
     if os.path.isdir(tp)]
-# TODO: Only needed by sagenb.notebook.server_conf
-THEMES = []
-for path in THEME_PATHS:
-    THEMES.extend([
-        theme for theme in os.listdir(path)
-        if os.path.isdir(os.path.join(path, theme))])
+THEMES = [theme for path in THEME_PATHS for theme in os.listdir(path)
+          if os.path.isdir(os.path.join(path, theme))]
 THEMES.sort()
 DEFAULT_THEME = 'Default'
-# TODO: dangerous. flask_babel translations path is not configurable.
-# This must be in sync with the hardcoded babel translation path. This
-# should be removed when sagenb.notebook.server_conf, sagenb.notebook.user_conf
-# be refactored.
 
 # translations
 TRANSLATIONS_PATH = os.path.join(APP_PATH, 'translations')
-# TODO: Only needed by sagenb.notebook.server_conf, sagenb.notebook.user_conf
 TRANSLATIONS = []
-for name in (l for l in os.listdir(TRANSLATIONS_PATH) if l != 'en_US'):
+for name in (lan for lan in os.listdir(TRANSLATIONS_PATH) if lan != 'en_US'):
     try:
         Locale.parse(name)
     except UnknownLocaleError:
@@ -225,3 +160,100 @@ JEDITABLE_TINYMCE = True
 
 # password
 min_password_length = 6
+
+
+# Global variables across the application
+# TODO: remove this. Previously in notebook.misc
+notebook = None
+
+
+SAGE_PATH = None
+SAGE = None
+SAGE_VERSION = None
+BROWSER_PATH = None
+DOC_PATH = None
+SRC_PATH = None
+JMOL_PATH = None
+JSMOL_PATH = None
+J2S_PATH = None
+THREEJS_PATH = None
+INTERACT_UPDATE_PREFIX = None
+INTERACT_RESTART = None
+INTERACT_START = None
+INTERACT_TEXT = None
+INTERACT_HTML = None
+INTERACT_END = None
+MATHJAX_MACROS = None
+
+
+def add_sage_conf(sage_path='sage'):
+    global SAGE_PATH
+    global SAGE_VERSION
+    global BROWSER_PATH
+    global DOC_PATH
+    global SRC_PATH
+    global JMOL_PATH
+    global JSMOL_PATH
+    global J2S_PATH
+    global THREEJS_PATH
+    global INTERACT_UPDATE_PREFIX
+    global INTERACT_RESTART
+    global INTERACT_START
+    global INTERACT_TEXT
+    global INTERACT_HTML
+    global INTERACT_END
+    global MATHJAX_MACROS
+
+    SAGE_PATH = sage_path
+
+    try:
+        sage_conf = sage(sage=SAGE_PATH)
+    except ExceptionPexpect:
+        raise OSError(
+            'Install sage and ensure that "{}" is in system PATH'.format(
+                SAGE_PATH))
+
+    sage_conf.execute('\n'.join((
+        'from sage.env import SAGE_ENV',
+        'from sage.misc.latex_macros import sage_mathjax_macros',
+        '[',
+        '    SAGE_ENV,',
+        '    sage_mathjax_macros(),',
+        '    {',
+        '         "UPDATE_PREFIX": _interact_.INTERACT_UPDATE_PREFIX,',
+        '         "RESTART": _interact_.INTERACT_RESTART,',
+        '         "START": _interact_.INTERACT_START,',
+        '         "TEXT": _interact_.INTERACT_TEXT,',
+        '         "HTML": _interact_.INTERACT_HTML,',
+        '         "END": _interact_.INTERACT_END,',
+        '         },',
+        ' ]',
+        )))
+    while True:
+        sconf = sage_conf.output_status()
+        if sconf.done:
+            break
+    sage_conf.quit()
+
+    sage_conf = eval(sconf.output.strip())
+    sage_env, MATHJAX_MACROS, interact_conf = sage_conf
+    SAGE_VERSION = sage_env['SAGE_VERSION']
+
+    # sage paths
+    BROWSER_PATH = sage_browser(sage_env['SAGE_ROOT'])
+
+    # paths for static urls
+    DOC_PATH = os.path.join(sage_env['SAGE_DOC'], 'html', 'en')
+    SRC_PATH = os.path.join(sage_env['SAGE_SRC'], 'sage')
+    JMOL_PATH = os.path.join(sage_env['SAGE_SHARE'], 'jmol')
+    JSMOL_PATH = os.path.join(sage_env['SAGE_SHARE'], 'jsmol')
+    J2S_PATH = os.path.join(JSMOL_PATH, 'j2s')
+    THREEJS_PATH = os.path.join(sage_env['SAGE_SHARE'], 'threejs')
+
+    # Interact markers
+    INTERACT_UPDATE_PREFIX = interact_conf['UPDATE_PREFIX']
+    INTERACT_RESTART = interact_conf['RESTART']
+    INTERACT_START = interact_conf['START']
+    INTERACT_TEXT = interact_conf['TEXT']
+    INTERACT_HTML = interact_conf['HTML']
+    INTERACT_END = interact_conf['END']

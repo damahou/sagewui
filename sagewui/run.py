@@ -31,9 +31,9 @@ import getpass
 import signal
 from os.path import join as joinpath
 
+from sagewui import config
 from sagewui.app import create_app
 from sagewui.config import min_password_length
-from sagewui.config import BROWSER_PATH
 from sagewui.config import DB_PATH
 from sagewui.config import DEFAULT_NB_NAME
 from sagewui.config import HOME_PATH
@@ -242,6 +242,12 @@ class NotebookFrontend(object):
             dest='debug',
             action='store_true',
             )
+        parser.add_argument(
+            '--sage',
+            dest='sage',
+            default='sage',
+            action='store',
+            )
 
         return parser
 
@@ -362,6 +368,8 @@ class NotebookFrontend(object):
 
     def run(self, args=None):
         self.parse(args)
+        config.add_sage_conf(self.conf['sage'])
+
         self.init_paths()
         self.init_misc()
         self.init_notebook()
@@ -515,12 +523,12 @@ class NotebookFrontend(object):
         # If we have to login and upload a file, then we do them
         # in that order and hope that the login is fast enough.
         if self.conf['automatic_login']:
-            open_page(BROWSER_PATH, self.conf['interface'], self.conf['port'],
-                      self.conf['secure'],
+            open_page(config.BROWSER_PATH, self.conf['interface'],
+                      self.conf['port'], self.conf['secure'],
                       '/?startup_token={}'.format(self.conf['startup_token']))
         if self.conf['upload']:
             open_page(
-                BROWSER_PATH, self.conf['interface'], self.conf['port'],
+                config.BROWSER_PATH, self.conf['interface'], self.conf['port'],
                 self.conf['secure'],
                 '/upload_worksheet?url=file://{}'.format(
                     quote(self.conf['upload'])))

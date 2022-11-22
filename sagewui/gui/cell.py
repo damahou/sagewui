@@ -30,10 +30,7 @@ from html import escape
 from random import randint
 from sys import maxsize
 
-from ..config import INTERACT_RESTART
-from ..config import INTERACT_UPDATE_PREFIX
-from ..config import INTERACT_TEXT
-from ..config import INTERACT_HTML
+from .. import config
 from ..config import MAX_OUTPUT
 from ..config import MAX_OUTPUT_LINES
 from ..config import TRACEBACK
@@ -231,8 +228,8 @@ class Cell(object):
     def is_auto_cell(self):
         """
         Returns whether this is an automatically evaluated generic
-        cell.  This is always false for :class:`Cell`\ s and
-        :class:`TextCell`\ s.
+        cell.  This is always false for :class:`Cell` and
+        :class:`TextCell`.
 
         OUTPUT:
 
@@ -582,8 +579,9 @@ class ComputeCell(Cell):
         """
         # Stuff to deal with interact
 
-        if input.startswith(INTERACT_UPDATE_PREFIX):
-            self.__interact_input = input[len(INTERACT_UPDATE_PREFIX) + 1:]
+        if input.startswith(config.INTERACT_UPDATE_PREFIX):
+            self.__interact_input = input[
+                len(config.INTERACT_UPDATE_PREFIX) + 1:]
             self.version += 1
             return
         else:
@@ -804,15 +802,15 @@ class ComputeCell(Cell):
         if allow_interact and self.__interact_output is not None:
             # Get the input template
             z = self.output_text(ncols, html, raw, allow_interact=False)
-            if INTERACT_TEXT not in z or INTERACT_HTML not in z:
+            if config.INTERACT_TEXT not in z or config.INTERACT_HTML not in z:
                 return z
             if ncols:
                 # Get the output template
                 # Fill in the output template
                 output, html = self.__interact_output
                 output = self.parse_html(output, ncols, False)
-                z = z.replace(INTERACT_TEXT, output)
-                z = z.replace(INTERACT_HTML, html)
+                z = z.replace(config.INTERACT_TEXT, output)
+                z = z.replace(config.INTERACT_HTML, html)
                 return z
             else:
                 # Get rid of the interact div to avoid updating the
@@ -866,7 +864,7 @@ class ComputeCell(Cell):
         """
         output = output
         html = html
-        if output.count(INTERACT_TEXT) > 1:
+        if output.count(config.INTERACT_TEXT) > 1:
             html = ('<h3><font color="red">WARNING: multiple @interacts in '
                     'one cell disabled (not yet implemented).</font></h3>')
             output = ''
@@ -875,7 +873,7 @@ class ComputeCell(Cell):
         # (do not overwrite).
         if self.__interact_input is not None:
             self.__interact_output = (output, html)
-            if INTERACT_RESTART in output:
+            if config.INTERACT_RESTART in output:
                 # We forfeit any interact output template (in
                 # self.__output), so that the restart message propagates
                 # out.  When the set_output_text function in
@@ -1811,7 +1809,7 @@ class ComputeCell(Cell):
             size = F[i + 5:-5]
         else:
             size = 500
- 
+
         # The ".jmol" script has defaultdirectory pointing
         # to a zip file [see Graphics3d.show()]. But it is
         # relative to the worksheet URL as seen in the browser.
@@ -1923,7 +1921,8 @@ class ComputeCell(Cell):
                 pass
             elif F.endswith('.canvas3d'):
                 script = (
-                    '<div><script>Sagewui.canvas3d.viewer("%s?%s");</script></div>' % (
+                    '<div><script>Sagewui.canvas3d.viewer("%s?%s");</script>'
+                    '</div>' % (
                         url, time.time()))
                 images.append(script)
             else:

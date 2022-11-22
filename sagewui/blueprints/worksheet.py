@@ -31,7 +31,7 @@ from flask.helpers import send_from_directory
 from jinja2.exceptions import TemplateNotFound
 from werkzeug.utils import secure_filename
 
-from ..config import INTERACT_UPDATE_PREFIX
+from .. import config
 from ..config import UN_GUEST
 from ..config import UN_PUB
 from ..config import UN_SAGE
@@ -976,7 +976,7 @@ def worksheet_eval(worksheet):
     # the update data.
     if 'interact' in request.values:
         r['interact'] = 1
-        input_text = INTERACT_UPDATE_PREFIX
+        input_text = config.INTERACT_UPDATE_PREFIX
         variable = request.values.get('variable', '')
         if variable != '':
             adapt_number = int(request.values.get('adapt_number', -1))

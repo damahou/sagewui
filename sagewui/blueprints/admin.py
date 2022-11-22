@@ -12,7 +12,7 @@ from flask import redirect
 from flask import url_for
 from flask_babel import gettext
 
-from ..config import SAGE_VERSION
+from .. import config
 from ..config import UN_ADMIN
 
 from ..util.auth import random_password
@@ -92,7 +92,7 @@ def settings_page():
         return redirect(url_for('worksheet_listing.home', username=g.username))
 
     td = {}
-    td['sage_version'] = SAGE_VERSION
+    td['sage_version'] = config.SAGE_VERSION
     td['username'] = g.username
 
     td['autosave_intervals'] = (
@@ -118,7 +118,7 @@ def settings_page():
 @with_lock
 def users():
     template_dict = {}
-    template_dict['sage_version'] = SAGE_VERSION
+    template_dict['sage_version'] = config.SAGE_VERSION
 
     users = sorted(g.notebook.user_manager.login_allowed_usernames)
     template_dict['number_of_users'] = len(users) if len(users) > 1 else None
@@ -196,7 +196,7 @@ def add_user():
     template_dict = {
         'admin': g.notebook.user_manager[g.username].is_admin,
         'username': g.username,
-        'sage_version': SAGE_VERSION}
+        'sage_version': config.SAGE_VERSION}
     if 'username' in request.values:
         if request.values['cancel']:
             return redirect(url_for('admin.users'))
@@ -313,7 +313,7 @@ def notebook_settings():
         # current_app.theme_manager.refresh()
 
     template_dict = {}
-    template_dict['sage_version'] = SAGE_VERSION
+    template_dict['sage_version'] = config.SAGE_VERSION
     template_dict['auto_table'] = g.notebook.conf.html_table(updated)
     template_dict['admin'] = g.notebook.user_manager[g.username].is_admin
     template_dict['username'] = g.username

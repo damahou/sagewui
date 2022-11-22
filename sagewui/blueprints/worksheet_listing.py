@@ -31,7 +31,7 @@ from flask_babel import gettext
 from jinja2.exceptions import TemplateNotFound
 from werkzeug.utils import secure_filename
 
-from ..config import SAGE_VERSION
+from .. import config
 from ..config import UN_PUB
 from ..util import tmp_dir
 from ..util import tmp_filename
@@ -94,7 +94,7 @@ def render_ws_list_template(args, pub, username):
         username = UN_PUB
 
     accounts = g.notebook.conf['accounts']
-    sage_version = SAGE_VERSION
+    sage_version = config.SAGE_VERSION
     return render_template('html/worksheet_listing.html', **locals())
 
 # New UI
@@ -149,7 +149,7 @@ def worksheet_list():
     #    r['username'] = UN_PUB
 
     r['accounts'] = nb.conf['accounts']
-    r['sage_version'] = SAGE_VERSION
+    r['sage_version'] = config.SAGE_VERSION
     # r['pub'] = pub
 
     return encode_response(r)
@@ -314,8 +314,9 @@ def upload():
             _("Account is in read-only mode"),
             cont=url_for('worksheet_listing.home', username=g.username),
             username=g.username)
-    return render_template('html/upload.html',
-                           username=g.username, sage_version=SAGE_VERSION)
+    return render_template(
+            'html/upload.html',
+            username=g.username, sage_version=config.SAGE_VERSION)
 
 
 class RetrieveError(Exception):

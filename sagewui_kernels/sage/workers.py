@@ -29,7 +29,7 @@ from .interfaces import ProcessLimits
 
 
 def sage(server_pool=None, max_vmem=None, max_walltime=None, max_cputime=None,
-         max_processes=None, python='sage --python',
+         max_processes=None, sage='sage',
          init_code=None):
     """
     sage process factory
@@ -43,10 +43,10 @@ def sage(server_pool=None, max_vmem=None, max_walltime=None, max_cputime=None,
 
     if server_pool is None or len(server_pool) == 0:
         return SageServerExpect(
-            process_limits=process_limits, init_code=init_code, python=python)
+            process_limits=process_limits, init_code=init_code, sage=sage)
     else:
         user_at_host = random.choice(server_pool)
         return SageServerExpectRemote(
             user_at_host=user_at_host,
             process_limits=process_limits,
-            python=python, init_code=init_code, sage_code=sage_code)
+            sage=sage, init_code=init_code, sage_code=sage_code)

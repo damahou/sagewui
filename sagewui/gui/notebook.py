@@ -476,11 +476,12 @@ class Notebook(object):
             sage: nb.came_from_wst(P) is W
             True
         """
+        # things can go wrong (especially with old migrated Sage notebook
+        # servers!), but we don't want such problems to crash the notebook
+        # server.
         try:
             return self.id_wst(wst.worksheet_that_was_published)
-        except Exception:   # things can go wrong (especially with old migrated
-                            # Sage notebook servers!), but we don't want such
-                            # problems to crash the notebook server.
+        except Exception:
             return wst
 
     @property
@@ -1168,6 +1169,7 @@ class Notebook(object):
         if tbl['v'] is not None:
             tbl['v'] = (1024 if tbl['v'] < 1024 else tbl['v'])*1024*1024
         return sage(
+            sage=config.SAGE_PATH,
             server_pool=self.server_pool(),
             max_vmem=tbl['v'],
             max_cputime=tbl['t'],

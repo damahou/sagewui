@@ -19,8 +19,7 @@ from flask_themes2 import theme_paths_loader
 from .config import DEFAULT_THEME
 from .config import JEDITABLE_TINYMCE
 from .config import MATHJAX
-from .config import SAGE_VERSION
-from .config import SRC_PATH
+from . import config
 from .config import THEME_PATHS
 from .config import UAT_GUEST
 from .util.decorators import guest_or_login_required
@@ -87,7 +86,7 @@ def create_app(notebook, startup_token=None, debug=False):
     @app.context_processor
     def default_template_context():
         return {'sitename': gettext('Sage Notebook'),
-                'sage_version': SAGE_VERSION,
+                'sage_version': config.SAGE_VERSION,
                 'MATHJAX': MATHJAX,
                 'JEDITABLE_TINYMCE': JEDITABLE_TINYMCE,
                 'conf': notebook.conf}
@@ -130,13 +129,13 @@ def create_app(notebook, startup_token=None, debug=False):
     # autoindex v0.3 doesnt seem to work with modules
     # routing with app directly does the trick
     # TODO: Check to see if autoindex 0.4 works with modules
-    idx = AutoIndex(app, browse_root=SRC_PATH, add_url_rules=False)
+    idx = AutoIndex(app, browse_root=config.SRC_PATH, add_url_rules=False)
 
     @app.route('/src/')
     @app.route('/src/<path:path>')
     @guest_or_login_required
     def autoindex(path='.'):
-        filename = os.path.join(SRC_PATH, path)
+        filename = os.path.join(config.SRC_PATH, path)
         if os.path.isfile(filename):
             with open(filename, 'rb') as f:
                 src = f.read().decode('utf-8', 'ignore')

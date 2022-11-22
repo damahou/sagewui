@@ -154,7 +154,7 @@ class SageServerExpect(SageServerABC):
     def __init__(self,
                  process_limits=None,
                  timeout=0.05,
-                 python='sage --python',
+                 sage='sage',
                  init_code=None,
                  sage_code=None):
         """
@@ -171,7 +171,7 @@ class SageServerExpect(SageServerABC):
         self._max_walltime = None
         self._start_walltime = None
         self._data_dir = None
-        self._python = python
+        self._python = '{} --python'.format(sage)
         self._so_far = ''
         self._start_label = None
         self._tempdir = ''

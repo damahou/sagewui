@@ -16,7 +16,7 @@ from flask import g
 from flask import current_app
 from flask_babel import gettext
 
-from ..config import SAGE_VERSION
+from .. import config
 from ..config import UN_SYSTEM
 from ..util.auth import challenge
 from ..util.auth import register_make_key
@@ -54,7 +54,7 @@ def login(template_dict={}):
     template_dict.update({'accounts': nb_conf['accounts'],
                           'recovery': nb_conf['email'],
                           'next': request.values.get('next', ''),
-                          'sage_version': SAGE_VERSION,
+                          'sage_version': config.SAGE_VERSION,
                           'username_error': False,
                           'password_error': False})
 
@@ -268,7 +268,7 @@ def register():
     template_dict = {'accounts': nb_conf['accounts'],
                      'welcome_user': username,
                      'recovery': nb_conf['email'],
-                     'sage_version': SAGE_VERSION}
+                     'sage_version': config.SAGE_VERSION}
 
     return render_template('html/login.html', **template_dict)
 

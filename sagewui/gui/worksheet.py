@@ -2106,10 +2106,10 @@ class Worksheet(object):
 
         if cell_system == 'sage' and C.introspect:
             before_prompt, after_prompt = C.introspect
-            I = before_prompt
+            Itxt = before_prompt
         else:
-            I = C.cleaned_input_text
-            if I in ['restart', 'quit', 'exit']:
+            Itxt = C.cleaned_input_text
+            if Itxt in ['restart', 'quit', 'exit']:
                 self.restart_sage()
                 S = self.system if self.system is not None else 'sage'
                 C.set_output_text('Exited %s process' % S, '')
@@ -2132,15 +2132,15 @@ class Worksheet(object):
 
         # If the input ends in a question mark and is *not* a comment
         # line, then we introspect on it.
-        if self._must_introspect_re.search(I) and cell_system == 'sage':
-            C.introspect = [I, '']
+        if self._must_introspect_re.search(Itxt) and cell_system == 'sage':
+            C.introspect = [Itxt, '']
 
         # Handle line continuations: join lines that end in a backslash
         # _except_ in LaTeX, sage and python mode.
         if cell_system not in ['latex', 'sage', 'python']:
-            I = I.replace('\\\n', '')
+            Itxt = Itxt.replace('\\\n', '')
 
-        input += self.preparse_input(I, C)
+        input += self.preparse_input(Itxt, C)
 
         self.__computing = True
         mode = ('sage' if cell_system == 'sage' and not C.introspect

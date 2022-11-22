@@ -24,8 +24,7 @@ from . import N_
 from . import nN_
 from .keymaps_js import get_keyboard
 
-from ..config import mathjax_macros
-from ..config import SAGE_VERSION
+from .. import config
 from flask import json
 
 css_illegal_re = re.compile(r'[^-A-Za-z_0-9]')
@@ -164,7 +163,7 @@ def message(msg, cont='/', username=None, **kwds):
     template_dict = {
         'msg': msg, 'cont': cont,
         'username': username,
-        'sage_version': SAGE_VERSION
+        'sage_version': config.SAGE_VERSION
         }
     template_dict.update(kwds)
     return render_template('html/error_message.html', **template_dict)
@@ -189,7 +188,7 @@ class DynamicJs(object):
     @cached_property()
     def mathjax(self):
         data = render_template('js/mathjax_sage.js',
-                               theme_mathjax_macros=mathjax_macros)
+                               theme_mathjax_macros=config.MATHJAX_MACROS)
         return self._prepare_data(data)
 
     def keyboard(self, browser_os):
