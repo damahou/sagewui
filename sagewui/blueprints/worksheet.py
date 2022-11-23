@@ -118,8 +118,8 @@ def get_cell_id():
 
 # notebook html
 
-def render_ws_template(ws=None, username=CFG.UN_GUEST, admin=False, do_print=False,
-                       publish=False):
+def render_ws_template(ws=None, username=CFG.UN_GUEST, admin=False,
+                       do_print=False, publish=False):
     r"""
     Return the HTML evaluated for a worksheet.
 
