@@ -6,10 +6,6 @@ URLS to do:
 ###/doc/live/   - WorksheetFile(os.path.join(DOC, name)
 ###/doc/static/ - DOC/index.html
 """
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
 
 import os
 from flask import Blueprint

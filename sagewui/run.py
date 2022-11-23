@@ -11,18 +11,6 @@ Script to start the notebook form the command line
 #  The full text of the GPL is available at:
 #                  http://www.gnu.org/licenses/
 #############################################################################
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-from builtins import input
-from builtins import object
-from builtins import open
-from builtins import str
-from future.utils import native_str
-
-from future.moves.urllib.parse import quote
-
 import os
 import random
 import argparse
@@ -30,6 +18,7 @@ import logging
 import getpass
 import signal
 from os.path import join as joinpath
+from urllib.parse import quote
 
 from sagewui import config as CFG
 from sagewui.app import create_app
@@ -458,7 +447,7 @@ class NotebookFrontend(object):
         # site = server.Site(resource)
 
         application = service.Application("Sage Notebook")
-        s = strports.service(native_str(self.conf['strport']), site)
+        s = strports.service(str(self.conf['strport']), site)
         self.open_page()
         s.setServiceParent(application)
 

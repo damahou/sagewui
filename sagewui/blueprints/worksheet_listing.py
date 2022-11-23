@@ -1,16 +1,8 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-from future import standard_library
-from builtins import str
-from builtins import open
-
-from future.moves.urllib.parse import quote
-from future.moves.urllib.parse import unquote
-from future.moves.urllib.parse import urljoin
-from future.moves.urllib.parse import urlparse
-from future.moves.urllib.request import urlretrieve
+from urllib.parse import quote
+from urllib.parse import unquote
+from urllib.parse import urljoin
+from urllib.parse import urlparse
+from urllib.request import urlretrieve
 
 import os
 import re
@@ -42,8 +34,6 @@ from ..util.templates import encode_response
 from ..util.templates import message as message_template
 from ..util.templates import render_template
 from .worksheet import url_for_worksheet
-
-standard_library.install_aliases()
 
 # Globals
 _ = gettext
