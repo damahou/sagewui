@@ -20,8 +20,8 @@ import sys
 
 from twisted.mail import smtp
 from twisted.mail import relaymanager
-from email.MIMEBase import MIMEBase
-from email.MIMEMultipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
 
 
 def buildMessage(fromaddr, toaddr, subject, body):
