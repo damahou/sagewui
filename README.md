@@ -10,7 +10,7 @@ completely different_.
 * SageWui is independent from Sage, so that it can be launched from
   an independent python interpreter. A SageMath installation and the `sage`
   command in the default path is required, though.
-* SageWui runs on python 2 and 3.
+* SageWui runs only on recent versions of python 3.
 * `smtpsend` is now a global module.
 * Sagewui startup procedure differs from Sagenb one.
   - No need for intermediate startup code files.
@@ -33,7 +33,7 @@ completely different_.
 Only for testing purposes.
 
 The instructions below are valid for a modern Linux host. A working
-`python` >= 3.4 and <3.6 installation with `venv` module
+`python` 3 installation with `venv` module
 (`sudo apt-get install python3-venv` on Ubuntu based dists) is supposed to be
 available.
 
@@ -318,8 +318,8 @@ A `ssh` server must be running.
 ## Notes
 
 * The dependencies for `sagewui` are: `twisted`, `flask`, `flask-autoindex`,
-  `flask-babel`, `flask-themes2`, `future`, `smtpsend`, `pexpect`, `docutils`,
-  `jsmin`, `pyopenssl`, `service_identity`, `appdirs`.
+  `flask-babel`, `flask-themes2`, `pexpect`, `docutils`,
+  `jsmin`, `pyopenssl`, `service_identity`, `appdirs`, `smtpsend`.
   All of them, but `smtpsend`
   which is in the source tree, are installable from pipy in an virtual
   python environment.
