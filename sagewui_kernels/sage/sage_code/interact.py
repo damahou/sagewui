@@ -1241,7 +1241,7 @@ class InputGrid(InteractControl):
                 [default_value for _ in range(columns)] for _ in range(rows)]
         elif not all(type(elt) == list for elt in default_value):
             default_value = [[default_value[i * columns + j]
-                              for j in xrange(columns)] for i in xrange(rows)]
+                              for j in range(columns)] for i in range(rows)]
 
         self.__default_value_grid = default_value
 
