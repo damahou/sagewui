@@ -116,7 +116,7 @@ class NotebookFrontend(object):
                 'password,',
                 'quit the notebook and type `sagenb --reset`.',
             )),
-            'server': 'Executing Sage Notebook with {} server',
+            'server': 'Executing SageWui with {} server',
             'ssl_wzeug':
                 'HTTPS cannot be used without pyOpenSSL installed. See the '
                 'Sage README for more information.'
