@@ -46,17 +46,9 @@ from itertools import count
 
 from flask_babel import gettext
 
-from .. import config
+from .. import config as CFG
 # Imports specifically relevant to the sage notebook
 from .cell import ComputeCell, TextCell
-from ..config import INITIAL_NUM_CELLS
-from ..config import UN_PUB
-from ..config import UN_SAGE
-from ..config import SYSTEMS
-from ..config import WARN_THRESHOLD
-from ..config import WS_ACTIVE
-from ..config import WS_ARCHIVED
-from ..config import WS_TRASH
 from ..util import cached_property
 from ..util import ignore_nonexistent_files
 from ..util import makedirs
@@ -196,7 +188,7 @@ class Worksheet(object):
         self.auto_publish = auto_publish
         self.last_change = set_default(last_change, (self.owner, time.time()))
         self.__saved_by_info = set_default(saved_by_info, {})  # property ro
-        self.tags = set_default(tags, {self.owner: [WS_ACTIVE]})
+        self.tags = set_default(tags, {self.owner: [CFG.WS_ACTIVE]})
         self.__collaborators = set_default(collaborators, [])  # property
         self.published_id_number = published_id_number
         self.__worksheet_that_was_published = set_default(
@@ -579,7 +571,7 @@ class Worksheet(object):
                 dictionary mapping usernames to list of tags that
                 reflect what the tages are for that user.  A tag can be
                 an integer
-                  0,1,2 (=WS_ARCHIVED,WS_ACTIVE,WS_TRASH),
+                  0,1,2 (=CFG.WS_ARCHIVED,CFG.WS_ACTIVE,CFG.WS_TRASH),
                 or a string (not yet supported).
                 This is used for now to fill in the __user_views.
             'last_change'
@@ -648,7 +640,7 @@ class Worksheet(object):
         worksheet_html = self.worksheet_html_filename
         if not os.path.exists(worksheet_html):
             cells = []
-            for i in range(INITIAL_NUM_CELLS):
+            for i in range(CFG.INITIAL_NUM_CELLS):
                 cells.append(self._new_cell(i))
         else:
             self.reset_interact_state()
@@ -810,7 +802,7 @@ class Worksheet(object):
 
         OUTPUT: integer
         """
-        system_names = tuple(system[0] for system in SYSTEMS)
+        system_names = tuple(system[0] for system in CFG.SYSTEMS)
         try:
             return system_names.index(self.system)
         except ValueError:
@@ -827,7 +819,7 @@ class Worksheet(object):
         EXAMPLES: We first create a standard worksheet for which docbrowser
         is of course False::
 
-            sage: from sagenb.config import UN_SAGE
+            sage: from sagenb.config import CFG.UN_SAGE
             sage: nb = sagenb.notebook.notebook.Notebook(
                 tmp_dir()
             sage: nb.user_manager.create_default_users('password')
@@ -837,11 +829,11 @@ class Worksheet(object):
 
         We create a worksheet for which docbrowser is True::
 
-            sage: W = nb.create_wst('doc_browser_0', UN_SAGE)
+            sage: W = nb.create_wst('doc_browser_0', CFG.UN_SAGE)
             sage: W.docbrowser
             True
         """
-        return self.owner == UN_SAGE
+        return self.owner == CFG.UN_SAGE
 
     def notebook(self):
         """
@@ -868,7 +860,7 @@ class Worksheet(object):
             True
         """
         if not hasattr(self, '_notebook'):
-            self._notebook = config.notebook
+            self._notebook = CFG.notebook
         return self._notebook
 
     def save(self, conf_only=False):
@@ -897,7 +889,7 @@ class Worksheet(object):
             sage: W.is_published
             True
         """
-        return self.owner == UN_PUB
+        return self.owner == CFG.UN_PUB
 
     @property
     def publisher(self):
@@ -922,7 +914,7 @@ class Worksheet(object):
     def published_filename(self):
         if self.published_id_number is None:
             return
-        return os.path.join(UN_PUB, str(self.published_id_number))
+        return os.path.join(CFG.UN_PUB, str(self.published_id_number))
 
     def rate(self, x, comment, username):
         """
@@ -1033,7 +1025,7 @@ class Worksheet(object):
             sage: W.user_view('foo')
             1
         """
-        return self.tags.setdefault(user, [WS_ACTIVE])[0]
+        return self.tags.setdefault(user, [CFG.WS_ACTIVE])[0]
 
     def set_user_view(self, user, x):
         """
@@ -1061,7 +1053,7 @@ class Worksheet(object):
         # views, e.g., moving to trash, etc., since the user can't
         # easily click save without changing the view back.
         self.save(conf_only=True)
-        if x in (WS_ARCHIVED, WS_TRASH):
+        if x in (CFG.WS_ARCHIVED, CFG.WS_TRASH):
             self.quit()
 
     def is_archived(self, user):
@@ -1086,7 +1078,7 @@ class Worksheet(object):
             sage: W.is_archived('admin')
             True
         """
-        return self.user_view(user) == WS_ARCHIVED
+        return self.user_view(user) == CFG.WS_ARCHIVED
 
     def is_active(self, user):
         """
@@ -1110,7 +1102,7 @@ class Worksheet(object):
             sage: W.is_active('admin')
             False
         """
-        return self.user_view(user) == WS_ACTIVE
+        return self.user_view(user) == CFG.WS_ACTIVE
 
     def is_trashed(self, user):
         """
@@ -1134,7 +1126,7 @@ class Worksheet(object):
             sage: W.is_trashed('admin')
             True
         """
-        return self.user_view(user) == WS_TRASH
+        return self.user_view(user) == CFG.WS_TRASH
 
     def move_to_archive(self, user):
         """
@@ -1154,7 +1146,7 @@ class Worksheet(object):
             sage: W.is_archived('admin')
             True
         """
-        self.set_user_view(user, WS_ARCHIVED)
+        self.set_user_view(user, CFG.WS_ARCHIVED)
 
     def set_active(self, user):
         """
@@ -1177,7 +1169,7 @@ class Worksheet(object):
             sage: W.is_active('admin')
             True
         """
-        self.set_user_view(user, WS_ACTIVE)
+        self.set_user_view(user, CFG.WS_ACTIVE)
 
     def move_to_trash(self, user):
         """
@@ -1197,7 +1189,7 @@ class Worksheet(object):
             sage: W.is_trashed('admin')
             True
         """
-        self.set_user_view(user, WS_TRASH)
+        self.set_user_view(user, CFG.WS_TRASH)
 
     # User management
 
@@ -1376,7 +1368,7 @@ class Worksheet(object):
         self.last_change = (user, time.time())
 
     def warn_about_other_person_editing(self, username,
-                                        threshold=WARN_THRESHOLD):
+                                        threshold=CFG.WARN_THRESHOLD):
         r"""
         Check to see if another user besides username was the last to edit
         this worksheet during the last ``threshold`` seconds.

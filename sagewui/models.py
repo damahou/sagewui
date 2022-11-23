@@ -11,30 +11,7 @@ import time
 from flask_babel import gettext
 from flask_babel import lazy_gettext
 
-from .config import CHOICES
-from .config import DESC
-from .config import GROUP
-from .config import POS
-from .config import TYPE
-from .config import T_BOOL
-from .config import T_CHOICE
-from .config import T_COLOR
-from .config import T_INFO
-from .config import T_INTEGER
-from .config import T_LIST
-from .config import T_REAL
-from .config import T_STRING
-from .config import G_APPEARANCE
-from .config import G_AUTH
-from .config import G_LDAP
-from .config import G_SERVER
-from .config import POS_DEFAULT
-from .config import THEMES
-from .config import TRANSLATIONS
-from .config import UAT_ADMIN
-from .config import UAT_GUEST
-from .config import UAT_USER
-from .config import UN_ADMIN
+from . import config as CFG
 from .util import import_from
 from .util import N_
 from .util import set_default
@@ -89,174 +66,174 @@ app_defaults = {
 
 app_gui_hints = {
     'max_history_length': {
-        DESC: _('Maximum history length'),
-        GROUP: G_SERVER,
-        TYPE: T_INTEGER,
+        CFG.DESC: _('Maximum history length'),
+        CFG.GROUP: CFG.G_SERVER,
+        CFG.TYPE: CFG.T_INTEGER,
     },
     'idle_timeout': {
-        POS: 1,
-        DESC: _('Idle timeout for normal worksheets (seconds)'),
-        GROUP: G_SERVER,
-        TYPE: T_INTEGER,
+        CFG.POS: 1,
+        CFG.DESC: _('Idle timeout for normal worksheets (seconds)'),
+        CFG.GROUP: CFG.G_SERVER,
+        CFG.TYPE: CFG.T_INTEGER,
     },
     'doc_timeout': {
-        POS: 3,
-        DESC: _('Idle timeout for live documentation (seconds)'),
-        GROUP: G_SERVER,
-        TYPE: T_INTEGER,
+        CFG.POS: 3,
+        CFG.DESC: _('Idle timeout for live documentation (seconds)'),
+        CFG.GROUP: CFG.G_SERVER,
+        CFG.TYPE: CFG.T_INTEGER,
     },
     'idle_check_interval': {
-        DESC: _('Idle check interval (seconds)'),
-        GROUP: G_SERVER,
-        TYPE: T_INTEGER,
+        CFG.DESC: _('Idle check interval (seconds)'),
+        CFG.GROUP: CFG.G_SERVER,
+        CFG.TYPE: CFG.T_INTEGER,
     },
     'save_interval': {
-        DESC: _('Save interval (seconds)'),
-        GROUP: G_SERVER,
-        TYPE: T_INTEGER,
+        CFG.DESC: _('Save interval (seconds)'),
+        CFG.GROUP: CFG.G_SERVER,
+        CFG.TYPE: CFG.T_INTEGER,
     },
     'doc_pool_size': {
-        DESC: _('Doc worksheet pool size'),
-        GROUP: G_SERVER,
-        TYPE: T_INTEGER,
+        CFG.DESC: _('Doc worksheet pool size'),
+        CFG.GROUP: CFG.G_SERVER,
+        CFG.TYPE: CFG.T_INTEGER,
     },
     'pub_interact': {
-        DESC: _(
+        CFG.DESC: _(
             'Enable published interacts (EXPERIMENTAL; USE AT YOUR OWN RISK)'),
-        GROUP: G_SERVER,
-        TYPE: T_BOOL,
+        CFG.GROUP: CFG.G_SERVER,
+        CFG.TYPE: CFG.T_BOOL,
     },
     'server_pool': {
-        DESC: _('Worksheet process users (comma-separated list)'),
-        GROUP: G_SERVER,
-        TYPE: T_LIST,
+        CFG.DESC: _('Worksheet process users (comma-separated list)'),
+        CFG.GROUP: CFG.G_SERVER,
+        CFG.TYPE: CFG.T_LIST,
     },
     'system': {
-        DESC: _('Default system'),
-        GROUP: G_SERVER,
-        TYPE: T_STRING,
+        CFG.DESC: _('Default system'),
+        CFG.GROUP: CFG.G_SERVER,
+        CFG.TYPE: CFG.T_STRING,
     },
     'ulimit': {
-        DESC: _('Worksheet process limits'),
-        GROUP: G_SERVER,
-        TYPE: T_STRING,
+        CFG.DESC: _('Worksheet process limits'),
+        CFG.GROUP: CFG.G_SERVER,
+        CFG.TYPE: CFG.T_STRING,
     },
     'model_version': {
-        DESC: _('Model Version'),
-        GROUP: G_SERVER,
-        TYPE: T_INFO,
+        CFG.DESC: _('Model Version'),
+        CFG.GROUP: CFG.G_SERVER,
+        CFG.TYPE: CFG.T_INFO,
     },
     'notification_recipients': {
-        DESC: _('Send notification e-mails to (comma-separated list)'),
-        GROUP: G_SERVER,
-        TYPE: T_LIST,
+        CFG.DESC: _('Send notification e-mails to (comma-separated list)'),
+        CFG.GROUP: CFG.G_SERVER,
+        CFG.TYPE: CFG.T_LIST,
     },
     'word_wrap_cols': {
-        DESC: _('Number of word-wrap columns'),
-        GROUP: G_APPEARANCE,
-        TYPE: T_INTEGER,
+        CFG.DESC: _('Number of word-wrap columns'),
+        CFG.GROUP: CFG.G_APPEARANCE,
+        CFG.TYPE: CFG.T_INTEGER,
     },
     'pretty_print': {
-        DESC: _('Pretty print (typeset) output'),
-        GROUP: G_APPEARANCE,
-        TYPE: T_BOOL,
+        CFG.DESC: _('Pretty print (typeset) output'),
+        CFG.GROUP: CFG.G_APPEARANCE,
+        CFG.TYPE: CFG.T_BOOL,
     },
     'default_language': {
-        DESC: _('Default Language'),
-        GROUP: G_APPEARANCE,
-        TYPE: T_CHOICE,
-        CHOICES: TRANSLATIONS,
+        CFG.DESC: _('Default Language'),
+        CFG.GROUP: CFG.G_APPEARANCE,
+        CFG.TYPE: CFG.T_CHOICE,
+        CFG.CHOICES: CFG.TRANSLATIONS,
     },
     'theme': {
-        DESC: _('Theme'),
-        GROUP: G_APPEARANCE,
-        TYPE: T_CHOICE,
-        CHOICES: THEMES,
+        CFG.DESC: _('Theme'),
+        CFG.GROUP: CFG.G_APPEARANCE,
+        CFG.TYPE: CFG.T_CHOICE,
+        CFG.CHOICES: CFG.THEMES,
     },
 
     'accounts': {
-        POS: 2,
-        DESC: _('Enable user registration'),
-        GROUP: G_AUTH,
-        TYPE: T_BOOL,
+        CFG.POS: 2,
+        CFG.DESC: _('Enable user registration'),
+        CFG.GROUP: CFG.G_AUTH,
+        CFG.TYPE: CFG.T_BOOL,
     },
     'email': {
-        POS: 3,
-        DESC: _('Require e-mail for account registration'),
-        GROUP: G_AUTH,
-        TYPE: T_BOOL,
+        CFG.POS: 3,
+        CFG.DESC: _('Require e-mail for account registration'),
+        CFG.GROUP: CFG.G_AUTH,
+        CFG.TYPE: CFG.T_BOOL,
     },
     'challenge': {
-        POS: 4,
-        DESC: _('Use a challenge for account registration'),
-        GROUP: G_AUTH,
-        TYPE: T_BOOL,
+        CFG.POS: 4,
+        CFG.DESC: _('Use a challenge for account registration'),
+        CFG.GROUP: CFG.G_AUTH,
+        CFG.TYPE: CFG.T_BOOL,
     },
     'challenge_type': {
-        POS: 4,
-        DESC: _('Type of challenge'),
-        GROUP: G_AUTH,
-        TYPE: T_CHOICE,
-        CHOICES: [N_('simple'), N_('recaptcha')],
+        CFG.POS: 4,
+        CFG.DESC: _('Type of challenge'),
+        CFG.GROUP: CFG.G_AUTH,
+        CFG.TYPE: CFG.T_CHOICE,
+        CFG.CHOICES: [N_('simple'), N_('recaptcha')],
     },
     'recaptcha_public_key': {
-        DESC: _('reCAPTCHA public key'),
-        GROUP: G_AUTH,
-        TYPE: T_STRING,
+        CFG.DESC: _('reCAPTCHA public key'),
+        CFG.GROUP: CFG.G_AUTH,
+        CFG.TYPE: CFG.T_STRING,
     },
     'recaptcha_private_key': {
-        DESC: _('reCAPTCHA private key'),
-        GROUP: G_AUTH,
-        TYPE: T_STRING,
+        CFG.DESC: _('reCAPTCHA private key'),
+        CFG.GROUP: CFG.G_AUTH,
+        CFG.TYPE: CFG.T_STRING,
     },
 
     'auth_ldap': {
-        POS: 1,
-        DESC: _('Enable LDAP Authentication'),
-        GROUP: G_LDAP,
-        TYPE: T_BOOL,
+        CFG.POS: 1,
+        CFG.DESC: _('Enable LDAP Authentication'),
+        CFG.GROUP: CFG.G_LDAP,
+        CFG.TYPE: CFG.T_BOOL,
     },
     'ldap_uri': {
-        POS: 2,
-        DESC: _('LDAP URI'),
-        GROUP: G_LDAP,
-        TYPE: T_STRING,
+        CFG.POS: 2,
+        CFG.DESC: _('LDAP URI'),
+        CFG.GROUP: CFG.G_LDAP,
+        CFG.TYPE: CFG.T_STRING,
     },
     'ldap_binddn': {
-        POS: 3,
-        DESC: _('Bind DN'),
-        GROUP: G_LDAP,
-        TYPE: T_STRING,
+        CFG.POS: 3,
+        CFG.DESC: _('Bind DN'),
+        CFG.GROUP: CFG.G_LDAP,
+        CFG.TYPE: CFG.T_STRING,
     },
     'ldap_bindpw': {
-        POS: 4,
-        DESC: _('Bind Password'),
-        GROUP: G_LDAP,
-        TYPE: T_STRING,
+        CFG.POS: 4,
+        CFG.DESC: _('Bind Password'),
+        CFG.GROUP: CFG.G_LDAP,
+        CFG.TYPE: CFG.T_STRING,
     },
     'ldap_gssapi': {
-        POS: 5,
-        DESC: _('Use GSSAPI instead of Bind DN/Password'),
-        GROUP: G_LDAP,
-        TYPE: T_BOOL,
+        CFG.POS: 5,
+        CFG.DESC: _('Use GSSAPI instead of Bind DN/Password'),
+        CFG.GROUP: CFG.G_LDAP,
+        CFG.TYPE: CFG.T_BOOL,
     },
     'ldap_basedn': {
-        POS: 6,
-        DESC: _('Base DN'),
-        GROUP: G_LDAP,
-        TYPE: T_STRING,
+        CFG.POS: 6,
+        CFG.DESC: _('Base DN'),
+        CFG.GROUP: CFG.G_LDAP,
+        CFG.TYPE: CFG.T_STRING,
     },
     'ldap_username_attrib': {
-        POS: 7,
-        DESC: _('Username Attribute (i.e. cn, uid or userPrincipalName)'),
-        GROUP: G_LDAP,
-        TYPE: T_STRING,
+        CFG.POS: 7,
+        CFG.DESC: _('Username Attribute (i.e. cn, uid or userPrincipalName)'),
+        CFG.GROUP: CFG.G_LDAP,
+        CFG.TYPE: CFG.T_STRING,
     },
     'ldap_timeout': {
-        POS: 8,
-        DESC: _('Query timeout (seconds)'),
-        GROUP: G_LDAP,
-        TYPE: T_INTEGER,
+        CFG.POS: 8,
+        CFG.DESC: _('Query timeout (seconds)'),
+        CFG.GROUP: CFG.G_LDAP,
+        CFG.TYPE: CFG.T_INTEGER,
     },
 }
 
@@ -271,10 +248,10 @@ user_defaults = {
 
 user_gui_hints = {
     'language': {
-        DESC: lazy_gettext('Language'),
-        GROUP: lazy_gettext('Appearance'),
-        TYPE: T_CHOICE,
-        CHOICES: ['default'] + TRANSLATIONS,
+        CFG.DESC: lazy_gettext('Language'),
+        CFG.GROUP: lazy_gettext('Appearance'),
+        CFG.TYPE: CFG.T_CHOICE,
+        CFG.CHOICES: ['default'] + CFG.TRANSLATIONS,
         },
     }
 
@@ -350,7 +327,7 @@ class Configuration(object):
         updated = {}
         for key in keys:
             try:
-                typ = DS[key][TYPE]
+                typ = DS[key][CFG.TYPE]
             except KeyError:
                 # We skip this setting.  Perhaps defaults_descriptions
                 # is not in sync with defaults, someone has tampered
@@ -358,32 +335,32 @@ class Configuration(object):
                 continue
             val = form.get(key, '')
 
-            if typ == T_BOOL:
+            if typ == CFG.T_BOOL:
                 if val:
                     val = True
                 else:
                     val = False
 
-            elif typ == T_INTEGER:
+            elif typ == CFG.T_INTEGER:
                 try:
                     val = int(val)
                 except ValueError:
                     val = self[key]
 
-            elif typ == T_REAL:
+            elif typ == CFG.T_REAL:
                 try:
                     val = float(val)
                 except ValueError:
                     val = self[key]
 
-            elif typ == T_LIST:
+            elif typ == CFG.T_LIST:
                 val = val.strip()
                 if val == '' or val == 'None':
                     val = None
                 else:
                     val = val.split(',')
 
-            if typ != T_INFO and self[key] != val:
+            if typ != CFG.T_INFO and self[key] != val:
                 self[key] = val
                 updated[key] = ('updated', gettext('Updated'))
 
@@ -404,12 +381,12 @@ class Configuration(object):
         # Make groups
         for key in K:
             try:
-                gp = DS[key][GROUP]
+                gp = DS[key][CFG.GROUP]
                 # don't display LDAP settings if the check above failed
-                if gp == G_LDAP and ldap_version is None:
+                if gp == CFG.G_LDAP and ldap_version is None:
                     continue
-                DS[key][DESC]
-                DS[key][TYPE]
+                DS[key][CFG.DESC]
+                DS[key][CFG.TYPE]
             except KeyError:
                 # We skip this setting.  It's obsolete and/or
                 # defaults_descriptions is not up to date.  See
@@ -429,26 +406,26 @@ class Configuration(object):
 
             opts = G[group]
 
-            opts.sort(key=lambda x: (DS[x].get(POS, POS_DEFAULT), x))
+            opts.sort(key=lambda x: (DS[x].get(CFG.POS, CFG.POS_DEFAULT), x))
             for o in opts:
                 s += ('    <tr>\n      <td>%s</td>\n      <td>\n' %
-                      lazy_gettext(DS[o][DESC]))
+                      lazy_gettext(DS[o][CFG.DESC]))
                 input_type = 'text'
                 input_value = self[o]
 
                 extra = ''
-                if DS[o][TYPE] == T_BOOL:
+                if DS[o][CFG.TYPE] == CFG.T_BOOL:
                     input_type = 'checkbox'
                     if input_value:
                         extra = 'checked="checked"'
 
-                if DS[o][TYPE] == T_LIST:
+                if DS[o][CFG.TYPE] == CFG.T_LIST:
                     if input_value is not None:
                         input_value = ','.join(input_value)
 
-                if DS[o][TYPE] == T_CHOICE:
+                if DS[o][CFG.TYPE] == CFG.T_CHOICE:
                     s += '        <select name="%s" id="%s">\n' % (o, o)
-                    for c in DS[o][CHOICES]:
+                    for c in DS[o][CFG.CHOICES]:
                         selected = ''
                         if c == input_value:
                             selected = ' selected="selected"'
@@ -456,7 +433,7 @@ class Configuration(object):
                               (c, selected, lazy_gettext(c)))
                     s += '        </select>\n'
 
-                elif DS[o][TYPE] == T_INFO:
+                elif DS[o][CFG.TYPE] == CFG.T_INFO:
                     s += '        <span>%s</span>' % input_value
 
                 else:
@@ -464,7 +441,7 @@ class Configuration(object):
                           'value="%s" %s>\n' % (
                               input_type, o, o, input_value, extra))
 
-                    if DS[o][TYPE] == T_COLOR:
+                    if DS[o][CFG.TYPE] == CFG.T_COLOR:
                         s += ('        <div id="picker_%s"></div>\n' %
                               color_picker)
                         special_init += (
@@ -504,11 +481,11 @@ class UserConfiguration(Configuration):
 
 
 class User(object):
-    account_types = (UAT_ADMIN, UAT_USER, UAT_GUEST)
+    account_types = (CFG.UAT_ADMIN, CFG.UAT_USER, CFG.UAT_GUEST)
 
     def __init__(self,
                  username, password='', email='',
-                 account_type=UAT_ADMIN, external_auth=None,
+                 account_type=CFG.UAT_ADMIN, external_auth=None,
 
                  email_confirmed=False,
                  is_suspended=False,
@@ -538,22 +515,22 @@ class User(object):
         EXAMPLES::
 
             sage: from sagenb.notebook.user import User
-            sage: User('A', account_type=UAT_ADMIN).account_type
+            sage: User('A', account_type=CFG.UAT_ADMIN).account_type
             'admin'
-            sage: User('B', account_type=UAT_USER).account_type
+            sage: User('B', account_type=CFG.UAT_USER).account_type
             'user'
-            sage: User('C', account_type=UAT_GUEST).account_type
+            sage: User('C', account_type=CFG.UAT_GUEST).account_type
             'guest'
         """
         return self.__account_type
 
     @account_type.setter
     def account_type(self, account_type):
-        if self.username == UN_ADMIN:
-            account_type = UAT_ADMIN
+        if self.username == CFG.UN_ADMIN:
+            account_type = CFG.UAT_ADMIN
         elif account_type not in self.account_types:
             raise ValueError(
-                'account type must be one{}}, {}, or {}'.format(
+                'account type must be one{}, {}, or {}'.format(
                     *self.account_types))
         self.__account_type = account_type
 

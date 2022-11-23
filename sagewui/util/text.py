@@ -7,7 +7,7 @@ from builtins import range
 import re
 from flask_babel import gettext
 
-from ..config import TRACEBACK
+from .. import config as CFG
 
 valid_username_chars = r'a-zA-Z0-9_.@'
 valid_username_re = re.compile(r'^[{}]{{3,64}}$'.format(
@@ -22,8 +22,8 @@ valid_email_re = re.compile(r"""
     re.IGNORECASE | re.VERBOSE)
 extract_title_re = re.compile(
     r'\<title\>(.*?)\<\/title\>', re.IGNORECASE | re.DOTALL)
-whitespace_re = re.compile('\s')
-non_whitespace_re = re.compile('\S')
+whitespace_re = re.compile(r'\s')
+non_whitespace_re = re.compile(r'\S')
 extract_cells_re0 = re.compile(  # No \n needed after open delimiter. Only comp
     r'(?:\n+|^)\{\{\{'
     r'(?:(?:([^\n]*)\|)?\n+)?'
@@ -234,24 +234,24 @@ def format_exception(s0, ncols):
     EXAMPLES::
 
         sage: sagenb.notebook.cell.format_exception(
-            sagenb.notebook.cell.TRACEBACK,80)
+            sagenb.notebook.cell.config.TRACEBACK,80)
         '\nTraceback (click to the left of this block for traceback)\n...\n
         Traceback (most recent call last):'
         sage: sagenb.notebook.cell.format_exception(
-            sagenb.notebook.cell.TRACEBACK + "notracebacks",80)
+            sagenb.notebook.cell.config.TRACEBACK + "notracebacks",80)
         'Traceback (most recent call last):notracebacks'
     """
     s = s0.lstrip()
     # Add a notracebacks option -- if it is in the string then
     # tracebacks aren't shrunk.  This is currently used by the
     # functions sagenb.misc.support.help and sage.server.support.help.
-    if TRACEBACK not in s or 'notracebacks' in s:
+    if CFG.TRACEBACK not in s or 'notracebacks' in s:
         return s0
     if ncols > 0:
         s = s.strip()
         w = s.splitlines()
         for k in range(len(w)):
-            if TRACEBACK in w[k]:
+            if CFG.TRACEBACK in w[k]:
                 break
         s = ('\n'.join(w[:k]) +
              '\nTraceback (click to the left of this block for traceback)' +

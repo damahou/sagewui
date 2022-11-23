@@ -12,8 +12,7 @@ from flask import redirect
 from flask import url_for
 from flask_babel import gettext
 
-from .. import config
-from ..config import UN_ADMIN
+from .. import config as CFG
 
 from ..util.auth import random_password
 from ..util.decorators import admin_required
@@ -92,7 +91,7 @@ def settings_page():
         return redirect(url_for('worksheet_listing.home', username=g.username))
 
     td = {}
-    td['sage_version'] = config.SAGE_VERSION
+    td['sage_version'] = CFG.SAGE_VERSION
     td['username'] = g.username
 
     td['autosave_intervals'] = (
@@ -118,11 +117,11 @@ def settings_page():
 @with_lock
 def users():
     template_dict = {}
-    template_dict['sage_version'] = config.SAGE_VERSION
+    template_dict['sage_version'] = CFG.SAGE_VERSION
 
     users = sorted(g.notebook.user_manager.login_allowed_usernames)
     template_dict['number_of_users'] = len(users) if len(users) > 1 else None
-    del users[users.index(UN_ADMIN)]
+    del users[users.index(CFG.UN_ADMIN)]
     template_dict['users'] = [g.notebook.user_manager[username]
                               for username in users]
     template_dict['admin'] = g.notebook.user_manager[g.username].is_admin
@@ -164,7 +163,7 @@ def suspend_user(user):
 @admin_required
 @with_lock
 def del_user(user):
-    if user != UN_ADMIN:
+    if user != CFG.UN_ADMIN:
         try:
             del g.notebook.user_manager[user]
         except KeyError:
@@ -196,7 +195,7 @@ def add_user():
     template_dict = {
         'admin': g.notebook.user_manager[g.username].is_admin,
         'username': g.username,
-        'sage_version': config.SAGE_VERSION}
+        'sage_version': CFG.SAGE_VERSION}
     if 'username' in request.values:
         if request.values['cancel']:
             return redirect(url_for('admin.users'))
@@ -313,7 +312,7 @@ def notebook_settings():
         # current_app.theme_manager.refresh()
 
     template_dict = {}
-    template_dict['sage_version'] = config.SAGE_VERSION
+    template_dict['sage_version'] = CFG.SAGE_VERSION
     template_dict['auto_table'] = g.notebook.conf.html_table(updated)
     template_dict['admin'] = g.notebook.user_manager[g.username].is_admin
     template_dict['username'] = g.username

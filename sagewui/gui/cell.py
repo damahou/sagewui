@@ -30,10 +30,7 @@ from html import escape
 from random import randint
 from sys import maxsize
 
-from .. import config
-from ..config import MAX_OUTPUT
-from ..config import MAX_OUTPUT_LINES
-from ..config import TRACEBACK
+from .. import config as CFG
 from ..util import cached_property
 from ..util import set_restrictive_permissions
 from ..util import word_wrap
@@ -579,9 +576,9 @@ class ComputeCell(Cell):
         """
         # Stuff to deal with interact
 
-        if input.startswith(config.INTERACT_UPDATE_PREFIX):
+        if input.startswith(CFG.INTERACT_UPDATE_PREFIX):
             self.__interact_input = input[
-                len(config.INTERACT_UPDATE_PREFIX) + 1:]
+                len(CFG.INTERACT_UPDATE_PREFIX) + 1:]
             self.version += 1
             return
         else:
@@ -802,15 +799,15 @@ class ComputeCell(Cell):
         if allow_interact and self.__interact_output is not None:
             # Get the input template
             z = self.output_text(ncols, html, raw, allow_interact=False)
-            if config.INTERACT_TEXT not in z or config.INTERACT_HTML not in z:
+            if CFG.INTERACT_TEXT not in z or CFG.INTERACT_HTML not in z:
                 return z
             if ncols:
                 # Get the output template
                 # Fill in the output template
                 output, html = self.__interact_output
                 output = self.parse_html(output, ncols, False)
-                z = z.replace(config.INTERACT_TEXT, output)
-                z = z.replace(config.INTERACT_HTML, html)
+                z = z.replace(CFG.INTERACT_TEXT, output)
+                z = z.replace(CFG.INTERACT_HTML, html)
                 return z
             else:
                 # Get rid of the interact div to avoid updating the
@@ -864,7 +861,7 @@ class ComputeCell(Cell):
         """
         output = output
         html = html
-        if output.count(config.INTERACT_TEXT) > 1:
+        if output.count(CFG.INTERACT_TEXT) > 1:
             html = ('<h3><font color="red">WARNING: multiple @interacts in '
                     'one cell disabled (not yet implemented).</font></h3>')
             output = ''
@@ -873,7 +870,7 @@ class ComputeCell(Cell):
         # (do not overwrite).
         if self.__interact_input is not None:
             self.__interact_output = (output, html)
-            if config.INTERACT_RESTART in output:
+            if CFG.INTERACT_RESTART in output:
                 # We forfeit any interact output template (in
                 # self.__output), so that the restart message propagates
                 # out.  When the set_output_text function in
@@ -889,8 +886,8 @@ class ComputeCell(Cell):
         # sage.database.sql_db.
         if ('notruncate' not in output and
             'Output truncated!' not in output and
-            (len(output) > MAX_OUTPUT or
-             output.count('\n') > MAX_OUTPUT_LINES)):
+            (len(output) > CFG.MAX_OUTPUT or
+             output.count('\n') > CFG.MAX_OUTPUT_LINES)):
             url = ""
             if not self.computing:
                 file = os.path.join(self.directory(), "full_output.txt")
@@ -900,8 +897,10 @@ class ComputeCell(Cell):
                            self.url_to_self()))
                 html += "<br>" + url
             lines = output.splitlines()
-            start = '\n'.join(lines[:MAX_OUTPUT_LINES // 2])[:MAX_OUTPUT // 2]
-            end = '\n'.join(lines[-MAX_OUTPUT_LINES // 2:])[-MAX_OUTPUT // 2:]
+            start = '\n'.join(
+                lines[:CFG.MAX_OUTPUT_LINES // 2])[:CFG.MAX_OUTPUT // 2]
+            end = '\n'.join(
+                lines[-CFG.MAX_OUTPUT_LINES // 2:])[-CFG.MAX_OUTPUT // 2:]
             warning = 'WARNING: Output truncated!  '
             if url:
                 # make the link to the full output appear at the top too.
@@ -1067,7 +1066,7 @@ class ComputeCell(Cell):
             text = self.input
 
         if plain:
-            msg = TRACEBACK
+            msg = CFG.TRACEBACK
             if self.__output.strip().startswith(msg):
                 out = re.sub(r'({})(\n +.*)*'.format(re.escape(msg)),
                              r'\1\n...', self.__output.strip())

@@ -31,10 +31,7 @@ from flask.helpers import send_from_directory
 from jinja2.exceptions import TemplateNotFound
 from werkzeug.utils import secure_filename
 
-from .. import config
-from ..config import UN_GUEST
-from ..config import UN_PUB
-from ..config import UN_SAGE
+from .. import config as CFG
 from ..util import tmp_filename
 from ..util.docHTMLProcessor import SphinxHTMLProcessor
 # New UI
@@ -78,7 +75,7 @@ def worksheet_view(f):
         with worksheet_locks[worksheet.filename]:
             owner = worksheet.owner
 
-            if owner != UN_SAGE and g.username != owner:
+            if owner != CFG.UN_SAGE and g.username != owner:
                 if not worksheet.is_published:
                     if (g.username not in worksheet.collaborators and
                             not g.notebook.user_manager[g.username].is_admin):
@@ -121,7 +118,7 @@ def get_cell_id():
 
 # notebook html
 
-def render_ws_template(ws=None, username=UN_GUEST, admin=False, do_print=False,
+def render_ws_template(ws=None, username=CFG.UN_GUEST, admin=False, do_print=False,
                        publish=False):
     r"""
     Return the HTML evaluated for a worksheet.
@@ -130,7 +127,7 @@ def render_ws_template(ws=None, username=UN_GUEST, admin=False, do_print=False,
 
     - ``ws`` - a Worksheet (default: None)
 
-    - ``username`` - a string (default: UN_GUEST)
+    - ``username`` - a string (default: CFG.UN_GUEST)
 
     - ``admin`` - a bool (default: False)
 
@@ -584,7 +581,7 @@ def public_worksheet(id):
     if g.notebook.conf['pub_interact']:
         worksheet = pub_worksheet(original_worksheet)
         owner = worksheet.owner
-        worksheet.owner = UN_PUB
+        worksheet.owner = CFG.UN_PUB
         s = render_ws_template(ws=worksheet, username=g.username)
         worksheet.owner = owner
     else:
@@ -594,7 +591,7 @@ def public_worksheet(id):
 
 @worksheet.route('/home/pub/<id>/download/<path:title>')
 def public_worksheet_download(id, title):
-    worksheet_filename = UN_PUB + '/' + id
+    worksheet_filename = CFG.UN_PUB + '/' + id
     try:
         worksheet = g.notebook.filename_wst(worksheet_filename)
     except KeyError:
@@ -606,7 +603,7 @@ def public_worksheet_download(id, title):
 
 @worksheet.route('/home/pub/<id>/cells/<path:filename>')
 def public_worksheet_cells(id, filename):
-    worksheet_filename = UN_PUB + '/' + id
+    worksheet_filename = CFG.UN_PUB + '/' + id
     try:
         worksheet = g.notebook.filename_wst(worksheet_filename)
     except KeyError:
@@ -645,7 +642,7 @@ def worksheet_command(target, **route_kwds):
             # Public worksheets #
             #####################
             # _sage_ is used by live docs and published interacts
-            if username_id and username_id[0] in [UN_SAGE]:
+            if username_id and username_id[0] in [CFG.UN_SAGE]:
                 if target.split('/')[0] not in published_commands_allowed:
                     raise NotImplementedError(
                         "User _sage_ can not access URL %s" % target)
@@ -976,7 +973,7 @@ def worksheet_eval(worksheet):
     # the update data.
     if 'interact' in request.values:
         r['interact'] = 1
-        input_text = config.INTERACT_UPDATE_PREFIX
+        input_text = CFG.INTERACT_UPDATE_PREFIX
         variable = request.values.get('variable', '')
         if variable != '':
             adapt_number = int(request.values.get('adapt_number', -1))
@@ -1554,7 +1551,7 @@ def worksheet_rating_info(worksheet):
 
 @worksheet_command('rate')
 def worksheet_rate(worksheet):
-    # if user_type(self.username) == UN_GUEST:
+    # if user_type(self.username) == CFG.UN_GUEST:
     # return HTMLResponse(stream = message(
     # 'You must <a href="/">login first</a> in order to rate this worksheet.',
     # ret))
@@ -1648,7 +1645,7 @@ def doc_worksheet():
     doc_worksheet_number = doc_worksheet_number % g.notebook.conf[
         'doc_pool_size']
     W = None
-    for X in g.notebook.user_wsts(UN_SAGE):
+    for X in g.notebook.user_wsts(CFG.UN_SAGE):
         if X.compute_process_has_been_started():
             continue
         if X.id_number == doc_worksheet_number:
@@ -1659,7 +1656,7 @@ def doc_worksheet():
     if W is None:
         # The first argument here is the worksheet's title, which the
         # caller should set with W.set_name.
-        W = g.notebook.create_wst('', UN_SAGE)
+        W = g.notebook.create_wst('', CFG.UN_SAGE)
     return W
 
 

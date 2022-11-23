@@ -33,10 +33,7 @@ import sys
 from docutils.core import publish_parts
 
 from sagewui_kernels.sage.workers import sage
-from .. import config
-from ..config import SYSTEMS
-from ..config import UN_PUB
-from ..config import UN_SAGE
+from .. import config as CFG
 from ..storage import FilesystemDatastore
 from ..util import cached_property
 from ..util import make_path_relative
@@ -130,7 +127,7 @@ class Notebook(object):
     HISTORY_NCOLS = 90
 
     def __init__(self, dir, user_manager=None):
-        self.systems = SYSTEMS
+        self.systems = CFG.SYSTEMS
         # TODO: This come from notebook.misc. Must be a conf parameter
         self.DIR = None
 
@@ -184,16 +181,17 @@ class Notebook(object):
 
         # Store / Refresh public worksheets
         for id_number in os.listdir(self._storage._abspath(
-                S._user_path(UN_PUB))):
+                S._user_path(CFG.UN_PUB))):
             if id_number.isdigit():
                 a = "pub/" + str(id_number)
                 if a not in W:
                     try:
                         W[a] = self._storage.load_worksheet(
-                            UN_PUB, int(id_number))
+                            CFG.UN_PUB, int(id_number))
                     except Exception:
                         print("Warning: problem loading %s/%s: %s" % (
-                            UN_PUB, int(id_number), traceback.format_exc()))
+                            CFG.UN_PUB, int(id_number),
+                            traceback.format_exc()))
 
         # Old stuff
         self.updater = NotebookUpdater(self)
@@ -280,7 +278,7 @@ class Notebook(object):
                 num_users += 1
                 if num_users % 1000 == 0:
                     print('Upgraded %d users' % num_users)
-                if username in (UN_SAGE, UN_PUB):
+                if username in (CFG.UN_SAGE, CFG.UN_PUB):
                     continue
                 try:
                     for w in self.user_wsts(username):
@@ -357,11 +355,11 @@ class Notebook(object):
 
     @property
     def _pub_wsts(self):
-        path = self._storage._abspath(self._storage._user_path(UN_PUB))
+        path = self._storage._abspath(self._storage._user_path(CFG.UN_PUB))
         v = []
         a = ""
         for id_number in (idn for idn in os.listdir(path) if idn.isdigit()):
-            a = '/'.join((UN_PUB, id_number))
+            a = '/'.join((CFG.UN_PUB, id_number))
             if a not in self.__worksheets:
                 try:
                     self.__worksheets[a] = self._storage.load_worksheet(
@@ -394,7 +392,7 @@ class Notebook(object):
         r"""
         Returns all worksheets owned by `username`
         """
-        if username == UN_PUB:
+        if username == CFG.UN_PUB:
             return self._pub_wsts
 
         worksheets = self._storage.worksheets(username)
@@ -419,8 +417,8 @@ class Notebook(object):
 
     def user_selected_wsts(self, user, typ="active", sort='last_edited',
                            reverse=False, search=None):
-        if user == UN_PUB:
-            W = self.user_wsts(UN_PUB)
+        if user == CFG.UN_PUB:
+            W = self.user_wsts(CFG.UN_PUB)
         elif typ == "trash":
             W = self.user_trashed_wsts(user)
         elif typ == "active":
@@ -490,7 +488,7 @@ class Notebook(object):
         We should only call this if the user is admin!
         """
         return [w for username in self.user_manager
-                if username not in (UN_SAGE, UN_PUB)
+                if username not in (CFG.UN_SAGE, CFG.UN_PUB)
                 for w in self.user_wsts(username)]
 
     # Worksheet controller
@@ -555,10 +553,10 @@ class Notebook(object):
 
     @cached_property()
     def scratch_wst(self):
-        return self.create_wst('scratch', UN_SAGE)
+        return self.create_wst('scratch', CFG.UN_SAGE)
 
     def create_wst(self, worksheet_name, username):
-        if username != UN_PUB and self.user_manager[username].is_guest:
+        if username != CFG.UN_PUB and self.user_manager[username].is_guest:
             raise ValueError("guests cannot create new worksheets")
 
         W = self.worksheet(username)
@@ -1096,13 +1094,13 @@ class Notebook(object):
         W = None
 
         # Reuse an existing published version
-        for X in self.user_wsts(UN_PUB):
+        for X in self.user_wsts(CFG.UN_PUB):
             if self.came_from_wst(X) == worksheet:
                 W = X
 
         # Or create a new one.
         if W is None:
-            W = self.create_wst(worksheet.name, UN_PUB)
+            W = self.create_wst(worksheet.name, CFG.UN_PUB)
 
         # Copy cells, output, data, etc.
         self.initialize_wst(worksheet, W)
@@ -1126,7 +1124,7 @@ class Notebook(object):
 
     def delete_doc_browser_worksheets(self):
         """Not used"""
-        for w in self.user_wsts(UN_SAGE):
+        for w in self.user_wsts(CFG.UN_SAGE):
             if w.name.startswith('doc_browser'):
                 self.delete_wst(w.filename)
 
@@ -1169,7 +1167,7 @@ class Notebook(object):
         if tbl['v'] is not None:
             tbl['v'] = (1024 if tbl['v'] < 1024 else tbl['v'])*1024*1024
         return sage(
-            sage=config.SAGE_PATH,
+            sage=CFG.SAGE_PATH,
             server_pool=self.server_pool(),
             max_vmem=tbl['v'],
             max_cputime=tbl['t'],
@@ -1234,6 +1232,6 @@ def load_notebook(dir, interface=None, port=None, secure=None,
     # mainly to avoid circular references, etc.  This also means
     # only one notebook can actually be used at any point.
     # TODO: remove this. Previously in notebook.misc
-    config.notebook = nb
+    CFG.notebook = nb
 
     return nb

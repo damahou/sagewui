@@ -31,21 +31,8 @@ import getpass
 import signal
 from os.path import join as joinpath
 
-from sagewui import config
+from sagewui import config as CFG
 from sagewui.app import create_app
-from sagewui.config import min_password_length
-from sagewui.config import DB_PATH
-from sagewui.config import DEFAULT_NB_NAME
-from sagewui.config import HOME_PATH
-from sagewui.config import PID_FILE_TEMPLATE
-from sagewui.config import PID_PATH
-from sagewui.config import SSL_PATH
-from sagewui.config import UAT_USER
-from sagewui.config import UAT_GUEST
-from sagewui.config import UN_ADMIN
-from sagewui.config import UN_GUEST
-from sagewui.config import UN_PUB
-from sagewui.config import UN_SAGE
 from sagewui.gui import notebook
 from sagewui.util import abspath
 from sagewui.util import cached_property
@@ -76,10 +63,10 @@ class NotebookFrontend(object):
             }
 
         self.default_paths = {
-            'dbdir': abspath(DB_PATH),
-            'piddir': abspath(PID_PATH),
-            'ssldir': abspath(SSL_PATH),
-            'homedir': abspath(HOME_PATH),
+            'dbdir': abspath(CFG.DB_PATH),
+            'piddir': abspath(CFG.PID_PATH),
+            'ssldir': abspath(CFG.SSL_PATH),
+            'homedir': abspath(CFG.HOME_PATH),
             'upload': None,
             }
         self.app_path_names = ('dbdir', 'piddir', 'ssldir')
@@ -150,7 +137,7 @@ class NotebookFrontend(object):
         parser.add_argument(
             '--nbname',
             dest='nbname',
-            default=DEFAULT_NB_NAME,
+            default=CFG.DEFAULT_NB_NAME,
             action='store',
             )
 
@@ -274,7 +261,7 @@ class NotebookFrontend(object):
         C['directory'] = abspath(C['dbdir'], C['nbname'])
 
         C['pidfile'] = joinpath(
-            C['piddir'], PID_FILE_TEMPLATE.format(C['nbname']))
+            C['piddir'], CFG.PID_FILE_TEMPLATE.format(C['nbname']))
 
         C['priv_pem'] = joinpath(C['ssldir'], 'private.pem')
         C['pub_pem'] = joinpath(C['ssldir'], 'public.pem')
@@ -330,20 +317,20 @@ class NotebookFrontend(object):
             nb.conf['accounts'] = (C['accounts'])
 
         if ('root' in nb.user_manager and
-                UN_ADMIN not in nb.user_manager):
+                CFG.UN_ADMIN not in nb.user_manager):
             # This is here only for backward compatibility with one
             # version of the notebook.
-            nb.create_user_with_same_password(UN_ADMIN, 'root')
+            nb.create_user_with_same_password(CFG.UN_ADMIN, 'root')
             # It would be a security risk to leave an escalated account around.
 
-        if UN_ADMIN not in nb.user_manager:
+        if CFG.UN_ADMIN not in nb.user_manager:
             C['reset'] = True
 
         if C['reset']:
             passwd = self.get_admin_passwd()
-            if UN_ADMIN in nb.user_manager:
-                nb.user_manager[UN_ADMIN].password = passwd
-                print(M['passchange'].format(UN_ADMIN))
+            if CFG.UN_ADMIN in nb.user_manager:
+                nb.user_manager[CFG.UN_ADMIN].password = passwd
+                print(M['passchange'].format(CFG.UN_ADMIN))
             else:
                 nb.user_manager.create_default_users(passwd)
                 print(M['admincreated'])
@@ -354,11 +341,11 @@ class NotebookFrontend(object):
         # For old notebooks, make sure that default users are always created.
         # This fixes issue #175 (https://github.com/sagemath/sagenb/issues/175)
         um = nb.user_manager
-        for user in (UN_SAGE, UN_PUB):
+        for user in (CFG.UN_SAGE, CFG.UN_PUB):
             if user not in um:
-                um.add_user(user, '', '', account_type=UAT_USER)
-        if UN_GUEST not in um:
-            um.add_user(UN_GUEST, '', '', account_type=UAT_GUEST)
+                um.add_user(user, '', '', account_type=CFG.UAT_USER)
+        if CFG.UN_GUEST not in um:
+            um.add_user(CFG.UN_GUEST, '', '', account_type=CFG.UAT_GUEST)
 
         nb.set_server_pool(C['server_pool'])
         nb.set_ulimit(C['ulimit'])
@@ -368,7 +355,7 @@ class NotebookFrontend(object):
 
     def run(self, args=None):
         self.parse(args)
-        config.add_sage_conf(self.conf['sage'])
+        CFG.add_sage_conf(self.conf['sage'])
 
         self.init_paths()
         self.init_misc()
@@ -523,12 +510,12 @@ class NotebookFrontend(object):
         # If we have to login and upload a file, then we do them
         # in that order and hope that the login is fast enough.
         if self.conf['automatic_login']:
-            open_page(config.BROWSER_PATH, self.conf['interface'],
+            open_page(CFG.BROWSER_PATH, self.conf['interface'],
                       self.conf['port'], self.conf['secure'],
                       '/?startup_token={}'.format(self.conf['startup_token']))
         if self.conf['upload']:
             open_page(
-                config.BROWSER_PATH, self.conf['interface'], self.conf['port'],
+                CFG.BROWSER_PATH, self.conf['interface'], self.conf['port'],
                 self.conf['secure'],
                 '/upload_worksheet?url=file://{}'.format(
                     quote(self.conf['upload'])))
@@ -549,7 +536,7 @@ class NotebookFrontend(object):
             '',
             '',
             'Please choose a new password for the '
-            'Sage Notebook {!r} user'.format(UN_ADMIN),
+            'Sage Notebook {!r} user'.format(CFG.UN_ADMIN),
             'Do _not_ choose a stupid password, since anybody who could guess '
             'your password',
             'and connect to your machine could access or delete your files.',
@@ -560,9 +547,10 @@ class NotebookFrontend(object):
             sep='\n')
         while True:
             passwd = getpass.getpass("Enter new password: ")
-            if len(passwd) < min_password_length:
+            if len(passwd) < CFG.MIN_PASSWORD_LENGTH:
                 print('That password is way too short. Enter a password with '
-                      'at least {} characters.'.format(min_password_length))
+                      'at least {} characters.'.format(
+                          CFG.MIN_PASSWORD_LENGTH))
                 continue
             passwd2 = getpass.getpass('Retype new password: ')
             if passwd != passwd2:
@@ -571,7 +559,7 @@ class NotebookFrontend(object):
                 break
 
         print('Please login to the notebook with the username {!r} and the '
-              'above password.'.format(UN_ADMIN))
+              'above password.'.format(CFG.UN_ADMIN))
         return passwd
 
     def ssl_setup(self):

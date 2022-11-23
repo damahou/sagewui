@@ -17,7 +17,7 @@ from flask import make_response
 from flask import current_app
 from flask_babel import gettext
 
-from ..config import UN_ADMIN
+from .. import config as CFG
 
 from ..util.decorators import login_required
 from ..util.templates import render_template
@@ -52,7 +52,7 @@ def index():
     if (current_app.startup_token is not None and
             'startup_token' in request.args):
         if request.args['startup_token'] == current_app.startup_token:
-            g.username = session['username'] = UN_ADMIN
+            g.username = session['username'] = CFG.UN_ADMIN
             session.modified = True
             current_app.startup_token = None
             return redirect(url_for('base.index'))

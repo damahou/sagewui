@@ -52,7 +52,7 @@ import tempfile
 import traceback
 from hashlib import md5
 
-from ..config import UN_SAGE
+from .. import config as CFG
 from ..controllers import User
 from ..models import ServerConfiguration
 from ..util import set_restrictive_permissions
@@ -705,7 +705,7 @@ class FilesystemDatastore(Datastore):
                       username, id_number, traceback.format_exc()))
             W = self._basic_to_worksheet(
                 {'owner': username, 'id_number': id_number})
-            if username == UN_SAGE:
+            if username == CFG.UN_SAGE:
                 # save the default configuration, since this may be loaded by a
                 # random other user since *anyone* looking at docs will load
                 # all _sage_ worksheets

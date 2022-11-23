@@ -1,5 +1,3 @@
-"""
-"""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -31,8 +29,7 @@ from flask_babel import gettext
 from jinja2.exceptions import TemplateNotFound
 from werkzeug.utils import secure_filename
 
-from .. import config
-from ..config import UN_PUB
+from .. import config as CFG
 from ..util import tmp_dir
 from ..util import tmp_filename
 from ..util import walltime
@@ -82,7 +79,7 @@ def render_ws_list_template(args, pub, username):
                 username, typ=typ, sort=sort, search=search, reverse=reverse)
         else:
             worksheets = g.notebook.user_selected_wsts(
-                UN_PUB, sort=sort, search=search, reverse=reverse)
+                CFG.UN_PUB, sort=sort, search=search, reverse=reverse)
     except ValueError as E:
         # for example, the sort key was not valid
         print("Error displaying worksheet listing: ", E)
@@ -91,10 +88,10 @@ def render_ws_list_template(args, pub, username):
     worksheet_filenames = [x.filename for x in worksheets]
 
     if pub and (not username or username == tuple([])):
-        username = UN_PUB
+        username = CFG.UN_PUB
 
     accounts = g.notebook.conf['accounts']
-    sage_version = config.SAGE_VERSION
+    sage_version = CFG.SAGE_VERSION
     return render_template('html/worksheet_listing.html', **locals())
 
 # New UI
@@ -124,7 +121,7 @@ def worksheet_list():
     nb = g.notebook
     r = {}
 
-    pub = UN_PUB in request.args
+    pub = CFG.UN_PUB in request.args
     typ = request.args['type'] if 'type' in request.args else 'active'
     search = request.args['search'] if 'search' in request.args else None
     sort = request.args['sort'] if 'sort' in request.args else 'last_edited'
@@ -137,7 +134,7 @@ def worksheet_list():
                 g.username, typ=typ, sort=sort, search=search, reverse=reverse)
         else:
             worksheets = nb.user_selected_wsts(
-                UN_PUB, sort=sort, search=search, reverse=reverse)
+                CFG.UN_PUB, sort=sort, search=search, reverse=reverse)
         r['worksheets'] = [extended_wst_basic(x, nb) for x in worksheets]
 
     except ValueError as E:
@@ -146,10 +143,10 @@ def worksheet_list():
         return message_template(_("Error displaying worksheet listing."))
 
     # if pub and (not g.username or g.username == tuple([])):
-    #    r['username'] = UN_PUB
+    #    r['username'] = CFG.UN_PUB
 
     r['accounts'] = nb.conf['accounts']
-    r['sage_version'] = config.SAGE_VERSION
+    r['sage_version'] = CFG.SAGE_VERSION
     # r['pub'] = pub
 
     return encode_response(r)
@@ -316,7 +313,7 @@ def upload():
             username=g.username)
     return render_template(
             'html/upload.html',
-            username=g.username, sage_version=config.SAGE_VERSION)
+            username=g.username, sage_version=CFG.SAGE_VERSION)
 
 
 class RetrieveError(Exception):

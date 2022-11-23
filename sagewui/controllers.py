@@ -9,15 +9,7 @@ import crypt
 from .models import User as UserModel
 from .models import Worksheet as WstModel
 from .models import UserConfiguration
-from .config import SALT
-from .config import UAT_ADMIN
-from .config import UAT_GUEST
-from .config import UAT_USER
-from .config import UN_ADMIN
-from .config import UN_GUEST
-from .config import UN_PUB
-from .config import UN_SAGE
-from .config import UN_SYSTEM
+from . import config as CFG
 from .util.auth import encrypt_password
 from .util.auth import LdapAuth
 
@@ -31,7 +23,7 @@ class User(object):
         return new
 
     @classmethod
-    def new(cls, username, password='', email='', account_type=UAT_ADMIN,
+    def new(cls, username, password='', email='', account_type=CFG.UAT_ADMIN,
             external_auth=None):
         """
         create a new user model with encrypted password and return the
@@ -151,7 +143,7 @@ class User(object):
 
     @property
     def login_allowed(self):
-        return self.usename not in UN_SYSTEM
+        return self.usename not in CFG.UN_SYSTEM
 
     @property
     def is_admin(self):
@@ -159,13 +151,13 @@ class User(object):
         EXAMPLES::
 
             sage: from sagenb.controllers import User
-            sage: from sagenb.config import UAT_ADMIN, UAT_USER
-            sage: User('A', account_type=UAT_ADMIN).is_admin
+            sage: from sagenb.config import CFG.UAT_ADMIN, CFG.UAT_USER
+            sage: User('A', account_type=CFG.UAT_ADMIN).is_admin
             True
-            sage: User('B', account_type=UAT_USER).is_admin
+            sage: User('B', account_type=CFG.UAT_USER).is_admin
             False
         """
-        return self.__data_model.account_type == UAT_ADMIN
+        return self.__data_model.account_type == CFG.UAT_ADMIN
 
     @property
     def is_guest(self):
@@ -173,25 +165,25 @@ class User(object):
         EXAMPLES::
 
             sage: from sagenb.notebook.user import User
-            sage: from sagenb.config import UAT_GUEST, UAT_USER
-            sage: User('A', account_type=UAT_GUEST).is_guest
+            sage: from sagenb.config import CFG.UAT_GUEST, CFG.UAT_USER
+            sage: User('A', account_type=CFG.UAT_GUEST).is_guest
             True
-            sage: User('B', account_type=UAT_USER).is_guest
+            sage: User('B', account_type=CFG.UAT_USER).is_guest
             False
         """
-        return self.__data_model.account_type == UAT_GUEST
+        return self.__data_model.account_type == CFG.UAT_GUEST
 
     def grant_admin(self):
         if not self.is_guest:
-            self.__data_model.account_type = UAT_ADMIN
+            self.__data_model.account_type = CFG.UAT_ADMIN
 
     def revoke_admin(self):
         if not self.is_guest:
-            self.__data_model.account_type = UAT_USER
+            self.__data_model.account_type = CFG.UAT_USER
 
     def check_password(self, password):
         # the empty password is always false
-        if self.username == UN_PUB or password == '':
+        if self.username == CFG.UN_PUB or password == '':
             return False
         if self.__data_model.external_auth is not None:
             return None
@@ -200,7 +192,7 @@ class User(object):
         if not my_passwd:
             return False
         if '$' not in my_passwd:
-            check = my_passwd == crypt.crypt(password, SALT)
+            check = my_passwd == crypt.crypt(password, CFG.SALT)
             if check:
                 self.password = password
             return check
@@ -256,7 +248,7 @@ class UserManager(dict):
                     email = None
 
                 self.add_user(username, password='', email=email,
-                              account_type=UAT_USER, external_auth=a)
+                              account_type=CFG.UAT_USER, external_auth=a)
                 return self[username]
 
         raise KeyError('no user {!r}'.format(username))
@@ -288,7 +280,7 @@ class UserManager(dict):
         """
         Return a list of users that can log in.
         """
-        return [x for x in self if x not in UN_SYSTEM]
+        return [x for x in self if x not in CFG.UN_SYSTEM]
 
     def create_default_users(self, passwd):
         """
@@ -303,12 +295,12 @@ class UserManager(dict):
             {'sage': _sage_, 'admin': admin, 'guest': guest, 'pub': pub}
 
         """
-        self.add_user(UN_PUB, '', '', account_type=UAT_USER)
-        self.add_user(UN_SAGE, '', '', account_type=UAT_USER)
-        self.add_user(UN_GUEST, '', '', account_type=UAT_GUEST)
-        self.add_user(UN_ADMIN, passwd, '', account_type=UAT_ADMIN)
+        self.add_user(CFG.UN_PUB, '', '', account_type=CFG.UAT_USER)
+        self.add_user(CFG.UN_SAGE, '', '', account_type=CFG.UAT_USER)
+        self.add_user(CFG.UN_GUEST, '', '', account_type=CFG.UAT_GUEST)
+        self.add_user(CFG.UN_ADMIN, passwd, '', account_type=CFG.UAT_ADMIN)
 
-    def add_user(self, username, password, email, account_type=UAT_USER,
+    def add_user(self, username, password, email, account_type=CFG.UAT_USER,
                  external_auth=None):
         """
         Adds a new user to the user dictionary.

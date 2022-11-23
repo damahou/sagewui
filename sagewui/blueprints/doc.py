@@ -17,7 +17,7 @@ from flask import g
 from flask_babel import gettext
 from flask.helpers import send_from_directory
 
-from .. import config
+from .. import config as CFG
 from ..util.decorators import login_required
 from ..util.templates import message as message_template
 from ..util.templates import render_template
@@ -31,7 +31,7 @@ doc = Blueprint('doc', __name__)
 @doc.route('/static/', defaults={'filename': 'index.html'})
 @doc.route('/static/<path:filename>')
 def static(filename):
-    return send_from_directory(config.DOC_PATH, filename)
+    return send_from_directory(CFG.DOC_PATH, filename)
 
 
 @doc.route('/live/')
@@ -56,14 +56,14 @@ def live(filename=None, manual=None, path_static=None):
     if filename is None:
         return message_template(_('nothing to see.'), username=g.username)
     if path_static is not None:
-        path_static = os.path.join(config.DOC_PATH, manual, '_static')
+        path_static = os.path.join(CFG.DOC_PATH, manual, '_static')
         return send_from_directory(path_static, filename)
 
     if filename.endswith('.html'):
-        filename = os.path.join(config.DOC_PATH, filename)
+        filename = os.path.join(CFG.DOC_PATH, filename)
         return worksheet_file(filename)
     else:
-        return send_from_directory(config.DOC_PATH, filename)
+        return send_from_directory(CFG.DOC_PATH, filename)
 
 
 # Help
@@ -261,4 +261,4 @@ notebook_help = [
 def help():
     return render_template(
         'html/docs.html', username=g.username,
-        notebook_help=notebook_help, sage_version=config.SAGE_VERSION)
+        notebook_help=notebook_help, sage_version=CFG.SAGE_VERSION)

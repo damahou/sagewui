@@ -159,16 +159,16 @@ MATHJAX = True
 JEDITABLE_TINYMCE = True
 
 # password
-min_password_length = 6
+MIN_PASSWORD_LENGTH = 6
 
 
 # Global variables across the application
 # TODO: remove this. Previously in notebook.misc
 notebook = None
 
-
-SAGE_PATH = None
+# sage runtime configuration
 SAGE = None
+SAGE_PATH = None
 SAGE_VERSION = None
 BROWSER_PATH = None
 DOC_PATH = None

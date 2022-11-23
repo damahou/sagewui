@@ -16,8 +16,7 @@ from flask import g
 from flask import current_app
 from flask_babel import gettext
 
-from .. import config
-from ..config import UN_SYSTEM
+from .. import config as CFG
 from ..util.auth import challenge
 from ..util.auth import register_make_key
 from ..util.auth import register_build_msg
@@ -54,7 +53,7 @@ def login(template_dict={}):
     template_dict.update({'accounts': nb_conf['accounts'],
                           'recovery': nb_conf['email'],
                           'next': request.values.get('next', ''),
-                          'sage_version': config.SAGE_VERSION,
+                          'sage_version': CFG.SAGE_VERSION,
                           'username_error': False,
                           'password_error': False})
 
@@ -80,7 +79,7 @@ def login(template_dict={}):
         # It is critically important that it be impossible to login as the pub,
         # _sage_, or guest users.  This _sage_ user is a fake user that is used
         # internally by the notebook for the doc browser and other tasks.
-        if username in UN_SYSTEM:
+        if username in CFG.UN_SYSTEM:
             U = None
             template_dict['username_error'] = True
 
@@ -268,7 +267,7 @@ def register():
     template_dict = {'accounts': nb_conf['accounts'],
                      'welcome_user': username,
                      'recovery': nb_conf['email'],
-                     'sage_version': config.SAGE_VERSION}
+                     'sage_version': CFG.SAGE_VERSION}
 
     return render_template('html/login.html', **template_dict)
 

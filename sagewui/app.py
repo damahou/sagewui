@@ -16,12 +16,7 @@ from flask_babel import gettext
 from flask_themes2 import Themes
 from flask_themes2 import theme_paths_loader
 
-from .config import DEFAULT_THEME
-from .config import JEDITABLE_TINYMCE
-from .config import MATHJAX
-from . import config
-from .config import THEME_PATHS
-from .config import UAT_GUEST
+from . import config as CFG
 from .util.decorators import guest_or_login_required
 from .util.templates import css_escape
 from .util.templates import convert_time_to_string
@@ -69,7 +64,7 @@ def create_app(notebook, startup_token=None, debug=False):
     def log_exception(error):
         return message_template(
             gettext('''500: Internal server error.'''),
-            username=getattr(g, 'username', UAT_GUEST)), 500
+            username=getattr(g, 'username', CFG.UAT_GUEST)), 500
 
     # Template globals
     app.add_template_global(url_for)
@@ -86,9 +81,9 @@ def create_app(notebook, startup_token=None, debug=False):
     @app.context_processor
     def default_template_context():
         return {'sitename': gettext('Sage Notebook'),
-                'sage_version': config.SAGE_VERSION,
-                'MATHJAX': MATHJAX,
-                'JEDITABLE_TINYMCE': JEDITABLE_TINYMCE,
+                'sage_version': CFG.SAGE_VERSION,
+                'MATHJAX': CFG.MATHJAX,
+                'JEDITABLE_TINYMCE': CFG.JEDITABLE_TINYMCE,
                 'conf': notebook.conf}
 
     # Register the Blueprints
@@ -119,8 +114,8 @@ def create_app(notebook, startup_token=None, debug=False):
         return g.notebook.conf['default_language']
 
     # Themes
-    app.config['THEME_PATHS'] = THEME_PATHS
-    app.config['DEFAULT_THEME'] = DEFAULT_THEME
+    app.config['THEME_PATHS'] = CFG.THEME_PATHS
+    app.config['DEFAULT_THEME'] = CFG.DEFAULT_THEME
     Themes(app, app_identifier='sagewui', loaders=[theme_paths_loader])
     name = notebook.conf['theme']
     if name not in app.theme_manager.themes:
@@ -129,13 +124,13 @@ def create_app(notebook, startup_token=None, debug=False):
     # autoindex v0.3 doesnt seem to work with modules
     # routing with app directly does the trick
     # TODO: Check to see if autoindex 0.4 works with modules
-    idx = AutoIndex(app, browse_root=config.SRC_PATH, add_url_rules=False)
+    idx = AutoIndex(app, browse_root=CFG.SRC_PATH, add_url_rules=False)
 
     @app.route('/src/')
     @app.route('/src/<path:path>')
     @guest_or_login_required
     def autoindex(path='.'):
-        filename = os.path.join(config.SRC_PATH, path)
+        filename = os.path.join(CFG.SRC_PATH, path)
         if os.path.isfile(filename):
             with open(filename, 'rb') as f:
                 src = f.read().decode('utf-8', 'ignore')

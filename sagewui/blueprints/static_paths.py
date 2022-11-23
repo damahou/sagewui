@@ -13,7 +13,7 @@ from flask import Blueprint
 from flask import current_app as app
 from flask.helpers import send_from_directory
 
-from .. import config
+from .. import config as CFG
 
 static_paths = Blueprint('static_paths', __name__)
 
@@ -39,19 +39,19 @@ def static_file(filename):
 
 @static_paths.route('/java/jmol/<path:filename>')
 def jmol(filename):
-    return send_from_directory(config.JMOL_PATH, filename)
+    return send_from_directory(CFG.JMOL_PATH, filename)
 
 
 @static_paths.route('/jsmol/<path:filename>')
 def jsmol(filename):
-    return send_from_directory(config.JSMOL_PATH, filename)
+    return send_from_directory(CFG.JSMOL_PATH, filename)
 
 
 @static_paths.route('/j2s/<path:filename>')
 def j2s(filename):
-    return send_from_directory(config.J2S_PATH, filename)
+    return send_from_directory(CFG.J2S_PATH, filename)
 
 
 @static_paths.route('/threejs/<path:filename>')
 def threejs(filename):
-    return send_from_directory(config.THREEJS_PATH, filename)
+    return send_from_directory(CFG.THREEJS_PATH, filename)
