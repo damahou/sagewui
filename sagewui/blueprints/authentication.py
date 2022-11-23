@@ -48,7 +48,9 @@ def lookup_current_user():
 
 
 @authentication.route('/login', methods=['POST', 'GET'])
-def login(template_dict={}):
+def login(template_dict=None):
+    if template_dict is None:
+        template_dict = {}
     nb_conf = g.notebook.conf
     template_dict.update({'accounts': nb_conf['accounts'],
                           'recovery': nb_conf['email'],

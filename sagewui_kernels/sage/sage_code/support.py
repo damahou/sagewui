@@ -51,11 +51,13 @@ sys.displayhook = DisplayHook()
 sage_globals = None
 
 
-def init(globs={}):
+def init(globs=None):
     r"""
     Initialize Sage for use with the web notebook interface.
     """
     global sage_globals
+    if globs is None:
+        globs = {}
     sage_globals = globs
 
     os.environ['PAGER'] = 'cat'

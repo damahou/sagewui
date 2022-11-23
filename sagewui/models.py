@@ -366,7 +366,9 @@ class Configuration(object):
 
         return updated
 
-    def html_table(self, updated={}):
+    def html_table(self, updated=None):
+        if updated is None:
+            updated = {}
 
         # check if LDAP can be used
         ldap_version = import_from('ldap', '__version__')

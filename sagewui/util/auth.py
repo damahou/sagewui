@@ -521,7 +521,7 @@ class SimpleChallenge(AbstractChallenge):
         return SIMPLE_TEMPLATE % {'question': gettext(question),
                                   'untranslated_question': question}
 
-    def is_valid_response(self, req_args={}, **kwargs):
+    def is_valid_response(self, req_args=None, **kwargs):
         """
         Returns the status of a user's answer to the challenge
         question.
@@ -567,6 +567,8 @@ class SimpleChallenge(AbstractChallenge):
             ''
 
         """
+        if req_args is None:
+            req_args = {}
         response_field = req_args.get('simple_response_field', None)
         if not (response_field and len(response_field)):
             return ChallengeResponse(None, '')
@@ -694,7 +696,7 @@ class reCAPTCHAChallenge(AbstractChallenge):
 
         return render_template('html/recaptcha.html', **template_dict)
 
-    def is_valid_response(self, req_args={}, **kwargs):
+    def is_valid_response(self, req_args=None, **kwargs):
         """
         Submits a reCAPTCHA request for verification and returns its
         status.
@@ -735,6 +737,8 @@ class reCAPTCHAChallenge(AbstractChallenge):
             'incorrect-captcha-sol'
 
         """
+        if req_args is None:
+            req_args = {}
         response_field = req_args.get('recaptcha_response_field', [None])[0]
         if not (response_field and len(response_field)):
             return ChallengeResponse(None, '')
