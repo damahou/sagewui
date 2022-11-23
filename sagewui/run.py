@@ -278,8 +278,9 @@ class NotebookFrontend(object):
         if C['interface'] != 'localhost' and not C['secure']:
             print(M['insecure'])
 
-        C['port'] = find_next_available_port(
-            C['interface'], C['port'], C['port_tries'])
+        if not C['debug']:
+            C['port'] = find_next_available_port(
+                C['interface'], C['port'], C['port_tries'])
 
         if C['automatic_login']:
             print(M['alogin'])
