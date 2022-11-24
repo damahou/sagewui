@@ -182,7 +182,7 @@ class Notebook(object):
                         W[a] = self._storage.load_worksheet(
                             CFG.UN_PUB, int(id_number))
                     except Exception:
-                        print("Warning: problem loading %s/%s: %s" % (
+                        print("Warning: problem loading {}/{}: {}".format(
                             CFG.UN_PUB, int(id_number),
                             traceback.format_exc()))
 
@@ -270,7 +270,7 @@ class Notebook(object):
             for username in self.user_manager:
                 num_users += 1
                 if num_users % 1000 == 0:
-                    print('Upgraded %d users' % num_users)
+                    print('Upgraded {} users'.format(num_users))
                 if username in (CFG.UN_SAGE, CFG.UN_PUB):
                     continue
                 try:
@@ -295,8 +295,9 @@ class Notebook(object):
                     # their sharing cached, but they will probably have
                     # problems logging in anyway, so they probably won't notice
                     # not having shared worksheets
-                    print('Error on username %s' % username.encode('utf8'),
-                          file=sys.stderr)
+                    print(
+                        'Error on username {}'.format(username.encode('utf8')),
+                        file=sys.stderr)
                     print(traceback.format_exc(), sys.stderr)
             print('Done upgrading to model version 1')
             self.conf['model_version'] = 1
@@ -440,7 +441,7 @@ class Notebook(object):
         try:
             return self.__worksheets[filename]
         except KeyError:
-            raise KeyError("No worksheet with filename '%s'" % filename)
+            raise KeyError("No worksheet with filename '{}'".format(filename))
 
     def id_wst(self, own_id):
         return self.filename_wst('{}/{}'.format(*own_id))
@@ -570,7 +571,7 @@ class Notebook(object):
     def copy_wst(self, ws, owner):
         W = self.create_wst('default', owner)
         self.initialize_wst(ws, W)
-        name = "Copy of %s" % ws.name
+        name = 'Copy of {}'.format(ws.name)
         W.name = name
         return W
 
@@ -586,8 +587,8 @@ class Notebook(object):
         try:
             W = self.__worksheets[filename]
         except KeyError:
-            raise KeyError("Attempt to delete missing worksheet '%s'" %
-                           filename)
+            raise KeyError("Attempt to delete missing worksheet '{}'".format(
+                filename))
 
         W.quit()
         shutil.rmtree(W.directory, ignore_errors=False)
@@ -678,7 +679,7 @@ class Notebook(object):
             [TextCell 0: foo, Cell 1: in=2+3, out=]
         """
         if not os.path.exists(filename):
-            raise ValueError("no file %s" % filename)
+            raise ValueError('no file {}'.format(filename))
 
         # Figure out the file extension
         ext = os.path.splitext(filename)[1]
@@ -714,7 +715,7 @@ class Notebook(object):
             W = self._import_wst_rst(filename, owner)
         else:
             # We only support txt, sws, html and rst files
-            raise ValueError("unknown extension '%s'" % ext)
+            raise ValueError("unknown extension '{}'".format(ext))
         self.__worksheets[W.filename] = W
         return W
 

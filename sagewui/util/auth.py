@@ -91,14 +91,14 @@ class LdapAuth(AuthMethod):
                  ldap_username_attrib='cn',
                  ldap_timeout=5,
                  ):
-                self.enabled = auth_ldap
-                self.ldap_uri = ldap_uri
-                self.ldap_basedn = ldap_basedn
-                self.ldap_binddn = ldap_binddn
-                self.ldap_bindpw = ldap_bindpw
-                self.ldap_gssapi = ldap_gssapi
-                self.ldap_username_attrib = ldap_username_attrib
-                self.ldap_timeout = ldap_timeout
+        self.enabled = auth_ldap
+        self.ldap_uri = ldap_uri
+        self.ldap_basedn = ldap_basedn
+        self.ldap_binddn = ldap_binddn
+        self.ldap_bindpw = ldap_bindpw
+        self.ldap_gssapi = ldap_gssapi
+        self.ldap_username_attrib = ldap_username_attrib
+        self.ldap_timeout = ldap_timeout
 
     def _ldap_search(self, query, attrlist=None, sizelimit=20):
         """
@@ -124,7 +124,7 @@ class LdapAuth(AuthMethod):
                 timeout=self.ldap_timeout,
                 sizelimit=sizelimit)
         except ldap.LDAPError as e:
-            print('LDAP Error: %s' % str(e))
+            print('LDAP Error: {}'.format(str(e)))
             return []
         finally:
             conn.unbind_s()
@@ -171,7 +171,7 @@ class LdapAuth(AuthMethod):
         except ldap.INVALID_CREDENTIALS:
             return False
         except ldap.LDAPError as e:
-            print('LDAP Error: %s' % str(e))
+            print('LDAP Error: {}'.format(str(e)))
             return False
         finally:
             conn.unbind_s()
@@ -679,7 +679,7 @@ class reCAPTCHAChallenge(AbstractChallenge):
         """
         error_param = ''
         if error_code:
-            error_param = '&error=%s' % error_code
+            error_param = '&error={}'.format(error_code)
 
         template_dict = {'api_server': self.api_server,
                          'public_key': self.public_key,
@@ -752,7 +752,7 @@ class reCAPTCHAChallenge(AbstractChallenge):
         })
 
         request = Request(
-            url="http://%s/verify" % RECAPTCHA_VERIFY_SERVER,
+            url='http://{}/verify'.format(RECAPTCHA_VERIFY_SERVER),
             data=params,
             headers={
                 "Content-type": "application/x-www-form-urlencoded",

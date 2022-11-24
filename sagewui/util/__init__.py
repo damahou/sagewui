@@ -322,7 +322,7 @@ def open_msg(address, port, secure=False, path=""):
         └────────────────────────────────────────────────┘
     """
     port = '' if port == 80 else ':{}'.format(port)
-    s = "Open your web browser to http%s://%s%s%s" % (
+    s = 'Open your web browser to http{}://{}{}{}'.format(
         's' if secure else '', address, port, path)
     template = '{0}{4:{1}^{3}}{2}'
     n = len(s) + 2
@@ -377,12 +377,12 @@ def find_next_available_port(interface, start, max_tries=100, verbose=False):
         except socket.error as err:
             if err.errno == errno.ECONNREFUSED:
                 if verbose:
-                    print("Using port = %s" % port)
+                    print('Using port = {}'.format(port))
                 return port
         except UserWarning:
             if verbose:
-                print("Port %s timed out." % port)
-                print("Trying next port...")
+                print('Port {} timed out." '.format(port))
+                print('Trying next port...')
             continue
         except KeyboardInterrupt:
             if verbose:
@@ -394,16 +394,16 @@ def find_next_available_port(interface, start, max_tries=100, verbose=False):
             signal.signal(signal.SIGALRM, signal.SIG_DFL)
             signal.alarm(0)
         if verbose:
-            print("Port %s is already in use." % port)
-            print("Trying next port...")
-    raise RuntimeError("no available port.")
+            print('Port {} is already in use.'.format(port))
+            print('Trying next port...')
+    raise RuntimeError('no available port.')
 
 
 def open_page(browser, address, port, secure, path=""):
     rsrc = 'https' if secure else 'http'
 
-    os.system('%s %s://%s:%s%s 1>&2 > /dev/null &' %
-              (browser, rsrc, address, port, path))
+    os.system('{} {}://{}:{}{} 1>&2 > /dev/null &'.format(
+        browser, rsrc, address, port, path))
 
 
 def system_command(cmd, msg=None):

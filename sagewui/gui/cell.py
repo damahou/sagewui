@@ -90,7 +90,7 @@ class Cell(object):
             sage: C.__repr__()
             'Cell 0'
         """
-        return "Cell %s" % self.id
+        return 'Cell {}'.format(self.id)
 
     def __eq__(self, right):
         """
@@ -308,7 +308,7 @@ class TextCell(Cell):
             sage: C.__repr__()
             'TextCell 0: 2+3'
         """
-        return "TextCell %s: %s" % (self.id, self.input)
+        return "TextCell {}: {}".format(self.id, self.input)
 
     @property
     def input(self):
@@ -510,7 +510,8 @@ class ComputeCell(Cell):
             sage: C = sagenb.notebook.cell.ComputeCell(0, '2+3', '5', None); C
             Cell 0: in=2+3, out=5
         """
-        return 'Cell %s: in=%s, out=%s' % (self.id, self.input, self.__output)
+        return 'Cell {}: in={}, out={}'.format(
+            self.id, self.input, self.__output)
 
     # Input
 
@@ -885,8 +886,8 @@ class ComputeCell(Cell):
             if not self.computing:
                 file = os.path.join(self.directory(), "full_output.txt")
                 open(file, "w").write(output)
-                url = ("<a target='_new' href='%s/full_output.txt' "
-                       "class='file_link'>full_output.txt</a>" % (
+                url = ("<a target='_new' href='{}/full_output.txt' "
+                       "class='file_link'>full_output.txt</a>".format(
                            self.url_to_self()))
                 html += "<br>" + url
             lines = output.splitlines()
@@ -897,8 +898,8 @@ class ComputeCell(Cell):
             warning = 'WARNING: Output truncated!  '
             if url:
                 # make the link to the full output appear at the top too.
-                warning += '\n<html>%s</html>\n' % url
-            output = warning + '\n\n' + start + '\n\n...\n\n' + end
+                warning = '{}\n<html>{}</html>\n'.format(warning, url)
+            output = '{}\n\n{}\n\n...\n\n{}'.format(warning, start, end)
         self.__output = output
         if not self.is_interactive_cell():
             self._out_html = html
@@ -1077,7 +1078,7 @@ class ComputeCell(Cell):
         text = '\n'.join((
             text.strip('\n'), out.strip('\r\n')))
 
-        return text if plain else '{{{id=%s|\n%s\n}}}' % (
+        return text if plain else '{{{{{{id={}|\n{}\n}}}}}}'.format(
             self.id, text.rstrip('\n'))
 
     @property
@@ -1299,7 +1300,7 @@ class ComputeCell(Cell):
             sage: C.process_cell_urls('"cell://foobar"')
             '/home/sage/0/cells/0/foobar?...'
         """
-        end = '?%d' % self.version
+        end = '?{}'.format(self.version)
         begin = self.url_to_self()
         for s in re_cell.findall(urls) + re_cell_2.findall(urls):
             urls = urls.replace(s, begin + s[7:-1] + end)
@@ -1643,7 +1644,7 @@ class ComputeCell(Cell):
         try:
             return self._url_to_self
         except AttributeError:
-            self._url_to_self = '/home/%s/cells/%s' % (
+            self._url_to_self = '/home/{}/cells/{}'.format(
                 self.worksheet_filename(), self.id)
             return self._url_to_self
 
@@ -1891,31 +1892,31 @@ class ComputeCell(Cell):
         # a computation.  This is inspired by
         # http://www.irt.org/script/416.htm/.
         for F in D:
-            if 'cell://%s' % F in out:
+            if 'cell://{}'.format(F) in out:
                 continue
             url = os.path.join(self.url_to_self(), F)
             if (F.endswith('.png') or F.endswith('.bmp') or
                     F.endswith('.jpg') or F.endswith('.gif')):
-                images.append('<img src="%s?%d">' % (url, time.time()))
+                images.append('<img src="{}?{}">'.format(url, time.time()))
             elif F.endswith('.obj'):
                 images.append(
-                    '<a href="javascript:sage3d_show(\'%s\', \'%s_%s\', '
-                    '\'%s\');">Click for interactive view.</a>' % (
+                    '<a href="javascript:sage3d_show(\'{}\', \'{}_{}\', '
+                    '\'{}\');">Click for interactive view.</a>'.format(
                         url, self.id, F, F[:-4]))
             elif F.endswith('.mtl') or F.endswith(".objmeta"):
                 pass  # obj data
             elif F.endswith('.svg'):
                 images.append(
-                    '<embed src="%s" type="image/svg+xml" name="emap">' % url)
+                    '<embed src="{}" type="image/svg+xml" name="emap">'.format(
+                        url))
             elif F.endswith('.jmol'):
                 images.append(self._jmol_files_html(F))
             elif F.endswith('.jmol.zip') or F.startswith('.jmol_'):
                 pass
             elif F.endswith('.canvas3d'):
                 script = (
-                    '<div><script>Sagewui.canvas3d.viewer("%s?%s");</script>'
-                    '</div>' % (
-                        url, time.time()))
+                    '<div><script>Sagewui.canvas3d.viewer("{}?{}");</script>'
+                    '</div>'.format(url, time.time()))
                 images.append(script)
             else:
                 link_text = str(F)
@@ -1923,13 +1924,13 @@ class ComputeCell(Cell):
                     link_text = '{}...{}'.format(
                         link_text[:10], link_text[-20:])
                 files.append(
-                    '<a target="_new" href="%s" class="file_link">%s</a>' % (
-                        url, link_text))
+                    '<a target="_new" href="{}" class="file_link">{}'
+                    '</a>'.format(url, link_text))
 
         if len(images) == 0:
             images = ''
         else:
-            images = "%s" % '<br>'.join(images)
+            images = '<br>'.join(images)
         if len(files) == 0:
             files = ''
         else:

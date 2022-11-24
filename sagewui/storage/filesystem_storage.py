@@ -304,7 +304,7 @@ class FilesystemDatastore(Datastore):
         self._readonly = None
 
     def __repr__(self):
-        return "Filesystem Sage Notebook Datastore at %s" % self._path
+        return 'Filesystem Sage Notebook Datastore at {}'.format(self._path)
 
     #########################################################################
     # Paths
@@ -646,8 +646,8 @@ class FilesystemDatastore(Datastore):
         filename = self._worksheet_html_filename(username, id_number)
         html_file = self._abspath(filename)
         if os.path.exists(html_file):
-            raise ValueError("Worksheet %s/%s already exists" %
-                             (username, id_number))
+            raise ValueError('Worksheet {}/{} already exists'.format(
+                username, id_number))
 
         # We create the worksheet
         kwargs.update({'owner': username, 'id_number': id_number})
@@ -675,14 +675,14 @@ class FilesystemDatastore(Datastore):
         # self.__worksheet_html_filename
         dirname = self._worksheet_pathname(username, id_number)
         if not os.path.exists(dirname):
-            raise ValueError("Worksheet %s/%s does not exist" %
-                             (username, id_number))
+            raise ValueError('Worksheet {}/{} does not exist'.format(
+                username, id_number))
 
         filename = self._worksheet_html_filename(username, id_number)
         html_file = self._abspath(filename)
         if not os.path.exists(html_file):
-            raise ValueError("Worksheet %s/%s does not exist" %
-                             (username, id_number))
+            raise ValueError('Worksheet {}/{} does not exist'.format(
+                username, id_number))
 
         try:
             basic = self._load(
@@ -693,8 +693,8 @@ class FilesystemDatastore(Datastore):
             W._last_basic = basic   # cache
         except Exception:
             # the worksheet conf loading didn't work, so we make up one
-            print("Warning: problem loading config for %s/%s; using default "
-                  "config: %s" % (
+            print('Warning: problem loading config for {}/{}; using default '
+                  'config: {}'.format(
                       username, id_number, traceback.format_exc()))
             W = self._basic_to_worksheet(
                 {'owner': username, 'id_number': id_number})
@@ -702,8 +702,8 @@ class FilesystemDatastore(Datastore):
                 # save the default configuration, since this may be loaded by a
                 # random other user since *anyone* looking at docs will load
                 # all _sage_ worksheets
-                print("Saving default configuration (overwriting corrupt "
-                      "configuration) for %s/%s" % (username, id_number))
+                print('Saving default configuration (overwriting corrupt '
+                      'configuration) for {}/{}'.format(username, id_number))
                 self.save_worksheet(W, conf_only=True)
         return W
 
@@ -744,7 +744,7 @@ class FilesystemDatastore(Datastore):
         # The following is purely for backwards compatibility with old
         # notebook servers prior to sage-4.1.2.
         fd, worksheet_txt = tempfile.mkstemp()
-        old_heading = "%s\nsystem:%s\n" % (basic['name'], basic['system'])
+        old_heading = '{}\nsystem:{}\n'.format(basic['name'], basic['system'])
         with open(worksheet_txt, 'w') as f:
             with open(worksheet_html) as g:
                 f.write(old_heading + g.read())
@@ -900,7 +900,7 @@ class FilesystemDatastore(Datastore):
                 try:
                     v.append(self.load_worksheet(username, int(id_number)))
                 except Exception:
-                    print("Warning: problem loading %s/%s: %s" % (
+                    print('Warning: problem loading {}/{}: {}'.format(
                         username, id_number, traceback.format_exc()))
         return v
 

@@ -259,7 +259,7 @@ class Worksheet(object):
             sage: W.__repr__()
             'admin/0: [Cell 0: in=2+3, out=\n5, Cell 10: in=2+8, out=\n10]'
         """
-        return '%s/%s: %s' % (self.owner, self.id_number, self.cells)
+        return '{}/{}: {}'.format(self.owner, self.id_number, self.cells)
 
     def __len__(self):
         r"""
@@ -396,7 +396,8 @@ class Worksheet(object):
             sage: nb.delete()
         """
         self.__pretty_print = check
-        self.sage().execute("pretty_print_default(%r)" % check, mode='raw')
+        self.sage().execute(
+            'pretty_print_default({!r})'.format(check), mode='raw')
 
     @property
     def saved_by_info(self):
@@ -1980,7 +1981,8 @@ class Worksheet(object):
         # TODO: this must be tested outside
         if not self.editable_by(username):
             raise ValueError(
-                "user '%s' not allowed to edit this worksheet" % username)
+                "user '{}' not allowed to edit this worksheet".format(
+                    username))
         for C in self.cells:
             C.delete_output()
 
@@ -2084,7 +2086,7 @@ class Worksheet(object):
             if Itxt in ['restart', 'quit', 'exit']:
                 self.restart_sage()
                 S = self.system if self.system is not None else 'sage'
-                C.set_output_text('Exited %s process' % S, '')
+                C.set_output_text('Exited {} process'.format(S), '')
                 return
 
         # Handle any percent directives
@@ -2094,8 +2096,8 @@ class Worksheet(object):
         # This is useful mainly for interact -- it allows a cell to
         # know its ID.
         input = (
-            '_interact_.SAGE_CELL_ID=%r\n__SAGE_TMP_DIR__=os.getcwd()\n' %
-            C.id)
+            '_interact_.SAGE_CELL_ID={!r}'
+            '\n__SAGE_TMP_DIR__=os.getcwd()\n'.format(C.id))
 
         print_time = C.time
         if C.time:
@@ -2332,7 +2334,7 @@ class Worksheet(object):
         try:
             S.quit()
         except AttributeError as msg:
-            print("WARNING: %s" % msg)
+            print('WARNING: {}'.format(msg))
         except Exception as msg:
             print(msg)
             print("WARNING: Error deleting Sage object!")
@@ -2367,7 +2369,8 @@ class Worksheet(object):
         if timeout > 0 and self.time_idle() > timeout:
             # worksheet name may contain unicode, so we use %r, which prints
             # the \xXX form for unicode characters
-            print("Quitting ignored worksheet process for %r." % self.name)
+            print('Quitting ignored worksheet process for {!r}.'.format(
+                self.name))
             self.quit()
 
     def time_idle(self):
@@ -2493,7 +2496,7 @@ class Worksheet(object):
     # Loading and attaching files
 
     def _eval_cmd(self, system, cmd):
-        return "print(_support_.syseval(%s, %r, __SAGE_TMP_DIR__))" % (
+        return "print(_support_.syseval({}, {!r}, __SAGE_TMP_DIR__))".format(
             system, cmd)
 
     # Parsing the %cython, %mathjax, %python, etc., extension.
@@ -2547,10 +2550,10 @@ class Worksheet(object):
         code = os.path.join(self.directory, 'code')
         if not os.path.exists(code):
             os.makedirs(code)
-        spyx = os.path.abspath(os.path.join(code, 'sage%s.spyx' % id))
+        spyx = os.path.abspath(os.path.join(code, 'sage{}.spyx'.format(id)))
         if not (os.path.exists(spyx) and open(spyx).read() == cmd):
             open(spyx, 'w').write(cmd.encode('utf-8', 'ignore'))
-        return '_support_.cython_import_all("%s", globals())' % spyx
+        return '_support_.cython_import_all("{}", globals())'.format(spyx)
 
     def check_for_system_switching(self, input, cell):
         r"""

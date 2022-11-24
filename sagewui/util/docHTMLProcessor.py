@@ -261,7 +261,7 @@ class genericHTMLProcessor(HTMLParser):
             self.all_pieces += pieces
             self.temp_pieces = []
         else:
-            raise ValueError('unknown piece_type(=%s)' % piece_type)
+            raise ValueError('unknown piece_type(={})'.format(piece_type))
 
     def get_cellcount(self):
         r"""
@@ -375,37 +375,37 @@ class genericHTMLProcessor(HTMLParser):
             # group and format inputs and outputs
             pieces = cell_piece.split('\n')
             output_flag = False
-            piece = '\n{{{id=%s|\n' % self.get_cellcount()
+            piece = '\n{{{{{{id={}|\n'.format(self.get_cellcount())
             for p in pieces:
 
                 if p[:6] == 'sage: ' and not output_flag:
-                    piece += p[6:] + '\n'
+                    piece = '{}{}\n'.format(piece, p[6:])
                 elif p[:6] == 'sage: ' and output_flag:
-                    piece += '\n}}}\n\n{{{id=%s|\n' % self.get_cellcount() + \
-                        p[6:] + '\n'
+                    piece = '{}\n}}}}}}\n\n{{{{{{id={}|\n{}\n'.format(
+                        piece, self.get_cellcount(), p[6:])
                     output_flag = False
                 elif p[:6] == '....: ':
-                    piece += p[6:] + '\n'
+                    piece = '{}{}\n'.format(piece, p[6:])
                 elif p[:13] == '&gt;' * 3 + ' ' and not output_flag:
-                    piece += p[13:] + '\n'
+                    piece = '{}{}\n'.format(piece, p[13:])
                 elif p[:13] == '&gt;' * 3 + ' ' and output_flag:
-                    piece += '\n}}}\n\n{{{id=%s|\n' % self.get_cellcount() + \
-                        p[13:] + '\n'
+                    piece = '{}\n}}}}}}\n\n{{{{{{id={}|\n{}\n'.format(
+                            piece, self.get_cellcount(), p[13:])
                     output_flag = False
                 elif p[:4] == '... ':
-                    piece += p[4:] + '\n'
+                    piece = '{}{}\n'.format(piece, p[4:])
                 else:
                     # first occurrence of an output string
                     # write /// denoting output
                     if output_flag is False:
-                        piece += '///'
+                        piece = '{}///'.format(piece)
                         if p:
-                            piece += '\n' + p
+                            piece = '{}\n{}'.format(piece, p)
                         output_flag = True
                     # multiple output lines exist, don't need /// repeated
                     else:
-                        piece += p
-            piece += '\n}}}\n\n'
+                        piece = '{}{}'.format(piece, p)
+            piece = '{}\n}}}}}}\n\n'.format(piece)
         return Markup(piece).unescape()
 
     ##############################################
@@ -669,7 +669,7 @@ class genericHTMLProcessor(HTMLParser):
             ['bunch ', 'of ', 'tmp ', 'strings', '<style type="text/css">']
         """
         if self.keep_data:
-            strattrs = "".join([' %s="%s"' % (key, value)
+            strattrs = "".join([' {}="{}"'.format(key, value)
                                 for key, value in attrs])
             self.temp_pieces.append("<%(tag)s%(strattrs)s>" % locals())
 

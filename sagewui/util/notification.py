@@ -35,7 +35,7 @@ Message:
     def emit(self, record):
         fqdn = getfqdn()
         from_address = '{}@{}'.format(getuser(), gethostname())
-        subject = '[sage-notebook] %s' % fqdn
+        subject = '[sage-notebook] {}'.format(fqdn)
         record.fqdn = fqdn
         message = self.format(record)
 
