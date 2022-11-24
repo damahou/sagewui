@@ -1610,7 +1610,7 @@ def worksheet_quit_sage(worksheet):
 def worksheet_interrupt(worksheet):
     # XXX: TODO -- this must not block long (!)
     worksheet.sage().interrupt()
-    return 'failed' if worksheet.sage().is_computing() else 'success'
+    return 'failed' if worksheet.sage().is_computing else 'success'
 
 
 @worksheet_command('delete_all_output')

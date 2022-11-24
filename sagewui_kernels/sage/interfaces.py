@@ -60,7 +60,7 @@ class SageServerABC(object):
         """
         Send an interrupt signal to the currently running computation
         in the controlled process.  This may or may not succeed.  Call
-        ``self.is_computing()`` to find out if it did.
+        ``self.is_computing`` to find out if it did.
         """
         raise NotImplementedError
 
@@ -82,6 +82,7 @@ class SageServerABC(object):
         """
         # default implementation is to do nothing.
 
+    @property
     def is_computing(self):
         """
         Return True if a computation is currently running in this worksheet
@@ -93,6 +94,7 @@ class SageServerABC(object):
         """
         raise NotImplementedError
 
+    @property
     def is_started(self):
         """
         Return true if this worksheet subprocess has already been started.
@@ -154,25 +156,25 @@ class SageServerExpect(SageServerABC):
         """
         self._output_status = OutputStatus('', [], True)
         self._expect = None
-        self._is_started = False
-        self._is_computing = True
+        self._is_started = False  # Exposed as RO property
+        self._is_computing = True  # Exposed as RO property
         self._timeout = timeout
         self._prompt = "__SAGE__"
+        self._data_dir = None
+        self._tempdir = ''
         self._all_tempdirs = []
         self._process_limits = process_limits
         self._max_walltime = None
         self._start_walltime = None
-        self._data_dir = None
         self._python = '{} --python'.format(sage)
         self._so_far = ''
         self._start_label = None
-        self._tempdir = ''
 
         if sage_code is None:
             sage_code = os.path.join(os.path.split(__file__)[0], 'sage_code')
         self._init_script = os.path.join(sage_code, 'init.py')
 
-        limit_code = '\n'.join((
+        code = [
             'import resource',
             'def process_limit(lim, rlimit, alt_rlimit=None):',
             '    if lim is not None:',
@@ -184,50 +186,26 @@ class SageServerExpect(SageServerABC):
             '               resource.setrlimit(rlimit, (lim, hard_lim))',
             '',
             '',
-            ))
+            ]
 
         if process_limits is not None:
-            lim_tpt = '{}process_limit({}, "RLIMIT_{}", alt_rlimit={}'\
-                      ')\n'
-            limit_code = lim_tpt.format(limit_code, process_limits.max_vmem,
-                                        'VMEM', 'resource.RLIMIT_AS')
-            limit_code = lim_tpt.format(limit_code, process_limits.max_cputime,
-                                        'CPU', None)
-            limit_code = lim_tpt.format(limit_code,
-                                        process_limits.max_processes,
-                                        'NPROC', None)
+            lim_tpt = 'process_limit({}, "RLIMIT_{}", alt_rlimit={})\n'
+            code.append(lim_tpt.format(
+                process_limits.max_vmem, 'VMEM', 'resource.RLIMIT_AS'))
+            code.append(lim_tpt.format(
+                process_limits.max_cputime, 'CPU', None))
+            code.append(lim_tpt.format(
+                process_limits.max_processes, 'NPROC', None))
 
-        init_code = '{}{}\n\n_support_.sys.ps1 = "{}"'.format(
-            limit_code, init_code, self._prompt)
+        code.append('{}\n\n_support_.sys.ps1 = "{}"'.format(
+            init_code, self._prompt))
+        code = '\n'.join(code)
 
         if process_limits and process_limits.max_walltime:
             self._max_walltime = process_limits.max_walltime
-        self.execute(init_code, mode='raw')
+
+        self.execute(code, mode='raw')
         self.execute('print("INIT OK")', mode='python')
-
-    def command(self):
-        return '{} -i {}'.format(self._python, self._init_script)
-
-    def __del__(self):
-        try:
-            self._cleanup_tempfiles()
-        except Exception:
-            pass
-        try:
-            self._cleanup_data_dir()
-        except Exception:
-            pass
-
-    def _cleanup_data_dir(self):
-        if self._data_dir is not None:
-            os.chmod(self._data_dir, stat.S_IRWXU)
-
-    def _cleanup_tempfiles(self):
-        for X in self._all_tempdirs:
-            try:
-                shutil.rmtree(X, ignore_errors=True)
-            except Exception:
-                pass
 
     def __repr__(self):
         """
@@ -239,7 +217,7 @@ class SageServerExpect(SageServerABC):
         """
         Send an interrupt signal to the currently running computation
         in the controlled process.  This may or may not succeed.  Call
-        ``self.is_computing()`` to find out if it did.
+        ``self.is_computing`` to find out if it did.
         """
         if self._expect is None:
             return
@@ -256,7 +234,6 @@ class SageServerExpect(SageServerABC):
             return
         try:
             self._expect.sendline(chr(3))  # send ctrl-c
-            self._expect.sendline('quit_sage()')
         except Exception:
             pass
         try:
@@ -275,7 +252,13 @@ class SageServerExpect(SageServerABC):
         """
         Start this worksheet process running.
         """
-        self._expect = pexpect.spawn(self.command())
+        try:
+            self._expect = pexpect.spawn(self._command())
+        except Exception:
+            raise RuntimeError(
+                "unable to start subprocess using command '{}'".format(
+                    self._command()))
+
         self._expect.setecho(False)
         self._is_started = True
         self._is_computing = False
@@ -290,16 +273,7 @@ class SageServerExpect(SageServerABC):
         """
         self._check_for_walltimeout()
 
-    def _check_for_walltimeout(self):
-        """
-        Check if the walltimeout has been reached, and if so, kill
-        this worksheet process.
-        """
-        if (self._is_started and
-                self._max_walltime and self._start_walltime and
-                walltime() - self._start_walltime > self._max_walltime):
-            self.quit()
-
+    @property
     def is_computing(self):
         """
         Return True if a computation is currently running in this worksheet
@@ -311,6 +285,7 @@ class SageServerExpect(SageServerABC):
         """
         return self._is_computing
 
+    @property
     def is_started(self):
         """
         Return true if this worksheet subprocess has already been started.
@@ -320,24 +295,6 @@ class SageServerExpect(SageServerABC):
             - ``bool``
         """
         return self._is_started
-
-    def get_tmpdir(self):
-        """
-        Return two strings (local, remote), where local is the name
-        of a pre-created temporary directory, and remote is the name
-        of the same directory but on the machine on which the actual
-        worksheet process is running.
-
-        OUTPUT:
-
-            - local directory
-
-            - remote directory
-        """
-        # In this implementation the remote process is just running
-        # as the same user on the local machine.
-        s = tempfile.mkdtemp()
-        return (s, s)
 
     def execute(self, code, data=None, mode='sage', print_time=False):
         """
@@ -354,15 +311,10 @@ class SageServerExpect(SageServerABC):
         if self._expect is None:
             self.start()
 
-        if self._expect is None:
-            raise RuntimeError(
-                "unable to start subprocess using command '{}'".format(
-                    self.command()))
-
         if mode != 'raw':
             self._number += 1
             self._start_label = 'START{}'.format(self._number)
-            local, remote = self.get_tmpdir()
+            local, remote = self._get_tmpdir()
             code = '_support_.os.chdir("{}")\n{}'.format(remote, code)
             if data is not None:
                 # make a symbolic link from the data directory into local tmp
@@ -390,16 +342,6 @@ class SageServerExpect(SageServerABC):
         except OSError as msg:
             self._is_computing = False
             self._so_far = str(msg)
-
-    def _read(self):
-        try:
-            self._expect.expect(pexpect.EOF, self._timeout)
-            # got EOF subprocess must have crashed; cleanup
-            print("got EOF subprocess must have crashed...")
-            print(self._expect.before)
-            self.quit()
-        except Exception:
-            pass
 
     def output_status(self):
         """
@@ -440,6 +382,68 @@ class SageServerExpect(SageServerABC):
                 self._tempdir) if x != self._data]
 
         return OutputStatus(s, files, not self._is_computing)
+
+    def __del__(self):
+        try:
+            self._cleanup_tempfiles()
+        except Exception:
+            pass
+        try:
+            self._cleanup_data_dir()
+        except Exception:
+            pass
+
+    def _command(self):
+        return '{} -i {}'.format(self._python, self._init_script)
+
+    def _cleanup_data_dir(self):
+        if self._data_dir is not None:
+            os.chmod(self._data_dir, stat.S_IRWXU)
+
+    def _cleanup_tempfiles(self):
+        for X in self._all_tempdirs:
+            try:
+                shutil.rmtree(X, ignore_errors=True)
+            except Exception:
+                pass
+
+    def _read(self):
+        try:
+            self._expect.expect(pexpect.EOF, self._timeout)
+            # got EOF subprocess must have crashed; cleanup
+            print("got EOF subprocess must have crashed...")
+            print(self._expect.before)
+            self.quit()
+        except Exception:
+            pass
+
+    def _check_for_walltimeout(self):
+        """
+        Check if the walltimeout has been reached, and if so, kill
+        this worksheet process.
+        """
+        if (self._is_started and
+                self._max_walltime and self._start_walltime and
+                walltime() - self._start_walltime > self._max_walltime):
+            self.quit()
+
+    def _get_tmpdir(self):
+        """
+        Return two strings (local, remote), where local is the name
+        of a pre-created temporary directory, and remote is the name
+        of the same directory but on the machine on which the actual
+        worksheet process is running.
+
+        OUTPUT:
+
+            - local directory
+
+            - remote directory
+        """
+        # In this implementation the remote process is just running
+        # as the same user on the local machine.
+        s = tempfile.mkdtemp()
+        return (s, s)
 
 
 class SageServerExpectRemote(SageServerExpect):
@@ -507,11 +511,11 @@ class SageServerExpectRemote(SageServerExpect):
 
         SageServerExpect.__init__(self, **kwargs)
 
-    def command(self):
+    def _command(self):
         return 'ssh -t {} "{}"'.format(
-            self._user_at_host, SageServerExpect.command(self))
+            self._user_at_host, super()._command(self))
 
-    def get_tmpdir(self):
+    def _get_tmpdir(self):
         """
         Return two strings (local, remote), where local is the name
         of a pre-created temporary directory, and remote is the name

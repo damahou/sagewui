@@ -2003,7 +2003,7 @@ class Worksheet(object):
             return None
         try:
             S = self.__sage
-            if S.is_started():
+            if S.is_started:
                 return S
         except AttributeError:
             pass
@@ -2040,7 +2040,7 @@ class Worksheet(object):
         computation.
         """
         try:
-            return self.__sage.is_started()
+            return self.__sage.is_started
         except AttributeError:
             return False
 
@@ -2254,7 +2254,7 @@ class Worksheet(object):
 
         return 'd', C
 
-    def interrupt(self, callback=None, timeout=1):
+    def interrupt(self, timeout=1):
         r"""
         Interrupt all currently queued up calculations.
 
@@ -2262,13 +2262,9 @@ class Worksheet(object):
 
         - ``timeout`` -- time to wait for interruption to succeed
 
-        - ``callback`` -- callback to be called. Called with True if
-          interrupt succeeds, else called with False.
-
         OUTPUT:
 
-        -  ``deferred`` - a Deferred object with the given callbacks and
-           errbacks
+        -  ``bool`` - True is if kernel not is computing, False if it is.
 
         EXAMPLES: We create a worksheet and start a large factorization
         going::
@@ -2318,10 +2314,7 @@ class Worksheet(object):
 
         time.sleep(timeout)
 
-        if S.is_computing():
-            return False
-        else:
-            return True
+        return not S.is_computing
 
     def quit(self):
         try:
