@@ -38,11 +38,12 @@ def index():
         response = redirect(
             url_for('worksheet_listing.home', username=session['username']))
         if 'remember' in request.args:
-            response.set_cookie('nb_session_%s' % g.notebook.port,
+            response.set_cookie('nb_session_{}'.format(g.notebook.port),
                                 expires=(time.time() + 60 * 60 * 24 * 14))
         else:
-            response.set_cookie('nb_session_%s' % g.notebook.port)
-        response.set_cookie('cookie_test_%s' % g.notebook.port, expires=1)
+            response.set_cookie('nb_session_{}'.format(g.notebook.port))
+        response.set_cookie(
+            'cookie_test_{}'.format(g.notebook.port), expires=1)
         return response
 
     if (current_app.startup_token is not None and

@@ -274,15 +274,15 @@ def download_worksheets():
         entry_name = worksheet.name
         if entry_name in worksheet_names:
             i = 2
-            while ("%s_%s" % (entry_name, i)) in worksheet_names:
+            while '{}_{}'.format(entry_name, i) in worksheet_names:
                 i += 1
-            entry_name = "%s_%s" % (entry_name, i)
+            entry_name = '{}_{}'.format(entry_name, i)
         zip.write(sws_filename, entry_name + ".sws")
         os.unlink(sws_filename)
     zip.close()
     r = open(zip_filename, 'rb').read()
     os.unlink(zip_filename)
-    print("Finished zipping %s worksheets (%s seconds)" % (
+    print('Finished zipping {} worksheets ({} seconds)'.format(
         len(worksheets), walltime(t)))
 
     response = current_app.make_response(r)
@@ -489,10 +489,10 @@ def upload_worksheet():
                         W = g.notebook.import_wst(
                             tmpfilename, g.username)
                         if new_name:
-                            W.name = "%s - %s" % (new_name, W.name)
+                            W.name = '{} - {}'.format(new_name, W.name)
                     else:
-                        print("Unknown extension, file %s is "
-                              "ignored" % subfilename)
+                        print('Unknown extension, file {} is ignored'.format(
+                            subfilename))
                 return redirect(url_for(
                     'worksheet_listing.home', username=g.username))
 

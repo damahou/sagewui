@@ -564,7 +564,7 @@ def worksheet_v(username, id, worksheet=None):
 @worksheet.route('/home/pub/<id>/')
 @guest_or_login_required
 def public_worksheet(id):
-    filename = 'pub/%s' % id
+    filename = 'pub/{}'.format(id)
     try:
         original_worksheet = g.notebook.filename_wst(filename)
     except KeyError:
@@ -638,7 +638,7 @@ def worksheet_command(target, **route_kwds):
             if username_id and username_id[0] in [CFG.UN_SAGE]:
                 if target.split('/')[0] not in published_commands_allowed:
                     raise NotImplementedError(
-                        "User _sage_ can not access URL %s" % target)
+                        'User _sage_ can not access URL {}'.format(target))
             if g.notebook.readonly_user(g.username):
                 if target.split('/')[0] not in readonly_commands_allowed:
                     return message_template(
@@ -775,7 +775,7 @@ def worksheet_properties(worksheet):
             'host',
             nb.interface + ':' + str(g.notebook.port))
 
-        r['published_url'] = 'http%s://%s/home/%s' % (
+        r['published_url'] = 'http{}://{}/home/{}'.format(
             '' if not nb.secure else 's',
             hostname,
             worksheet.published_filename)
@@ -950,7 +950,8 @@ def worksheet_eval(worksheet):
     if public and not cell.is_interactive_cell():
         r['command'] = 'error'
         r['message'] = (
-            'Cannot evaluate non-interactive public cell with ID %r.' % id)
+            'Cannot evaluate non-interactive public cell with ID {!r}.'.format(
+                id))
         return encode_response(r)
 
     worksheet.increase_state_number()
@@ -971,13 +972,15 @@ def worksheet_eval(worksheet):
         if variable != '':
             adapt_number = int(request.values.get('adapt_number', -1))
             value = request.values.get('value', '')
-            input_text += (
-                "\n_interact_.update('%s', '%s', "
-                "%s, _support_.base64.standard_b64decode('%s'), globals())" % (
-                    id, variable, adapt_number, value))
+            input_text = (
+                "{}\n_interact_.update('{}', '{}', "
+                "{}, _support_.base64.standard_b64decode('{}'), "
+                "globals())".format(
+                    input_text, id, variable, adapt_number, value))
 
         if int(request.values.get('recompute', 0)):
-            input_text += "\n_interact_.recompute('%s')" % id
+            input_text = "{}\n_interact_.recompute('{}')".format(
+                input_text, id)
 
     cell.input = input_text
 
@@ -1025,7 +1028,7 @@ def worksheet_cell_update(worksheet):
         # Update the log.
         t = time.strftime('%Y-%m-%d at %H:%M',
                           time.localtime(time.time()))
-        H = "Worksheet '%s' (%s)\n" % (worksheet.name, t)
+        H = "Worksheet '{}' ({})\n".format(worksheet.name, t)
         H += cell.format_text(plain=False, ncols=g.notebook.HISTORY_NCOLS,
                               max_out=g.notebook.HISTORY_MAX_OUTPUT)
         g.notebook.add_to_user_history(H, g.username)
@@ -1521,7 +1524,7 @@ def worksheet_publish(worksheet):
                 'host', nb.interface + ':' + str(nb.port))
 
             # XXX: We shouldn't hardcode this.
-            addr = 'http%s://%s/home/%s' % (
+            addr = 'http{}://{}/home/{}'.format(
                 '' if not nb.secure else 's',
                 hostname,
                 worksheet.published_filename)

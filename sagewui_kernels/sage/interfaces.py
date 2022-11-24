@@ -356,8 +356,8 @@ class SageServerExpect(SageServerABC):
 
         if self._expect is None:
             raise RuntimeError(
-                "unable to start subprocess using command '%s'" % self.command(
-                    ))
+                "unable to start subprocess using command '{}'".format(
+                    self.command()))
 
         if mode != 'raw':
             self._number += 1
@@ -568,8 +568,13 @@ class OutputStatus(object):
         Return string representation of this output status.
         """
         return (
-            "Output Status:\n\toutput: '%s'\n\tfilenames: %s\n\tdone: %s" % (
-                self.output, self.filenames, self.done))
+            "Output Status:"
+            "\n\toutput: '{}'"
+            "\n\tfilenames: {}"
+            "\n\tdone: {}".format(
+                self.output,
+                self.filenames,
+                self.done))
 
 
 class ProcessLimits(object):
@@ -605,8 +610,13 @@ class ProcessLimits(object):
         self.max_processes = max_processes
 
     def __repr__(self):
-        return 'Process limit object:' + \
-               '\n\tmax_vmem = %s MB' % self.max_vmem +  \
-               '\n\tmax_cputime = %s' % self.max_cputime + \
-               '\n\tmax_walltime = %s' % self.max_walltime + \
-               '\n\tmax_processes = %s' % self.max_processes
+        return (
+            'Process limit object:'
+            '\n\tmax_vmem = {} MB'
+            '\n\tmax_cputime = {}'
+            '\n\tmax_walltime = {}'
+            '\n\tmax_processes = {}'.format(
+               self.max_vmem,
+               self.max_cputime,
+               self.max_walltime,
+               self.max_processes))

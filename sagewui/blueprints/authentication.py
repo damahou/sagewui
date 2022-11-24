@@ -99,7 +99,8 @@ def login(template_dict=None):
 
     response = current_app.make_response(
         render_template('html/login.html', **template_dict))
-    response.set_cookie('cookie_test_%s' % g.notebook.port, 'cookie_test')
+    response.set_cookie(
+        'cookie_test_{}'.format(g.notebook.port), 'cookie_test')
     return response
 
 
@@ -247,7 +248,7 @@ def register():
         key = register_make_key()
         listenaddr = g.notebook.interface
         port = g.notebook.port
-        fromaddr = 'no-reply@%s' % listenaddr
+        fromaddr = 'no-reply@{}'.format(listenaddr)
         body = register_build_msg(
             key, username, listenaddr, port, g.notebook.secure)
 
@@ -326,7 +327,7 @@ def forgot_pass():
 
     listenaddr = g.notebook.interface
     port = g.notebook.port
-    fromaddr = 'no-reply@%s' % listenaddr
+    fromaddr = 'no-reply@{}'.format(listenaddr)
     body = register_build_password_msg(
         password, username, listenaddr, port, g.notebook.secure)
     destaddr = user.email

@@ -1,5 +1,3 @@
-
-
 import copy
 import time
 
@@ -262,7 +260,7 @@ class Configuration(object):
         self.confs = {}
 
     def __repr__(self):
-        return 'Configuration: %s' % self.confs
+        return 'Configuration: {}'.format(self.confs)
 
     def __eq__(self, other):
         return self.__class__ is other.__class__ and self.confs == other.confs
@@ -288,7 +286,8 @@ class Configuration(object):
                 self.confs[key] = A
                 return A
             else:
-                raise KeyError("No key '%s' and no default for this key" % key)
+                raise KeyError(
+                    "No key '{}' and no default for this key".format(key))
 
     def __setitem__(self, key, value):
         self.confs[key] = value
@@ -300,17 +299,18 @@ class Configuration(object):
         K.sort()
         options = ''
         for key in K:
-            options += ('<tr><td>%s</td><td><input type="text" name="%s" '
-                        'value="%s"></td></tr>\n' % (
-                            key, key, self[key]))
+            options = (
+                '{}<tr><td>{}</td><td><input type="text" name="{}" '
+                'value="{}"></td></tr>\n'.format(
+                    options, key, key, self[key]))
         s = """
-        <form method="post" action="%s" enctype="multipart/form-data">
+        <form method="post" action="{}" enctype="multipart/form-data">
         <input type="submit" value="Submit">
         <table border=0 cellpadding=5 cellspacing=2>
-            %s
+            {}
         </table>
         </form>
-        """ % (action, options)
+        """.format(action, options)
         return s
 
     def update_from_form(self, form):
@@ -394,19 +394,21 @@ class Configuration(object):
             except KeyError:
                 G[gp] = [key]
 
-        s = ''
+        lines = []
         color_picker = 0
         special_init = ''
         for group in G:
-            s += ('<div class="section">\n  <h2>%s</h2>\n  <table>\n' %
-                  lazy_gettext(group))
+            lines.append(
+                '<div class="section">\n  <h2>{}</h2>\n  <table>'.format(
+                    lazy_gettext(group)))
 
             opts = G[group]
 
             opts.sort(key=lambda x: (DS[x].get(CFG.POS, CFG.POS_DEFAULT), x))
             for o in opts:
-                s += ('    <tr>\n      <td>%s</td>\n      <td>\n' %
-                      lazy_gettext(DS[o][CFG.DESC]))
+                lines.append(
+                    '    <tr>\n      <td>{}</td>\n      <td>'.format(
+                        lazy_gettext(DS[o][CFG.DESC])))
                 input_type = 'text'
                 input_value = self[o]
 
@@ -421,44 +423,50 @@ class Configuration(object):
                         input_value = ','.join(input_value)
 
                 if DS[o][CFG.TYPE] == CFG.T_CHOICE:
-                    s += '        <select name="%s" id="%s">\n' % (o, o)
+                    lines.append(
+                        '        <select name="{0}" id="{0}">'.format(o))
                     for c in DS[o][CFG.CHOICES]:
                         selected = ''
                         if c == input_value:
                             selected = ' selected="selected"'
-                        s += ('          <option value="%s"%s>%s</option>\n' %
-                              (c, selected, lazy_gettext(c)))
-                    s += '        </select>\n'
+                        lines.append(
+                            '          '
+                            '<option value="{}"{}>{}</option>'.format(
+                                c, selected, lazy_gettext(c)))
+                    lines.append('        </select>')
 
                 elif DS[o][CFG.TYPE] == CFG.T_INFO:
-                    s += '        <span>%s</span>' % input_value
+                    lines.append('        <span>{}</span>'.format(input_value))
 
                 else:
-                    s += ('        <input type="%s" name="%s" id="%s" '
-                          'value="%s" %s>\n' % (
-                              input_type, o, o, input_value, extra))
+                    lines.append(
+                        '        <input type="{0}" name="{1}" id="{1}" '
+                        'value="{2}" {3}>'.format(
+                              input_type, o, input_value, extra))
 
                     if DS[o][CFG.TYPE] == CFG.T_COLOR:
-                        s += ('        <div id="picker_%s"></div>\n' %
-                              color_picker)
-                        special_init += (
-                            '    $("#picker_%s").farbtastic("#%s");\n' % (
-                                color_picker, o))
+                        lines.append(
+                            '        <div id="picker_{}"></div>'.format(
+                                color_picker))
+                        special_init = (
+                            '{}    $("#picker_{}").farbtastic('
+                            '"#{}");\n').format(special_init, color_picker, o)
                         color_picker += 1
 
-                s += ('      </td>\n      <td class="%s">%s</td>\n'
-                      '    </tr>\n' % updated.get(o, ('', '')))
+                lines.append(
+                    '      </td>\n      <td class="{t[0]}">{t[1]}</td>\n'
+                    '    </tr>'.format(t=updated.get(o, ('', ''))))
 
-            s += '  </table>\n</div>\n'
+            lines.append('  </table>\n</div>')
 
-        s += ('<script type="text/javascript">\n'
-              '$(document).ready(function() {\n' + special_init +
-              '});\n</script>')
+        lines.append(
+            '<script type="text/javascript">\n'
+            '$(document).ready(function() {{\n'
+            '{}}});\n</script>'.format(special_init))
 
-        lines = s.split('\n')
-        lines = ['  ' + x for x in lines]
+        lines = '\n'.join(lines).split('\n')
 
-        return '\n'.join(lines)
+        return '\n'.join('  {}'.format(x) for x in lines)
 
 
 class ServerConfiguration(Configuration):
