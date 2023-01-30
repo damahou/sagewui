@@ -381,7 +381,7 @@ class SageServerExpect(SageServerABC):
             files = [os.path.join(self._tempdir, x) for x in os.listdir(
                 self._tempdir) if x != self._data]
 
-        return OutputStatus(s, files, not self._is_computing)
+        return OutputStatus(s, files, not self._is_computing, self._tempdir)
 
     def __del__(self):
         try:
