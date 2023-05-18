@@ -13,12 +13,12 @@ from .util import sage_browser
 
 app_name = 'sagewui'
 
-# sagewui paths
+# sagewui default paths
 APP_PATH = resource_filename(__name__, '')
 HOME_PATH = user_data_dir(app_name)
-DB_PATH = os.path.join(HOME_PATH, 'db')
-SSL_PATH = os.path.join(HOME_PATH, 'ssl')
-PID_PATH = os.path.join(HOME_PATH, 'run')
+DB_DIR = 'db'
+SSL_DIR = 'ssl'
+PID_DIR = 'run'
 PID_FILE_TEMPLATE = 'sagewui-{}.pid'
 
 # DB
@@ -115,14 +115,22 @@ WARN_THRESHOLD = 100   # The number of seconds, so if there was no
 # Used when multiple people are editing the
 # same worksheet.
 
+
 # themes
-THEME_PATHS = [
-    tp for tp in (os.path.join(d, 'themes') for d in [APP_PATH, HOME_PATH])
-    if os.path.isdir(tp)]
-THEMES = [theme for path in THEME_PATHS for theme in os.listdir(path)
-          if os.path.isdir(os.path.join(path, theme))]
-THEMES.sort()
-DEFAULT_THEME = 'Default'
+def update_themes(default_theme='Default'):
+    global THEME_PATHS
+    global THEMES
+    global DEFAULT_THEME
+    THEME_PATHS = [
+        tp for tp in (os.path.join(d, 'themes') for d in [APP_PATH, HOME_PATH])
+        if os.path.isdir(tp)]
+    THEMES = [theme for path in THEME_PATHS for theme in os.listdir(path)
+              if os.path.isdir(os.path.join(path, theme))]
+    THEMES.sort()
+    DEFAULT_THEME = 'Default'
+
+
+update_themes()
 
 # translations
 TRANSLATIONS_PATH = os.path.join(APP_PATH, 'translations')

@@ -52,13 +52,13 @@ class NotebookFrontend(object):
             }
 
         self.default_paths = {
-            'dbdir': abspath(CFG.DB_PATH),
-            'piddir': abspath(CFG.PID_PATH),
-            'ssldir': abspath(CFG.SSL_PATH),
-            'homedir': abspath(CFG.HOME_PATH),
+            'dbdir': CFG.DB_DIR,
+            'piddir': CFG.PID_DIR,
+            'ssldir': CFG.SSL_DIR,
+            'homepath': abspath(CFG.HOME_PATH),
             'upload': None,
             }
-        self.app_path_names = ('dbdir', 'piddir', 'ssldir')
+        self.app_dir_names = ('dbdir', 'piddir', 'ssldir')
 
         self.notebook = None
 
@@ -235,27 +235,29 @@ class NotebookFrontend(object):
 
     def init_paths(self):
         C = self.conf
-        M = self.msg
 
-        makedirs(*(self.default_paths[p] for p in self.app_path_names))
+        app_path_names = [
+            dirname.replace('dir', 'path') for dirname in self.app_dir_names]
+
         C['nbname'] = securepath(C['nbname'])
 
-        for path, default in self.default_paths.items():
-            if not testpaths(C[path]):
-                print(M['path'].format(path, C[path], default))
-                C[path] = default
-            else:
-                C[path] = abspath(C[path])
+        C['homepath'] = abspath(C['homepath'], C['nbname'])
+        for i, pathname in enumerate(app_path_names):
+            C[pathname] = abspath(C['homepath'], C[self.app_dir_names[i]])
 
-        C['directory'] = abspath(C['dbdir'], C['nbname'])
+        makedirs(*(C[p] for p in app_path_names))
+
+        C['directory'] = C['dbpath']
 
         C['pidfile'] = joinpath(
-            C['piddir'], CFG.PID_FILE_TEMPLATE.format(C['nbname']))
+            C['pidpath'], CFG.PID_FILE_TEMPLATE.format(C['nbname']))
 
-        C['priv_pem'] = joinpath(C['ssldir'], 'private.pem')
-        C['pub_pem'] = joinpath(C['ssldir'], 'public.pem')
+        C['priv_pem'] = joinpath(C['sslpath'], 'private.pem')
+        C['pub_pem'] = joinpath(C['sslpath'], 'public.pem')
 
-        os.chdir(C['homedir'])  # If not readable, twisted fails in server mode
+        # If not readable, twisted fails in server mode
+        os.chdir(C['homepath'])
+        CFG.update_themes()
 
     def init_misc(self):
         C = self.conf
@@ -553,7 +555,7 @@ class NotebookFrontend(object):
         return passwd
 
     def ssl_setup(self):
-        makedirs(self.conf['ssldir'])
+        makedirs(self.conf['sslpath'])
 
         if which('openssl') is None:
             raise RuntimeError('You must install openssl to use the secure'
