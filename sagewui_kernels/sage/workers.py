@@ -25,7 +25,7 @@ from .interfaces import ProcessLimits
 
 def sage(server_pool=None, max_vmem=None, max_walltime=None, max_cputime=None,
          max_processes=None, sage='sage',
-         init_code=None):
+         init_code=''):
     """
     sage process factory
     """

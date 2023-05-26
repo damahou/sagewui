@@ -149,7 +149,7 @@ class SageServerExpect(SageServerABC):
                  process_limits=None,
                  timeout=0.05,
                  sage='sage',
-                 init_code=None,
+                 init_code='',
                  sage_code=None):
         """
         Initialize this worksheet process.

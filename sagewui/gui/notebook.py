@@ -121,8 +121,6 @@ class Notebook(object):
 
     def __init__(self, dir, user_manager=None):
         self.systems = CFG.SYSTEMS
-        # TODO: This come from notebook.misc. Must be a conf parameter
-        self.DIR = None
 
         dir = dir.rstrip(os.sep)
 
@@ -1140,7 +1138,7 @@ class Notebook(object):
     def set_ulimit(self, ulimit):
         self.__ulimit = ulimit
 
-    def new_worksheet_process(self, init_code=None):
+    def new_worksheet_process(self, init_code=''):
         """
         Return a new worksheet process object with parameters determined by
         configuration of this notebook server.
@@ -1166,7 +1164,8 @@ class Notebook(object):
             max_vmem=tbl['v'],
             max_cputime=tbl['t'],
             max_processes=tbl['u'],
-            init_code='\n'.join((init_code, "DIR = '{}'".format(self.DIR))))
+            init_code=init_code
+        )
 
     # Computing control
 

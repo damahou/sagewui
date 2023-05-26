@@ -359,9 +359,6 @@ class NotebookFrontend(object):
             print(self.msg['passreset'])
         print(self.msg['server'].format(self.conf['server']))
 
-        # TODO: This must be a conf parameter of the notebook
-        self.notebook.DIR = self.conf['cwd']
-
         flask_app = create_app(self.notebook,
                                startup_token=self.conf['startup_token'],
                                debug=self.conf['debug'],
