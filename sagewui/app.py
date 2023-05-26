@@ -31,7 +31,8 @@ from .blueprints.worksheet_listing import worksheet_listing
 from .blueprints.worksheet import worksheet
 
 
-def create_app(notebook, startup_token=None, debug=False):
+def create_app(notebook, startup_token=None, debug=False,
+               nbname=CFG.DEFAULT_NB_NAME):
     """
     This is the main method to create a running notebook. This is
     called from the process spawned in run.py
@@ -45,6 +46,7 @@ def create_app(notebook, startup_token=None, debug=False):
         'PROPAGATE_EXCEPTIONS': debug,
         'DEBUG': debug,
         'SECRET_KEY': os.urandom(24),
+        'SESSION_COOKIE_NAME': 'session_{}'.format(nbname)
         })
 
     dynamic_javascript = DynamicJs(debug=debug)

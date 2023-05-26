@@ -362,6 +362,7 @@ class NotebookFrontend(object):
         flask_app = create_app(self.notebook,
                                startup_token=self.conf['startup_token'],
                                debug=self.conf['debug'],
+                               nbname=self.conf['nbname']
                                )
         self.servers[self.conf['server']](flask_app)
 
