@@ -400,7 +400,11 @@ class BackendSageNB(BackendBase):
         elif isinstance(rich_output, OutputLatex):
             print(rich_output.mathjax())
         elif isinstance(rich_output, OutputHtml):
-            print(rich_output.with_html_tag())
+            if hasattr(rich_output, 'latex') and rich_output.latex is not None:
+                # In sage >= 9.4 mathjax is html, not latex
+                rich_output.print_to_stdout()
+            else:
+                print(rich_output.with_html_tag())
         elif isinstance(rich_output, OutputImagePng):
             self.embed_image(rich_output.png, '.png')
         elif isinstance(rich_output, OutputImageGif):
