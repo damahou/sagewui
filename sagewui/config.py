@@ -241,6 +241,10 @@ def add_sage_conf(sage_path='sage'):
 
     sage_conf = eval(sconf.output.strip())
     sage_env, MATHJAX_MACROS, interact_conf = sage_conf
+
+    if isinstance(MATHJAX_MACROS, dict):
+        MATHJAX_MACROS = ['{}: {!r}'.format(k, v).replace("'", '"')
+                          for k, v in MATHJAX_MACROS.items()]
     SAGE_VERSION = sage_env['SAGE_VERSION']
 
     # sage paths
