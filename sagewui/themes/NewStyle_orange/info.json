@@ -1,0 +1,9 @@
+{
+    "application": "sagewui", 
+    "identifier": "NewStyle_orange", 
+    "name": "New Style with green colors", 
+    "author": "J. Miguel Farto",
+    "license": "GPL",
+    "description": "Sage Notebook New Style theme with colors changed",
+    "version": "0.1"
+}

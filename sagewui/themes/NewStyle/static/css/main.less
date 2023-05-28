@@ -97,6 +97,7 @@ div.fivepix {
 }
 
 body div#banner {
+  line-height: 0.5em;
   float: left;
   margin: 0;
   width: 100%;
@@ -131,6 +132,7 @@ div#banner span {
 }  
 
 #main-controls {
+  line-height: 1em;
   float: left;
   width: auto;
 }
@@ -213,7 +215,7 @@ div#search-area form {
     display:inline;
 }
 #search-area input {
-  width: 100px;
+  width: 200px;
 }
 #search-area button{
   background-color: @bg;
@@ -227,28 +229,41 @@ div#search-area form {
   }
 }
 /*endfixed*/
-/*fixed*/
 div#worksheet-list-controls {
-    position:fixed;
-    top: 315px;
-    left:0px;
-    width:150px;
     text-align:right;
     color: @bg;
 }
-div#worksheet-list-controls button {
+/*fixed*/
+div#worksheet-list-controls div.action-buttons {
+    position:fixed;
+    top: 335px;
+    left:0px;
+    width:150px;
+}
+div#worksheet-list-controls div.action-buttons button {
   float: right;
   clear: both;
   display: block;
   width: 125px;
   .basic_colors;
   border: 0;
-  margin-top: 1px;
-  margin-bottom: 1px;
+  margin: 1px 0px;
+  padding: 1px 6px;
   text-align: right;
   &:hover {
     color: @strong2;
   }
+}
+div#worksheet-list-controls div.action-buttons input {
+  float: right;
+  clear: both;
+  display: block;
+  width: 117px;
+  .basic_colors;
+  margin: 1px 0px;
+  padding: 1px 2px;
+  border: 2px solid @strong2;
+  text-align: left;
 }
 /*endfixed*/
 /*fixed*/
@@ -261,7 +276,7 @@ div#worksheet-list-controls div.folders {
     padding-top:8px;
     font-size:0px;
 }
-div.folders a {
+div#worksheet-list-controls div.folders a {
   .strong_colors2;
   font-size: 14px;
   padding:1px 10px 1px 0px;
@@ -276,7 +291,7 @@ div.folders a {
     cursor: pointer;
   }
 }
-div.folders a.boldusercontrol {
+div#worksheet-list-controls div.folders a.boldusercontrol {
   color: @strong1;
   background: @light1;
   &:hover {

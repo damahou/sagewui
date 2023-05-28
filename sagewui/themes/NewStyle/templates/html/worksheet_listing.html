@@ -46,23 +46,31 @@ INPUT:
 <h1>{{ gettext('Account is read only.  You may download or delete worksheets or data.') }}</h1>
 {% endif %}
 <div id="user-main-controls" class="user-controls">
-    {% if pub is not defined or not pub %}
-    <a href="/new_worksheet" target="_blank">{{ gettext('New Worksheet') }}</a>
-    <a href="/upload">{{ gettext('Upload') }}</a>
-    <a href="/download_worksheets.zip">{{ gettext('Download All Active') }}</a>
-    {% endif %}
-
     <div id="search-area">
-        <form action="." method="GET">
-            <input type="hidden" value="{{ typ if not pub else 'pub' }}" name="typ" />
-            <input id="search-worksheets" size="20" value="{{ search if search else "" }}" name="search" />
-            <button class="add_new_worksheet_menu" id="search-worksheets-button" type="submit">{{ gettext('Search Worksheets') }}</button>
-        </form>
     </div>
 </div>       
 <div id="worksheet-list-controls" class="controls">
+    <div class="folders">
+        {{ gettext('Current Folder') }}:
+        <a class="{{ 'bold' if pub else '' }}usercontrol" title="{{ gettext('Browse the published worksheets') }}" href="/pub">{{ gettext('Published') }}</a>
+    {% if not pub %}
+        <a class="{{ 'bold' if typ == 'active' else '' }}usercontrol" title="{{ gettext('Browse the active worksheets') }}" href=".">{{ gettext('Active') }}</a>
+        <a class="{{ 'bold' if typ == 'archive' else '' }}usercontrol" title="{{ gettext('Browse the archived') }}" href=".?typ=archive">{{ gettext('Archived') }}</a>
+
+        {% if typ == 'trash' %}
+        <form method="POST" action="/emptytrash" id="empty-trash-form">
+            <a class="boldusercontrol" onClick="empty_trash(this); return false" title="{{ gettext('Empty the trash') }}" href="#">{{ gettext('Empty Trash') }}</a>
+        </form>
+        {% else %}
+        <a class="{{ 'bold' if typ == 'trash' else '' }}usercontrol" title="{{ gettext('Browse the trash') }}" href=".?typ=trash">{{ gettext('Trash') }}</a>
+        {% endif %}
+    </div>
+    {% endif %}
     {% if not pub %}
     <div class="action-buttons">
+        <button onClick="new_worksheet();" title="{{ gettext('New  worksheet') }}">{{ gettext('New') }}</button>
+        <button onClick="upload_worksheet_button();" title="{{ gettext('Upload  worksheets from URL') }}">{{ gettext('Upload') }}</button>
+        <button onClick="download_worksheets_button();" title="{{ gettext('Download selected worksheets') }}">{{ gettext('Download') }}</button>
         {% if typ == 'archive' %}
         <button onClick="make_active_button();" title="{{ gettext('Unarchive selected worksheets so it appears in the default worksheet list') }}">{{ gettext('Unarchive') }}</button>
         {% else %}
@@ -74,21 +82,12 @@ INPUT:
         {% else %}
         <button onClick="make_active_button();" title="{{ gettext('Move the selected worksheets out of the trash') }}">{{ gettext('Undelete') }}</button>
         {% endif %}
-
         <button onClick="stop_worksheets_button();" title="{{ gettext('Stop selected worksheets') }}">{{ gettext('Stop') }}</button>
-        <button onClick="download_worksheets_button();" title="{{ gettext('Download selected worksheets') }}">{{ gettext('Download') }}</button>
-    </div>
-    <div class="folders">
-        {{ gettext('Current Folder') }}:
-        <a class="{{ 'bold' if typ == 'active' else '' }}usercontrol" href=".">{{ gettext('Active') }}</a>
-        <a class="{{ 'bold' if typ == 'archive' else '' }}usercontrol" href=".?typ=archive">{{ gettext('Archived') }}</a>
-        <a class="{{ 'bold' if typ == 'trash' else '' }}usercontrol" href=".?typ=trash">{{ gettext('Trash') }}</a>
-
-        {% if typ == 'trash' %}
-        <form method="POST" action="/emptytrash" id="empty-trash-form">
-            <a class="boldusercontrol" onClick="empty_trash(this); return false" href="#">({{ gettext('Empty Trash') }})</a>
+        <form action="." method="GET">
+            <button id="search-worksheets-button" type="submit">{{ gettext('Filter') }}</button>
+            <input type="hidden" value="{{ typ if not pub else 'pub' }}" name="typ" />
+            <input id="search-worksheets" value="{{ search if search else "" }}" name="search" />
         </form>
-        {% endif %}
     </div>
     {% endif %}
 </div>
