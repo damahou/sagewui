@@ -62,9 +62,6 @@ thead {
   .strong_colors2;
   font-weight: bold;
 }
-div.fivepix {
-  height: 5px;
-}
 
 #main {
     margin-left:150px;
@@ -72,7 +69,7 @@ div.fivepix {
     z-index:0;
 }
 #worksheet-listing-page #main {
-    margin-top:25px;
+    margin-top:0px;
 }
 
 /******header->topbar->(banner, main-controls)*********/
@@ -192,43 +189,6 @@ hr.usercontrol {
   float: left;
 }
 
-/*fixed*/
-div#user-main-controls {    
-  padding-left:10px;
-  margin-bottom: 5px;
-  position:fixed;
-  top:0px;
-  left:150px;
-  right:0px;
-  height:25px;
-  z-index:1;
-  border:0;
-  min-width:630px;
-  .basic_colors;
-}
-div#search-area {
-  clear:both;
-  float: none;
-  display:inline;
-}
-div#search-area form {
-    display:inline;
-}
-#search-area input {
-  width: 200px;
-}
-#search-area button{
-  background-color: @bg;
-  color: @links;
-  border: 0;
-  text-align: left;
-  padding: 0;
-  padding-left: 0px;
-  &:hover {
-    color: @linksh;
-  }
-}
-/*endfixed*/
 div#worksheet-list-controls {
     text-align:right;
     color: @bg;
@@ -298,7 +258,6 @@ div#worksheet-list-controls div.folders a.boldusercontrol {
     color: @strong1;
   }
 }
-
 /*endfixed*/
 
 /******* Top Control Bar (Worksheets)  ********** */
@@ -1482,8 +1441,13 @@ span.worksheet_buttons {
 }
 #worksheet-list thead {
   .strong_colors2;
+  position: sticky;
+  top: 0px;
 }
-#worksheet-list td.checkbox {
+#worksheet-list th {
+    text-align: left;
+}
+#worksheet-list td.checkbox, th.checkbox {
   padding: 4px;
 }
 

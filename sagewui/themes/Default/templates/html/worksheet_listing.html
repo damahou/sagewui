@@ -46,8 +46,6 @@ INPUT:
 <h1>{{ gettext('Account is read only.  You may download or delete worksheets or data.') }}</h1>
 {% endif %}
 <div id="user-main-controls" class="user-controls">
-    <div id="search-area">
-    </div>
 </div>       
 <div id="worksheet-list-controls" class="controls">
     <div class="folders">
@@ -93,33 +91,33 @@ INPUT:
 </div>
 
 <table cellspacing="0" cellpadding="0" id="worksheet-list">
-    <thead>
+    <thead class="table_fix_head">
         <tr>
             {% if not pub %}
-            <td class="checkbox">
+            <th class="checkbox">
                 <input id="controlbox" onClick="set_worksheet_list_checks();" class="entry" type="checkbox" />
-            </td>
+            </th>
             {% else %}
-            <td><a class="listcontrol" href=".?sort=rating">{{ gettext('Rating') }}</a></td>
+            <th><a class="listcontrol" href=".?sort=rating">{{ gettext('Rating') }}</a></td>
             {% endif %}
 
-            <td>
+            <th>
                 <a class="listcontrol" href=".?typ={{ typ }}&sort=name{{ '' if sort != 'name' or reverse else '&reverse=True' }}">
                     {{ worksheet_heading }}
                 </a>
-            </td>
+            </th>
             
-            <td>
+            <th>
                 <a class="listcontrol" href=".?typ={{ typ }}&sort=owner{{ '' if sort != 'owner' or reverse else '&reverse=True' }}">
                     {{ gettext('Owner') }} {{ '' if pub else ' / '+gettext('Collaborators') }}
                 </a>
-            </td>
+            </th>
 
-            <td>
+            <th>
                 <a class="listcontrol" href=".?typ={{ typ }}{{ '' if sort != 'last_edited' or reverse else '&reverse=True' }}">
                     {{ gettext('Last Edited') }}
                 </a>
-            </td>
+            </th>
         </tr>
     </thead>
     <tbody>
