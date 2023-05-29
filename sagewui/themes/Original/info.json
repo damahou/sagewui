@@ -1,0 +1,9 @@
+{
+    "application": "sagewui", 
+    "identifier": "Original", 
+    "name": "Original", 
+    "author": "J. Miguel farto",
+    "license": "GPL",
+    "description": "Old Sage Notebook original style",
+    "version": "0.1"
+}

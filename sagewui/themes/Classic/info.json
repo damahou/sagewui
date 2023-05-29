@@ -4,6 +4,6 @@
     "name": "Classic less", 
     "author": "J. Miguel Farto",
     "license": "GPL",
-    "description": "Sage Notebook Classic style with less. No templates changed",
+    "description": "Old Sage Notebook Original style with less. No templates changed",
     "version": "0.1"
 }

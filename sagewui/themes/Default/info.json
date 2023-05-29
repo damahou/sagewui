@@ -1,9 +1,9 @@
 {
-    "application": "sagewui", 
+    "application": "sagewui",
     "identifier": "Default", 
     "name": "Default", 
-    "author": "J. Miguel farto",
+    "author": "J. Miguel Farto",
     "license": "GPL",
-    "description": "Sage Notebook default style",
+    "description": "SageWui default theme. Uses less. There are templates modified with respect to the Original theme",
     "version": "0.1"
 }

@@ -1,0 +1,9 @@
+{
+    "application": "sagewui", 
+    "identifier": "Green", 
+    "name": "SageWui Default Style with green colors", 
+    "author": "J. Miguel Farto",
+    "license": "GPL",
+    "description": "SageWui Default Style theme with colors changed",
+    "version": "0.1"
+}
