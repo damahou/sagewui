@@ -32,9 +32,9 @@ def all_files(dir, prefix):
 
 install_requires = [
     'twisted>=11.0.0',
-    'flask>=0.10.1',
+    'flask>=2.3.2',
     'flask-autoindex',
-    'flask-babel',
+    'flask-babel>=3.1.0',
     'flask-themes2',
     'future',
     # 'smtpsend',
@@ -49,7 +49,7 @@ install_requires = [
 
 setup(
     name='sagewui',
-    version='0.0.2',
+    version='0.1.0',
     description='SageWui',
     license='GNU General Public License (GPL) v3+',
     author='J Miguel Farto et al.',

@@ -113,7 +113,7 @@ WARNING:
 from html.parser import HTMLParser
 from html.entities import entitydefs
 
-from flask import Markup
+from markupsafe import Markup
 
 
 class genericHTMLProcessor(HTMLParser):
