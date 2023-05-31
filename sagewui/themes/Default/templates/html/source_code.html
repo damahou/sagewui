@@ -2,9 +2,10 @@
 
 {% block title %}{{ src_filename }} - {{ gettext('Source Code') }}{% endblock %}
 
-{% block css %}main{% endblock %}
-
-{% block more_css %}<link type="text/css" ref="stylesheet" href="/javascript/highlight/prettify.css" />{% endblock %}
+{% block css %}
+{{ super() }}
+<link type="text/css" ref="stylesheet" href="/javascript/highlight/prettify.css" />
+{% endblock %}
 
 {% block page_id %}source-code-page{% endblock %}
 

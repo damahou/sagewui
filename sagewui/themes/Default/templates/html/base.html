@@ -1,40 +1,39 @@
-{%- macro render_title() -%}{% block title %}{% endblock %}{%- endmacro -%}
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    {% block meta %}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>{{ render_title() }} -- Sage</title>
-    {% block more_meta %}{% endblock %}
-    {% block published_link_rel %}{% endblock %}
-    {% block pre_main_css %}{% endblock %}
+    {% endblock %}
+
+    <title>{% block title %}{% endblock %} -- Sage</title>
+
+    {% block link %}{% endblock %}
+
+    {% block css %}
     <link type="text/css" rel="stylesheet/less"
           href={{ theme_static("css/main.less") }}>
-    {% block more_css %}{% endblock %}
-    <script type="text/javascript"
-            src={{ theme_static("js/less.js") }}></script>
+    {% endblock %}
+
     {# jQuery and other universally used libraries #}
-    <script type="text/javascript"
-            src="/javascript/jquery/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript"
-            src="/javascript/dynamic/localization.js"></script>
-    <script type="text/javascript"
-            src="/javascript/json/json2.min.js"></script>
-    {% block javascript %}
+    <script type="text/javascript" src={{ theme_static("js/less.js") }}></script>
+    <script type="text/javascript" src="/javascript/jquery/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="/javascript/dynamic/localization.js"></script>
+    <script type="text/javascript" src="/javascript/json/json2.min.js"></script>
+
     {# Page-specific libraries #}
-    <script type="text/javascript"
-            src="/javascript/sage/js/ws_list.js"></script>
+    {% block javascript %}
+    <script type="text/javascript" src="/javascript/sage/js/ws_list.js"></script>
     {% endblock %}
-    {% block more_javascript %}
-    {% endblock %}
+
     {# Behavior #}
-    <script type="text/javascript"
-            src="/javascript/sage/js/master.js"></script>
+    <script type="text/javascript" src="/javascript/sage/js/master.js"></script>
+
     {% block debug %}
     {% if g.dynamic_javascript.debug %}
-    <script type="text/javascript"
-            src="/javascript/sage/js/debug.js"></script>
+    <script type="text/javascript" src="/javascript/sage/js/debug.js"></script>
     {% endif %}
     {% endblock %}
+
   </head>
   <body id="{% block page_id %}{% endblock %}"
         class="{% block body_classes %}{% endblock %}">

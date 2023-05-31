@@ -30,8 +30,8 @@ INPUT:
 
 {% set download_name = worksheet.download_name %}
 
-{% block published_link_rel %}
-<link rel="alternate" type="application/sage" title="{{ render_title() }}" href="download/{{ download_name }}.sws" />
+{% block link %}
+<link rel="alternate" type="application/sage" title="{% block title %}{{ super() }}{% endblock %}" href="download/{{ download_name }}.sws" />
 {% endblock %}
 
 {% block body %}

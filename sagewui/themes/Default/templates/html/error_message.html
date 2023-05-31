@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% if redirect_url %}
-{% block more_meta %}
+{% block meta %}
+{{ super() }}
 <meta http-equiv="refresh" content="{{ redirect_delay }};url={{ redirect_url}}" />
 {% endblock %}
 {% endif %}
