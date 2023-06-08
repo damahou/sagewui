@@ -17,7 +17,7 @@ worksheet/ratings_info                 worksheet.filename                       
 worksheet/ratings_info                 worksheet.ratings.iteritems(                1
 worksheet_listing                      worksheets                                  3
 worksheet_listing                      worksheet                                   1
-worksheet_listing                      worksheet.rating(                           2
+worksheet_listing                      worksheet.rating                            2
 worksheet_listing                      worksheet.name                              2
 worksheet_listing                      worksheet.compute_process_has_been_started( 1
 worksheet_listing                      worksheet.is_published                      1
@@ -44,7 +44,7 @@ notebook/guest_worksheet_page          original_worksheet.collaborators         
 notebook/guest_worksheet_page          original_worksheet.owner                    1
 notebook/guest_worksheet_page          original_worksheet.filename                 1
 notebook/guest_worksheet_page          worksheet.download_name                     1
-notebook/guest_worksheet_page          worksheet.rating(                           3
+notebook/guest_worksheet_page          worksheet.rating                            3
 notebook/guest_worksheet_page          worksheet.publisher                         2
 notebook/guest_worksheet_page          worksheet.ratings                           1
 notebook/guest_worksheet_page          worksheet.name                              1

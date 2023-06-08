@@ -946,6 +946,7 @@ class Worksheet(object):
         self.ratings[username] = (int(x), comment)
         self.save(conf_only=True)
 
+    @property
     def rating(self):
         """
         Return overall average rating of self.
@@ -958,11 +959,11 @@ class Worksheet(object):
                 tmp_dir()
             sage: nb.user_manager.create_default_users('password')
             sage: W = nb.create_wst('Publish Test', 'admin')
-            sage: W.rating()
+            sage: W.rating
             -1
             sage: W.rate(0, 'this lacks content', 'riemann')
             sage: W.rate(3, 'this is great', 'hilbert')
-            sage: W.rating()
+            sage: W.rating
             1.5
         """
         r = self.ratings

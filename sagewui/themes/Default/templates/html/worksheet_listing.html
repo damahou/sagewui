@@ -142,10 +142,10 @@ INPUT:
                 {% if pub %}
                 
                 <a class="worksheet_edit" href="/home/{{ name }}/rating_info">
-                    {% if worksheet.rating() < 0 %}
+                    {% if worksheet.rating < 0 %}
                     ----
                     {% else %}
-                    {{ worksheet.rating() }}
+                    {{ worksheet.rating }}
                     {% endif %}
                 </a>
                 

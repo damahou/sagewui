@@ -38,12 +38,12 @@ INPUT:
 <ul class="controls">
     <li><a href="{{ url }}">{{ edit_text }}</a></li>
     <li><a href="download/{{ download_name }}.sws">{{ gettext('Download.') }}</a></li>
-    {% if worksheet.rating() != -1 or
+    {% if worksheet.rating != -1 or
        not (notebook.user_manager[username].is_guest or worksheet.publisher == username) %}
     <li>
-        {% if worksheet.rating() != -1 %}
+        {% if worksheet.rating != -1 %}
             <a class="usercontrol" href="rating_info">
-                {{ gettext('This page is rated %(wr).1f.', wr=worksheet.rating()) }}
+                {{ gettext('This page is rated %(wr).1f.', wr=worksheet.rating) }}
             </a>
         {% endif %}
         {% if not (notebook.user_manager[username].is_guest or worksheet.publisher == username) %}
