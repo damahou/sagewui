@@ -60,8 +60,8 @@ INPUT:
         {% else %}
         <a class="{{ 'bold' if typ == 'trash' else '' }}usercontrol" title="{{ gettext('Browse the trash') }}" href=".?typ=trash">{{ gettext('Trash') }}</a>
         {% endif %}
-    </div>
     {% endif %}
+    </div>
     {% if not pub %}
     <div class="action-buttons">
         <button onClick="new_worksheet();" title="{{ gettext('New  worksheet') }}">{{ gettext('New') }}</button>
