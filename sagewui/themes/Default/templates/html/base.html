@@ -39,8 +39,7 @@
         class="{% block body_classes %}{% endblock %}">
     {% block body %}
     <div id="header">
-      {% block header %}
-      <div id="top-bar">
+      <div id="main-header">
         <div id="banner">
           <a class="banner" href="/">
             <img align="top" src="/images/sagenb.png" alt="Sage"><span>{{ gettext('The Sage Notebook') }}</span>
@@ -50,10 +49,11 @@
             {{ gettext('Version') }} {{ sage_version }}
           </div>
         </div>
-        {% block controls %}
-        {% endblock %}
+        {% block main_header %}{% endblock %}
       </div>
-      {% endblock %}
+      <div id="secondary-header">
+      {% block secondary_header %}{% endblock %}
+      </div>
     </div>
     <div id="main">
       {% block main %}
