@@ -119,13 +119,8 @@ INPUT:
 
 {% endblock %}
 
-{% block main %}
-{% if notebook is defined and notebook.readonly_user(username) %}
-<h1>{{ gettext(
-  'Account is read only.  You may download or delete worksheets or data.') }}
-</h1>
-{% endif %}
-
+{% block controls %}
+{{  super() }}
 <div id="worksheet-bar">
   <div class="worksheet_title">
     <a id="worksheet_title" class="worksheet_title"
@@ -320,6 +315,13 @@ INPUT:
     {% endif %} 
   </div>
 </div>
+{% endblock %}
+{% block main %}
+{% if notebook is defined and notebook.readonly_user(username) %}
+<h1>{{ gettext(
+  'Account is read only.  You may download or delete worksheets or data.') }}
+</h1>
+{% endif %}
 <div class="hidden" id="slide_controls">
   <div class="slideshow_control">
     <a class="slide_arrow" onClick="slide_next()">&gt;</a>

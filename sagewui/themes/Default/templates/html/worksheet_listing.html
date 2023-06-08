@@ -41,10 +41,8 @@ INPUT:
 {% endblock %}
 
 
-{% block main %}
-{% if readonly is defined and readonly %}
-<h1>{{ gettext('Account is read only.  You may download or delete worksheets or data.') }}</h1>
-{% endif %}
+{% block controls %}
+{{ super() }}
 <div id="worksheet-list-controls" class="controls">
     <div class="folders">
         {{ gettext('Current Folder') }}:
@@ -87,6 +85,11 @@ INPUT:
     </div>
     {% endif %}
 </div>
+{% endblock %}
+{% block main %}
+{% if readonly is defined and readonly %}
+<h1>{{ gettext('Account is read only.  You may download or delete worksheets or data.') }}</h1>
+{% endif %}
 
 <table cellspacing="0" cellpadding="0" id="worksheet-list">
     <thead class="table_fix_head">
