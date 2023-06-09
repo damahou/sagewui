@@ -119,33 +119,13 @@ INPUT:
 
 {% endblock %}
 
-{% block main_header %}
-{{  super() }}
-<div id="worksheet-bar">
-  <div class="worksheet_title">
-    <a id="worksheet_title" class="worksheet_title"
-       onClick="rename_worksheet(); return false;"
-       title="{{ gettext('Click to rename this worksheet') }}">
-      {{ worksheet.name }}
-    </a>
-    <div class="lastedit">
-        {{ gettext('last edited') }}
-        {{ time.last_edited(worksheet.last_edited, worksheet.last_to_edit) }}
-    </div>
-    {% if worksheet.warn_about_other_person_editing(username) and username != 'guest' and not worksheet.docbrowser and not worksheet.is_published %}
-    <span class="pingdown">
-      ({{ gettext('Someone else is viewing this worksheet') }})
-    </span>
-    {% endif %}
-  </div>
+{% block controls %}
+<div id="worksheet-controls">
   <div id="share-publish-buttons">
     {% if not worksheet.docbrowser and not worksheet.is_published %}
     {% macro cls(x) %}
     {{ "control-select" if x == select else "control" }}
     {% endmacro %}
-    <a class="control"
-       title="{{ gettext('Print this worksheet') }}"
-       onClick="print_worksheet()">{{ gettext('Print') }}</a>
     <a class="{{ cls('use') }}"
        title="{{ gettext('Interactively use this worksheet') }}"
        href="./">{{ gettext('Worksheet') }}</a>        
@@ -155,6 +135,9 @@ INPUT:
     <a class="{{ cls('text') }}"
        title="{{ gettext('View plain text version of this worksheet') }}"
        href="text">{{ gettext('Text') }}</a>
+    <a class="control"
+       title="{{ gettext('Print this worksheet') }}"
+       onClick="print_worksheet()">{{ gettext('Print') }}</a>
     <a class="{{ cls('revisions') }}"
        title="{{ gettext('View changes to this worksheet over time') }}"
        href="revisions">{{ gettext('Revisions') }}</a>
@@ -316,7 +299,25 @@ INPUT:
   </div>
 </div>
 {% endblock %}
+
 {% block main %}
+<div id="worksheet-title">
+  <a class="worksheet-title"
+     onClick="rename_worksheet(); return false;"
+     title="{{ gettext('Click to rename this worksheet') }}">
+    {{ worksheet.name }}
+  </a>
+  <div class="lastedit">
+      {{ gettext('last edited') }}
+      {{ time.last_edited(worksheet.last_edited, worksheet.last_to_edit) }}
+  </div>
+  {% if worksheet.warn_about_other_person_editing(username) and username != 'guest' and not worksheet.docbrowser and not worksheet.is_published %}
+  <span class="pingdown">
+    ({{ gettext('Someone else is viewing this worksheet') }})
+  </span>
+  {% endif %}
+</div>
+
 {% if notebook is defined and notebook.readonly_user(username) %}
 <h1>{{ gettext(
   'Account is read only.  You may download or delete worksheets or data.') }}

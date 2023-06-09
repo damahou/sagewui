@@ -41,11 +41,9 @@ INPUT:
 {% endblock %}
 
 
-{% block main_header %}
-{{ super() }}
-<div id="worksheet-list-controls" class="controls">
+{% block controls %}
+<div id="worksheet-list-controls">
     <div class="folders">
-        {{ gettext('Current Folder') }}:
         <a class="{{ 'bold' if pub else '' }}usercontrol" title="{{ gettext('Browse the published worksheets') }}" href="/pub">{{ gettext('Published') }}</a>
     {% if not pub %}
         <a class="{{ 'bold' if typ == 'active' else '' }}usercontrol" title="{{ gettext('Browse the active worksheets') }}" href=".">{{ gettext('Active') }}</a>

@@ -186,59 +186,20 @@ hr.usercontrol {
   float: left;
 }
 
+
 div#worksheet-list-controls {
     text-align:right;
     color: @bg;
 }
-/*fixed*/
-div#worksheet-list-controls div.action-buttons {
-    position:fixed;
-    top: 285px;
-    left:0px;
-    width:150px;
-}
-div#worksheet-list-controls div.action-buttons button {
-  float: right;
-  clear: both;
-  display: block;
-  width: 125px;
-  .basic_colors;
-  border: 0;
-  margin: 1px 0px;
-  padding: 1px 6px;
-  text-align: right;
-  &:hover {
-    color: @strong2;
-  }
-}
-div#worksheet-list-controls div.action-buttons input {
-  float: right;
-  clear: both;
-  display: block;
-  width: 117px;
-  .basic_colors;
-  margin: 1px 0px;
-  padding: 1px 2px;
-  border: 2px solid @strong2;
-  text-align: left;
-}
-/*endfixed*/
-/*fixed*/
+
 div#worksheet-list-controls div.folders {
-    position:fixed;
-    top:186px;
-    left:0px;
-    width:150px;
-    border-top:1px solid  @bg;
-    padding-top:8px;
-    font-size:0px;
+    padding-top: 8px;
+    padding-left: 10px;
 }
 div#worksheet-list-controls div.folders a {
   .strong_colors2;
   font-size: 14px;
   padding:1px 10px 1px 0px;
-  float: right;
-  clear: both;
   display: block;
   width: 130px;
   text-align: right;
@@ -255,112 +216,124 @@ div#worksheet-list-controls div.folders a.boldusercontrol {
     color: @strong1;
   }
 }
-/*endfixed*/
-
-/******* Top Control Bar (Worksheets)  ********** */
-#worksheet-bar {
-  overflow: hidden;
-  clear: both;
+div#worksheet-list-controls div.action-buttons {
+    padding-top: 20px;
+    padding-left: 25px;
 }
-#worksheet-bar a.worksheet_title {
-  text-decoration: none;
-  font-size: 20px;
-  font-weight: bold;
-}
-#worksheet-bar a.worksheet_title:hover {
-  cursor: pointer;
-}
-/*fixed*/
-#worksheet-bar div.worksheet_title {
-    padding-left:10px;
-    margin-bottom: 0px;
-    position:fixed;
-    top:0px;
-    left:150px;
-    right:0px;
-    height:25px;
-    .basic_colors;
-    z-index:1;
-}
-#worksheet-bar div.worksheet_title div {
-    display:inline;
-}
-/*endfixed*/
-/*fixed*/
-#worksheet-bar #save-discard-buttons {
-  position:fixed;
-  top:186px;
-  left:0px;
-  width:150px;
-  border-top:1px solid @light1;
-  padding-top:8px;
-}
-#worksheet-bar #save-discard-buttons button {
-  float: right;
-  clear: both;
+div#worksheet-list-controls div.action-buttons button {
   display: block;
   width: 125px;
   .basic_colors;
   border: 0;
-  margin-top: 1px;
-  margin-bottom: 1px;
+  margin-bottom: 2px;
+  padding: 1px 6px;
   text-align: right;
   &:hover {
     color: @strong2;
   }
 }
-/*endfixed*/
-/*fixed*/
-#worksheet-bar #worksheet-menu  {
-  position:fixed;
-  top: 278px;
-  left:0px;
-  width:150px;
-  text-align:right;
-  color: @bg;
-  margin-bottom: 0.25em;
-}
-#worksheet-bar #worksheet-menu select {
+div#worksheet-list-controls div.action-buttons input {
+  display: block;
+  width: 117px;
   .basic_colors;
-  float:right;
-  clear:both;
+  padding: 1px 2px;
+  border: 2px solid @strong2;
+  text-align: left;
+}
+/* worksheet title
+/*fixed*/
+#worksheet-title {
+    position: fixed;
+    top: 0px;
+    left: 150px;
+    right: 0px;
+    height: 25px;
+    padding-left: 10px;
+    margin-bottom: 0px;
+    .basic_colors;
+    z-index:1;
+}
+/*endfixed*/
+#worksheet-title a.worksheet-title {
+  color: @fg;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+}
+#worksheet-title a.worksheet-title:hover {
+  cursor: pointer;
+}
+#worksheet-title div {
+    display:inline;
+}
+
+/******* Top Control Bar (Worksheets)  ********** */
+#worksheet-controls {
+    
+   overflow: hidden;
+   clear: both;
+}
+#worksheet-controls #share-publish-buttons {
+  padding-top:8px;
+  padding-left:10px;
+}
+#worksheet-controls #share-publish-buttons a {
+  .strong_colors2;
+  font-size: 14px;
+  padding:1px 10px 1px 0px;
+  display: block;
+  width: 130px;
+  text-align: right;
+  margin-bottom: 2px;
+  &:hover {
+    color: @aux1;
+    cursor: pointer;
+  }
+}
+#worksheet-controls #share-publish-buttons a.control-select {
+  color: @strong1;
+  background: @light1;
+  &:hover {
+    color: @strong1;
+  }
+}
+
+#worksheet-controls #save-discard-buttons {
+  padding-top: 20px;
+  padding-left: 25px;
+}
+#worksheet-controls #save-discard-buttons button {
+  display: block;
+  width: 125px;
+  .basic_colors;
+  border: 0;
+  margin-bottom: 2px;
+  text-align: right;
+  &:hover {
+    color: @strong2;
+  }
+}
+#worksheet-controls #worksheet-menu  {
+  text-align:right;
+  padding-top: 20px;
+  padding-left: 25px;
+}
+#worksheet-controls #worksheet-menu select {
+  .basic_colors;
   display:block;
   width:125px;
   &:hover {
     color: @strong2;
   }
 }
-#worksheet-bar #worksheet-menu p {
+#worksheet-controls #worksheet-menu p {
   margin: 0;
   padding: 0;
   font-size: 0.75em;
   display: block;
-  float: right;
-  clear: left;
   white-space: nowrap;
 }
-#worksheet-bar #worksheet-menu input {
-}
-/*endfixed*/
-/*fixed*/
-#worksheet-bar #share-publish-buttons {
-  padding-top:2px;
-  padding-left:10px;
-  position:fixed;
-  top:26px;
-  left:150px;
-  right:0px;
-  height:23px;
-  .basic_colors;
-  z-index:1;
-}
-/*endfixed*/
-#worksheet-bar #share-publish-buttons a.print-link {
-  text-decoration: underline;
-  margin-right: 0.5em;
-}
-#worksheet-bar #share-publish-buttons a.print-link img {
-  margin-right: 0.3em;
+#worksheet-controls #worksheet-menu input {
 }
 
 span.control_commands {
@@ -1453,19 +1426,6 @@ span.worksheet_buttons {
   font-size: 14px;
   padding: 0.3em;
 }
-a.control{
-  cursor: pointer;
-  .strong_colors2;
-  .sans-serif-stack;
-  margin-right:-3px;
-  padding: 4px;
-  font-size: 15px;
-  font-weight: bold;
-  &:hover {
-  cursor: pointer;
-  color: @aux1;
-  }
-}
 
 .user-controls a {
   font-size: 14px;
@@ -1475,18 +1435,6 @@ a.control{
   }
 }
 
-a.control-select {
-  .strong_colors1;
-  .sans-serif-stack;
-  margin-right:-3px;
-  padding: 4px;
-  font-size: 15px;
-  font-weight: bold;
-  &:hover {
-    cursor: pointer;
-    color: @light1;
-  }
-}
 
 .sharebar {
   .strong_colors1;
