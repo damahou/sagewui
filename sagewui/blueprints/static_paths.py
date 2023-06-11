@@ -72,3 +72,8 @@ def j2s(filename):
 @static_paths.route('/threejs/<path:filename>')
 def threejs(filename):
     return send_from_directory(CFG.THREEJS_PATH, filename)
+
+
+@static_paths.route('/mathjax/<path:filename>')
+def mathjax(filename):
+    return send_from_directory(CFG.MATHJAX_PATH, filename)

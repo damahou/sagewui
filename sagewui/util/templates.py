@@ -225,6 +225,13 @@ class DynamicJs(object):
         return self.__localization[locale]
 
     @cached_property()
+    def load_mathjax(self):
+        data = render_template('js/load_mathjax.js',
+                               theme_mathjax_macros=CFG.MATHJAX_MACROS,
+                               mathjax_script=CFG.MATHJAX_SCRIPT)
+        return self._prepare_data(data)
+
+    @cached_property()
     def mathjax(self):
         data = render_template('js/mathjax_sage.js',
                                theme_mathjax_macros=CFG.MATHJAX_MACROS)
@@ -244,6 +251,7 @@ class DynamicJs(object):
 
     def clear_cache(self):
         del self.mathjax
+        del self.load_mathjax
         self.__localization = {}
         self.__keyboard = {}
 

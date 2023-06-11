@@ -3,6 +3,7 @@ window.MathJax = {
     inlineMath: [['$', '$'], ['\\(', '\\)']],
     tags: 'ams',
     macros: {
+	    {{ theme_mathjax_macros|join(',\n') }}
     },
   },
 
@@ -10,7 +11,7 @@ window.MathJax = {
 
 (function () {
   var script = document.createElement('script');
-    script.src = '/mathjax/tex-chtml-full.js'
+  script.src = '{{ mathjax_script }}';
   script.async = true;
   document.head.appendChild(script);
 })();

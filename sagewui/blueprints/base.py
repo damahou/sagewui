@@ -79,6 +79,12 @@ def mathjax_js():
     return render_js(data, datahash)
 
 
+@base.route('/javascript/dynamic/load_mathjax.js')
+def load_mathjax_js():
+    data, datahash = g.dynamic_javascript.load_mathjax
+    return render_js(data, datahash)
+
+
 @base.route('/javascript/dynamic/keyboard/<browser_os>')
 def keyboard_js(browser_os):
     data, datahash = g.dynamic_javascript.keyboard(browser_os)

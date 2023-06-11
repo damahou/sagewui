@@ -305,7 +305,7 @@ sagenb.worksheetapp.cell = function(id) {
 				var $_this = $("#cell_" + _this.id);
 			
 				// MathJax the text
-				MathJax.Hub.Queue(["Typeset", MathJax.Hub, $_this.find(".view_text")[0]]);
+				MathJax.typesetPromise($_this);
 			}
 			else {
 				$(container).html("<div class=\"cell text_cell\" id=\"cell_" + _this.id + "\">" + 
@@ -347,7 +347,7 @@ sagenb.worksheetapp.cell = function(id) {
 				var $_this = $("#cell_" + _this.id);
 				
 				// MathJax the text
-				MathJax.Hub.Queue(["Typeset", MathJax.Hub, $_this.find(".view_text")[0]]);
+				MathJax.typesetPromise($_this);
 				
 				$_this.dblclick(function(e) {
 					if(!_this.is_evaluate_cell) {
@@ -389,7 +389,7 @@ sagenb.worksheetapp.cell = function(id) {
 					$_this.find(".view_text").html(_this.input);
 					
 					// MathJax the text
-					MathJax.Hub.Queue(["Typeset", MathJax.Hub, $_this.find(".view_text")[0]]);
+					MathJax.typesetPromise($_this);
 					
 					// remove the edit class
 					$("#cell_" + _this.id).removeClass("edit")
@@ -475,8 +475,8 @@ sagenb.worksheetapp.cell = function(id) {
 				fixOldjsMath($output_cell);
 			}
 
-			MathJax.Hub.Queue(["Typeset", MathJax.Hub, $output_cell[0]]);
 		}
+        MathJax.typesetPromise($output_cell);
 	};
 	
 	////// FOCUS/BLUR ///////
@@ -533,7 +533,7 @@ sagenb.worksheetapp.cell = function(id) {
 
 		tooltip_root.popover("show");
 		fixOldjsMath($(".popover"));
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub, $(".popover")[0]]);
+		MathJax.typesetPromise( $(".popover"));
 
 		var safety = 50;
 		var off = $(".popover-inner").offset();

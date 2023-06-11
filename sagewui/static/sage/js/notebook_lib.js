@@ -1329,7 +1329,7 @@ function update_introspection_text(id, text) {
     if (intr.loaded) {
         introspect_div.html(text);
         try {
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,introspect_div.get(0)]);
+            MathJax.typesetPromise($(introspect_div.get(0)));
         } catch (e) {
             introspect_div.html('Error typesetting mathematics' + introspect_div.html());
         }
@@ -2230,7 +2230,7 @@ function evaluate_text_cell_callback(status, response) {
     text_cell = get_element('cell_outer_' + X.id);
     setTimeout(new_html[1], 50);
 
-    try { MathJax.Hub.Queue(["Typeset",MathJax.Hub,text_cell]); 
+    try { MathJax.typesetPromise($(text_cell)); 
 	} catch (e) { text_cell.innerHTML = 'Error typesetting mathematics' + text_cell.innerHTML; }
 }
 
@@ -3699,7 +3699,7 @@ function set_output_text(id, status, output_text, output_text_wrapped,
 
         cell_interact = get_element('cell-interact-' + id);
         cell_interact.innerHTML = new_interact_output;
-        MathJax.Hub.Queue(["Typeset",MathJax.Hub,cell_interact]);
+        MathJax.typesetPromise($(cell_interact));
 
         return false;
     }
@@ -3723,7 +3723,7 @@ function set_output_text(id, status, output_text, output_text_wrapped,
     // Call MathJax on the final output.
     if (status === 'd' ) {
         try {
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,cell_output]);
+            MathJax.typesetPromise($(cell_output));
         } catch (e) {
             cell_output.innerHTML = 'Error typesetting mathematics' + cell_output.innerHTML;
             cell_output_nowrap.innerHTML = 'Error typesetting mathematics' +

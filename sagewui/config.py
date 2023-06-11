@@ -207,6 +207,8 @@ def add_sage_conf(sage_path='sage'):
     global INTERACT_HTML
     global INTERACT_END
     global MATHJAX_MACROS
+    global MATHJAX_SCRIPT
+    global MATHJAX_PATH
 
     SAGE_PATH = sage_path
 
@@ -257,6 +259,8 @@ def add_sage_conf(sage_path='sage'):
     JSMOL_PATH = sage_env.get('JSMOL_DIR')
     J2S_PATH = os.path.join(JSMOL_PATH, 'j2s') if JSMOL_PATH else None
     THREEJS_PATH = sage_env['THREEJS_DIR']
+    MATHJAX_PATH = os.path.join(sage_env['MATHJAX_DIR'], 'mathjax')
+    MATHJAX_SCRIPT = '/mathjax/tex-chtml-full.js'
 
     # Interact markers
     INTERACT_UPDATE_PREFIX = interact_conf['UPDATE_PREFIX']
