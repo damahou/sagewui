@@ -4,10 +4,10 @@
 	{{ super() }}
 
 	<!-- CodeMirror -->
-	<link rel="stylesheet" href="{{ theme_static('codemirror-3.0/lib/codemirror.css') }}">
+	<link rel="stylesheet" href="/ext/codemirror-3.0/lib/codemirror.css">
 	
 	<!-- simple hinting -->
-	<link rel="stylesheet" href="{{ theme_static('codemirror-3.0/lib/util/simple-hint.css') }}">
+	<link rel="stylesheet" href="/ext/codemirror-3.0/lib/util/simple-hint.css">
 {% endblock head %}
 
 {% block navbar %}
@@ -105,27 +105,27 @@
 {% endblock after_container %}
 
 {% block extra_javascript %}
-		<script type="text/javascript" src="{{ theme_static('sage/js/load_mathjax.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('codemirror-3.0/lib/codemirror.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('codemirror-3.0/lib/util/matchbrackets.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('codemirror-3.0/lib/util/simple-hint.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('codemirror-3.0/mode/python/python.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('codemirror-3.0/mode/stex/stex.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('codemirror-3.0/mode/r/r.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('codemirror-3.0/mode/shell/shell.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('codemirror-3.0/mode/xml/xml.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('codemirror-3.0/mode/javascript/javascript.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('codemirror-3.0/mode/css/css.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('codemirror-3.0/mode/htmlmixed/htmlmixed.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('sage3d/sage3d.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('sage/js/jmol.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('sage/js/worksheet.js') }}"></script>
-		<script type="text/javascript" src="{{ theme_static('sage/js/cell.js') }}"></script>
+		<script type="text/javascript" src="/sage/js/load_mathjax.js"></script>
+		<script type="text/javascript" src="/ext/codemirror-3.0/lib/codemirror.js"></script>
+		<script type="text/javascript" src="/ext/codemirror-3.0/lib/util/matchbrackets.js"></script>
+		<script type="text/javascript" src="/ext/codemirror-3.0/lib/util/simple-hint.js"></script>
+		<script type="text/javascript" src="/ext/codemirror-3.0/mode/python/python.js"></script>
+		<script type="text/javascript" src="/ext/codemirror-3.0/mode/stex/stex.js"></script>
+		<script type="text/javascript" src="/ext/codemirror-3.0/mode/r/r.js"></script>
+		<script type="text/javascript" src="/ext/codemirror-3.0/mode/shell/shell.js"></script>
+		<script type="text/javascript" src="/ext/codemirror-3.0/mode/xml/xml.js"></script>
+		<script type="text/javascript" src="/ext/codemirror-3.0/mode/javascript/javascript.js"></script>
+		<script type="text/javascript" src="/ext/codemirror-3.0/mode/css/css.js"></script>
+		<script type="text/javascript" src="/ext/codemirror-3.0/mode/htmlmixed/htmlmixed.js"></script>
+		<script type="text/javascript" src="/sage3d/sage3d.js"></script>
+		<script type="text/javascript" src="/sage/js/jmol.js"></script>
+		<script type="text/javascript" src="/sage/js/worksheet.js"></script>
+		<script type="text/javascript" src="/sage/js/cell.js"></script>
 
 
 	<!-- Can't minify -->
 	<!-- TinyMCE -->
-	<script type="text/javascript" src="{{ theme_static('tinymce-3.5.2/jscripts/tiny_mce/tiny_mce.js') }}"></script>
+	<script type="text/javascript" src="/ext/tinymce-3.5.2/jscripts/tiny_mce/tiny_mce.js"></script>
 
 	<!-- Jmol - embedded 3D graphics -->
 	<script type="text/javascript" src="/java/jmol/Jmol.js"></script>
@@ -133,20 +133,20 @@
 
 	<!-- These are already minified, so there's no point in minifying again -->
 	<!-- jQuery UI - interacts, widgets, drag-drop, etc. -->
-	<link rel="stylesheet" href="{{ theme_static('jqueryui/css/sage/jquery-ui-1.8.11.custom.css') }}" />
-	<script type="text/javascript" src="{{ theme_static('jqueryui/js/jquery-ui-1.8.11.custom.min.js') }}"></script>
+	<link rel="stylesheet" href="/ext/jqueryui/css/sage/jquery-ui-1.8.11.custom.css" />
+	<script type="text/javascript" src="/ext/jqueryui/js/jquery-ui-1.8.11.custom.min.js"></script>
 
 	<!-- jQuery plugins - color pickers, shift-click, AJAX forms, IE fixes, notifications -->
-	<link rel="stylesheet" href="{{ theme_static('jquery/plugins/farbtastic/farbtastic.css') }}" type="text/css" />
-	<script type="text/javascript" src="{{ theme_static('jquery/plugins/farbtastic/farbtastic.min.js') }}"></script>
-	<script type="text/javascript" src="{{ theme_static('jquery/plugins/extendedclick/jquery.event.extendedclick.min.js') }}"></script>
-	<script type="text/javascript" src="{{ theme_static('jquery/plugins/form/jquery.form.min.js') }}"></script>
-	<script type="text/javascript" src="{{ theme_static('jquery/plugins/jquery.bgiframe.min.js') }}"></script>
-	<link rel="stylesheet" href="{{ theme_static('jquery/plugins/jpicker/css/jPicker-1.1.6.min.css') }}" type="text/css" />
-	<script type="text/javascript" src="{{ theme_static('jquery/plugins/jpicker/jpicker-1.1.6.min.js') }}"></script>
-	<link rel="stylesheet" media="screen" type="text/css" href="{{ theme_static('jquery/plugins/colorpicker/css/colorpicker.css') }}" />
-	<script type="text/javascript" src="{{ theme_static('jquery/plugins/colorpicker/js/colorpicker.min.js') }}"></script>
-	<script type="text/javascript" src="{{ theme_static('jquery/plugins/achtung/ui.achtung-mod.min.js') }}"></script>
+	<link rel="stylesheet" href="/ext/jquery/plugins/farbtastic/farbtastic.css" type="text/css" />
+	<script type="text/javascript" src="/ext/jquery/plugins/farbtastic/farbtastic.min.js"></script>
+	<script type="text/javascript" src="/ext/jquery/plugins/extendedclick/jquery.event.extendedclick.min.js"></script>
+	<script type="text/javascript" src="/ext/jquery/plugins/form/jquery.form.min.js"></script>
+	<script type="text/javascript" src="/ext/jquery/plugins/jquery.bgiframe.min.js"></script>
+	<link rel="stylesheet" href="/ext/jquery/plugins/jpicker/css/jPicker-1.1.6.min.css" type="text/css" />
+	<script type="text/javascript" src="/ext/jquery/plugins/jpicker/jpicker-1.1.6.min.js"></script>
+	<link rel="stylesheet" media="screen" type="text/css" href="/ext/jquery/plugins/colorpicker/css/colorpicker.css" />
+	<script type="text/javascript" src="/ext/jquery/plugins/colorpicker/js/colorpicker.min.js"></script>
+	<script type="text/javascript" src="/ext/jquery/plugins/achtung/ui.achtung-mod.min.js"></script>
 	
 	<script type="text/javascript">
 		$(function() {
