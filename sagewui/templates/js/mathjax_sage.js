@@ -38,4 +38,4 @@ MathJax.Hub.Config({
 
 // This path is a little funny because we have to load our local
 // config file as '../../dynamic/mathjax_sage' when we load MathJax
-MathJax.Ajax.loadComplete("[MathJax]/config/../../dynamic/mathjax_sage.js")
+MathJax.Ajax.loadComplete("[MathJax]/config/../../../javascript/dynamic/mathjax_sage.js")

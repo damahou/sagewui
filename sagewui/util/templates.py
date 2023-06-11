@@ -6,12 +6,16 @@ import re
 from hashlib import sha1
 from itertools import islice
 from jsmin import jsmin
+from pathlib import Path
 
 from flask import g
+from flask import current_app as app
+from flask import send_from_directory
 from flask_babel import format_datetime
 from flask_babel import get_locale
 from flask_babel import ngettext
 from flask_themes2 import render_theme_template
+from flask_themes2 import get_theme
 
 from . import cached_property
 from . import N_
@@ -143,11 +147,52 @@ def render_template(template, **context):
 
     EXAMPLES::
 
-        sage: from sagenb.util.templates import render_template
+        sage: from sagewui.util.templates import render_template
         sage: type(render_template)
     """
     theme = g.notebook.conf['theme']
     return render_theme_template(theme, template, **context)
+
+
+# theme static files
+
+def theme_relative_static_path(themeid):
+    theme_absolute_path = Path(get_theme(themeid).static_path)
+    app_absolute_path = Path(app.root_path)
+
+    return theme_absolute_path.relative_to(app_absolute_path)
+
+
+def current_theme_relative_static_path():
+    return theme_relative_static_path(g.notebook.conf['theme'])
+
+
+def send_static_file(path):
+    """
+    Replacement of flask.Flask.send_static_file( for send static files
+    from current theme.
+
+    INPUT:
+
+    - As in flask.Flask.send_static_file
+
+    OUTPUT:
+
+    - As static file in current theme static folder, but if the current theme
+    miss the file, the application's normal static file is served.
+
+    EXAMPLES::
+
+        sage: from sagewui.util.templates import send_static_file
+        sage: type(send_static_file)
+    """
+
+    static_path = current_theme_relative_static_path()
+    file_path = static_path / path
+    if file_path.exists():
+        return send_from_directory(file_path, path)
+    else:
+        return app.send_static_file(path)
 
 
 # Message template

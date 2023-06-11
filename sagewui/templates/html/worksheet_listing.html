@@ -26,17 +26,17 @@ INPUT:
 
 {% block javascript %}
 {% if not pub %}
-<link rel="stylesheet" href="/javascript/jqueryui/css/sage/jquery-ui-1.10.4.custom.css" />
-<script type="text/javascript" src="/javascript/jqueryui/js/jquery-ui-1.10.4.custom.min.js"></script>
-<script type="text/javascript" src="/javascript/jquery/plugins/form/jquery.form.min.js"></script>
-<script type="text/javascript" src="/javascript/jquery/plugins/jquery.bgiframe.min.js"></script>
+<link rel="stylesheet" href="/ext/jqueryui/css/sage/jquery-ui-1.10.4.custom.css" />
+<script type="text/javascript" src="/ext/jqueryui/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src="/ext/jquery/plugins/form/jquery.form.min.js"></script>
+<script type="text/javascript" src="/ext/jquery/plugins/jquery.bgiframe.min.js"></script>
 <script type="text/javascript">
     var worksheet_filenames = {{ worksheet_filenames|tojson| safe }}; 
 </script>
-<script type="text/javascript" src="/javascript/sage/js/keys.js"></script>
-<script type="text/javascript" src="/javascript/sage/js/notebook_lib.js"></script>
+<script type="text/javascript" src="/sage/js/keys.js"></script>
+<script type="text/javascript" src="/sage/js/notebook_lib.js"></script>
 {% else %}
-<script type="text/javascript" src="/javascript/sage/js/ws_list.js"></script>
+<script type="text/javascript" src="/sage/js/ws_list.js"></script>
 {% endif %}
 {% endblock %}
 

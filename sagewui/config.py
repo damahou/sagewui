@@ -253,10 +253,10 @@ def add_sage_conf(sage_path='sage'):
     # paths for static urls
     DOC_PATH = os.path.join(sage_env['SAGE_DOC'], 'html', 'en')
     SRC_PATH = os.path.join(sage_env['SAGE_SRC'], 'sage')
-    JMOL_PATH = os.path.join(sage_env['SAGE_SHARE'], 'jmol')
-    JSMOL_PATH = os.path.join(sage_env['SAGE_SHARE'], 'jsmol')
-    J2S_PATH = os.path.join(JSMOL_PATH, 'j2s')
-    THREEJS_PATH = os.path.join(sage_env['SAGE_SHARE'], 'threejs')
+    JMOL_PATH = sage_env['JMOL_DIR']
+    JSMOL_PATH = sage_env.get('JSMOL_DIR')
+    J2S_PATH = os.path.join(JSMOL_PATH, 'j2s') if JSMOL_PATH else None
+    THREEJS_PATH = sage_env['THREEJS_DIR']
 
     # Interact markers
     INTERACT_UPDATE_PREFIX = interact_conf['UPDATE_PREFIX']
