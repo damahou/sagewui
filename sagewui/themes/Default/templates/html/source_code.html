@@ -4,7 +4,7 @@
 
 {% block css %}
 {{ super() }}
-<link type="text/css" ref="stylesheet" href="/javascript/highlight/prettify.css" />
+<link type="text/css" ref="stylesheet" href="/ext/highlight/prettify.css" />
 {% endblock %}
 
 {% block page_id %}source-code-page{% endblock %}
@@ -17,7 +17,7 @@
 
 <code id="code">{{ src }}</code>
 
-<script src="/javascript/highlight/prettify.js" type="text/javascript"></script>
+<script src="/ext/highlight/prettify.js" type="text/javascript"></script>
 <script type="text/javascript">
     code = $('code');
     code.html(prettyPrintOne(code.html()))

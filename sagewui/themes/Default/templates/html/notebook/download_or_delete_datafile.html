@@ -28,7 +28,7 @@ INPUT:
 
 {% block javascript %}
 {{ super() }}
-<script type="text/javascript" src="/javascript/codemirror/js/codemirror.js"></script>
+<script type="text/javascript" src="/ext/codemirror/js/codemirror.js"></script>
 {% endblock %}
 
 {% set path = "/home/%s/data/%s"|format(worksheet.filename, filename_) %}
@@ -61,8 +61,8 @@ INPUT:
     $(document).ready(function () {
 	CodeMirror.fromTextArea('textfield', {
 	    parserfile: "../contrib/python/js/parsepython.js",
-	    stylesheet: "/javascript/codemirror/contrib/python/css/pythoncolors.css",
-	    path: "/javascript/codemirror/js/",
+	    stylesheet: "/ext/codemirror/contrib/python/css/pythoncolors.css",
+	    path: "/ext/codemirror/js/",
 	    height: '25.0em',
 	    width: '100%',
 	    indentUnit: 4,

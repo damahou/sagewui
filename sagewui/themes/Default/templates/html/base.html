@@ -10,27 +10,26 @@
     {% block link %}{% endblock %}
 
     {% block css %}
-    <link type="text/css" rel="stylesheet/less"
-          href={{ theme_static("css/main.less") }}>
+    <link type="text/css" rel="stylesheet/less" href="/css/main.less">
     {% endblock %}
 
     {# jQuery and other universally used libraries #}
-    <script type="text/javascript" src={{ theme_static("js/less.js") }}></script>
-    <script type="text/javascript" src="/javascript/jquery/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="/ext/less.js"></script>
+    <script type="text/javascript" src="/ext/jquery/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="/javascript/dynamic/localization.js"></script>
-    <script type="text/javascript" src="/javascript/json/json2.min.js"></script>
+    <script type="text/javascript" src="/ext/json/json2.min.js"></script>
 
     {# Page-specific libraries #}
     {% block javascript %}
-    <script type="text/javascript" src="/javascript/sage/js/ws_list.js"></script>
+    <script type="text/javascript" src="/sage/js/ws_list.js"></script>
     {% endblock %}
 
     {# Behavior #}
-    <script type="text/javascript" src="/javascript/sage/js/master.js"></script>
+    <script type="text/javascript" src="/sage/js/master.js"></script>
 
     {% block debug %}
     {% if g.dynamic_javascript.debug %}
-    <script type="text/javascript" src="/javascript/sage/js/debug.js"></script>
+    <script type="text/javascript" src="/sage/js/debug.js"></script>
     {% endif %}
     {% endblock %}
 

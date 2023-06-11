@@ -16,42 +16,42 @@ INPUT:
 
 <!-- trying to work around JSmol collisions with jquery -->
 <script type="text/javascript"
-  src="/javascript/jquery/jquery-1.11.0.min.js">
+  src="/ext/jquery/jquery-1.11.0.min.js">
 </script>
 <!-- jQuery UI - interacts, widgets, drag-drop, etc. -->
 <link rel="stylesheet"
-  href="/javascript/jqueryui/css/sage/jquery-ui-1.10.4.custom.css">
+  href="/ext/jqueryui/css/sage/jquery-ui-1.10.4.custom.css">
 <script type="text/javascript"
-  src="/javascript/jqueryui/js/jquery-ui-1.10.4.custom.min.js">
+  src="/ext/jqueryui/js/jquery-ui-1.10.4.custom.min.js">
 </script>
 
 <!-- jQuery plugins - color pickers, shift-click, AJAX forms, IE fixes, notifications -->
 <link rel="stylesheet" type="text/css"
-  href="/javascript/jquery/plugins/farbtastic/farbtastic.css">
+  href="/ext/jquery/plugins/farbtastic/farbtastic.css">
 <script type="text/javascript"
-  src="/javascript/jquery/plugins/farbtastic/farbtastic.min.js">
+  src="/ext/jquery/plugins/farbtastic/farbtastic.min.js">
 </script>
 <script type="text/javascript"
-  src="/javascript/jquery/plugins/extendedclick/jquery.event.extendedclick.min.js">
+  src="/ext/jquery/plugins/extendedclick/jquery.event.extendedclick.min.js">
 </script>
 <script type="text/javascript"
-  src="/javascript/jquery/plugins/form/jquery.form.min.js">
+  src="/ext/jquery/plugins/form/jquery.form.min.js">
 </script>
 <script type="text/javascript"
-  src="/javascript/jquery/plugins/jquery.bgiframe.min.js">
+  src="/ext/jquery/plugins/jquery.bgiframe.min.js">
 </script>
 <link rel="stylesheet" type="text/css"
-  href="/javascript/jquery/plugins/jpicker/css/jPicker-1.1.6.min.css">
+  href="/ext/jquery/plugins/jpicker/css/jPicker-1.1.6.min.css">
 <script type="text/javascript"
-  src="/javascript/jquery/plugins/jpicker/jpicker-1.1.6.min.js">
+  src="/ext/jquery/plugins/jpicker/jpicker-1.1.6.min.js">
 </script>
 <link rel="stylesheet" media="screen" type="text/css"
-  href="/javascript/jquery/plugins/colorpicker/css/colorpicker.css">
+  href="/ext/jquery/plugins/colorpicker/css/colorpicker.css">
 <script type="text/javascript"
-  src="/javascript/jquery/plugins/colorpicker/js/colorpicker.min.js">
+  src="/ext/jquery/plugins/colorpicker/js/colorpicker.min.js">
 </script>
 <script type="text/javascript"
-  src="/javascript/jquery/plugins/achtung/ui.achtung-mod.min.js">
+  src="/ext/jquery/plugins/achtung/ui.achtung-mod.min.js">
 </script>
 
 <!-- Jmol - embedded 3D graphics **needs to be before jmol_lib.js** -->
@@ -61,21 +61,21 @@ INPUT:
 
 {% if not worksheet.is_published or notebook.conf['pub_interact'] %}
 <script type="text/javascript"
-  src="/javascript/sage/js/keys.js">
+  src="/sage/js/keys.js">
 </script>
 <script type="text/javascript"
-  src="/javascript/sage/js/notebook_lib.js">
+  src="/sage/js/notebook_lib.js">
 </script>
 <script type="text/javascript"
-  src="/javascript/sage/js/jmol_lib.js">
+  src="/sage/js/jmol_lib.js">
 </script>
 <script type="text/javascript"
-  src="/javascript/sage/js/canvas3d_lib.js">
+  src="/sage/js/canvas3d_lib.js">
 </script>
 {% elif worksheet.is_published %}
 <script type="text/javascript"
-  src="/javascript/sage/js/keys.js">
-  src="/javascript/sage/js/jmol_lib.js">
+  src="/sage/js/keys.js">
+  src="/sage/js/jmol_lib.js">
 </script>
 {% endif %}
 
@@ -86,22 +86,22 @@ INPUT:
 
 <!-- Sage3d - accelerated 3D graphics -->
 <script type="text/javascript"
-  src="/javascript/sage3d/sage3d.js">
+  src="/sage3d/sage3d.js">
 </script>
 
 {% if JEDITABLE_TINYMCE and not worksheet.docbrowser and not worksheet.is_published %}
 <!-- TinyMCE and jEditable - in-place editing of text cells -->
 <script type="text/javascript"
-  src="/javascript/tiny_mce/tiny_mce.js">
+  src="/ext/tiny_mce/tiny_mce.js">
 </script>
 <script type="text/javascript" charset="utf-8"
-  src="/javascript/jquery/plugins/jeditable/jquery.jeditable.mini.js">
+  src="/ext/jquery/plugins/jeditable/jquery.jeditable.mini.js">
 </script>
 <script type="text/javascript"
-  src="/javascript/sage/js/tinymce.js">
+  src="/sage/js/tinymce.js">
 </script>
 <script type="text/javascript"
-  src="/javascript/tiny_mce/plugins/media/js/embed.js">
+  src="/ext/tiny_mce/plugins/media/js/embed.js">
 </script>
 {% endif %}
 

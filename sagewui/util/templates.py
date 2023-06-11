@@ -156,15 +156,12 @@ def render_template(template, **context):
 
 # theme static files
 
-def theme_relative_static_path(themeid):
-    theme_absolute_path = Path(get_theme(themeid).static_path)
-    app_absolute_path = Path(app.root_path)
-
-    return theme_absolute_path.relative_to(app_absolute_path)
+def theme_absolute_static_path(themeid):
+    return Path(get_theme(themeid).static_path)
 
 
-def current_theme_relative_static_path():
-    return theme_relative_static_path(g.notebook.conf['theme'])
+def current_theme_absolute_static_path():
+    return Path(theme_absolute_static_path(g.notebook.conf['theme']))
 
 
 def send_static_file(path):
@@ -187,10 +184,13 @@ def send_static_file(path):
         sage: type(send_static_file)
     """
 
-    static_path = current_theme_relative_static_path()
-    file_path = static_path / path
+    absolute_static_path = current_theme_absolute_static_path()
+    relative_static_path = absolute_static_path.relative_to(
+        Path(app.root_path))
+    file_path = current_theme_absolute_static_path() / path
+    print(file_path)
     if file_path.exists():
-        return send_from_directory(file_path, path)
+        return send_from_directory(relative_static_path, path)
     else:
         return app.send_static_file(path)
 
