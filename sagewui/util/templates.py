@@ -195,6 +195,10 @@ def send_static_file(path):
         return app.send_static_file(path)
 
 
+def send_from_path(basepathname, filepath):
+    return send_static_file(Path(basepathname) / filepath)
+
+
 # Message template
 
 def message(msg, cont='/', username=None, **kwds):
