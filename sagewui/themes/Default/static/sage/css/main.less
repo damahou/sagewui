@@ -356,15 +356,13 @@ span.worksheet_control_commands {
 }
 
 div.slide_control_commands {
-  float: right;
-  position: fixed;
-  width: 500px;
-  top: 1ex;
-  right: 45%;
-  text-align: right;
-  color: blue;
-  font-weight: normal;
-  font-size: 12px;
+    width: 145px;
+    padding-top: 10px;
+    padding-right: 5px;
+    text-align: right;
+    color: @fg;
+    font-weight: normal;
+    font-size: 12px;
 }
 
 span.vbar {
@@ -387,33 +385,34 @@ span.worksheet_control_commands a:hover {
 }
 
 div.slideshow_control {
-  float: right;
+    display: inline-block;
 }
 div.slideshow_control:hover {
   cursor: pointer;
 }
 div.slideshow_progress {
-  float: right;
-  background-color: white;
-  padding: 1px;
-  border: 1px solid #cccccc;
-  width: 20%;
+    text-align: left;
+    display: inline-block;
+    background-color: white;
+    padding: 1px;
+    border: 1px solid #cccccc;
+    width: 70px;
 }
 div.slideshow_progress_bar {
-  z-index: 1;
-  position: relative;
-  background-color: #dcdcdc;
+    display: inline-block;
+    z-index: 1;
+    background-color: #dcdcdc;
 }
 div.slideshow_progress_bar:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 div.slideshow_progress_text {
-  position: absolute;
-  z-index: 2;
-  top: 2px;
-  text-align: center;
-  color: black;
-  width: 20%;
+    display: inline-block;
+    position: absolute;
+    left: 20px;
+    text-align: center;
+    color: black;
+    z-index: 2;
 }
 
 .completion_menu_selected {
