@@ -188,7 +188,6 @@ def send_static_file(path):
     relative_static_path = absolute_static_path.relative_to(
         Path(app.root_path))
     file_path = current_theme_absolute_static_path() / path
-    print(file_path)
     if file_path.exists():
         return send_from_directory(relative_static_path, path)
     else:

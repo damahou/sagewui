@@ -1,7 +1,8 @@
-{% extends "html/settings/base.html" %}
+{% extends theme("html/settings/base.html") %}
 {% block title %}{{ gettext('Notebook Settings') }}{% endblock %}
 
-{% block more_css %}
+{% block css %}
+{{ super() }}
 <link rel="stylesheet" href="/ext/jquery/plugins/farbtastic/farbtastic.css" type="text/css" />  
 {% endblock %}
 

@@ -11,8 +11,7 @@ INPUT:
 
 {% block page_id %}datafile-page{% endblock %}
 
-{% block css %}
-{{ super() }}
+{% block more_css %}
 <style type="text/css">
     .CodeMirror-line-numbers {
 	border-right: 1px dotted blue;
@@ -26,8 +25,7 @@ INPUT:
 </style>
 {% endblock %}
 
-{% block javascript %}
-{{ super() }}
+{% block more_javascript %}
 <script type="text/javascript" src="/ext/codemirror/js/codemirror.js"></script>
 {% endblock %}
 

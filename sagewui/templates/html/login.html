@@ -1,4 +1,4 @@
-{% extends "html/base.html" %}
+{% extends theme("html/base.html") %}
 
 {% block javascript %}
 {% endblock %}
@@ -84,3 +84,5 @@
     <noscript style="color:red">{{ gettext('Error') }}: {{ gettext('Javascript must be enabled in order to use the Sage Notebook.') }}</noscript>
 </div>
 {% endblock %}
+
+

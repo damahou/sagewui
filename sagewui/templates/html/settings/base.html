@@ -1,9 +1,9 @@
-{% extends "html/base_authenticated.html" %}
+{% extends theme("html/base_authenticated.html") %}
 
 {% block body_classes %}settings-page{% endblock %}
 
 {% block main %}
-<h1>{{ render_title() }}</h1>
+<h1>{% block title %}{{ super() }}{% endblock %}</h1>
 {% block settings_nav %}
 <ul id="settings-nav" class="user-controls">
     {% if admin %}

@@ -1,4 +1,4 @@
-{% extends "html/notebook/base_aux.html" %}
+{% extends theme("html/notebook/base_aux.html") %}
 {#
 INPUT:
 - worksheet - an instance of Worksheet
@@ -11,7 +11,8 @@ INPUT:
 
 {% block page_id %}datafile-page{% endblock %}
 
-{% block more_css %}
+{% block css %}
+{{ super() }}
 <style type="text/css">
     .CodeMirror-line-numbers {
 	border-right: 1px dotted blue;
@@ -25,7 +26,8 @@ INPUT:
 </style>
 {% endblock %}
 
-{% block more_javascript %}
+{% block javascript %}
+{{ super() }}
 <script type="text/javascript" src="/ext/codemirror/js/codemirror.js"></script>
 {% endblock %}
 

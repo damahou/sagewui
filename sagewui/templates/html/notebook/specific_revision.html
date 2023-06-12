@@ -1,4 +1,4 @@
-{% extends "html/notebook/base_aux.html" %}
+{% extends theme("html/notebook/base_aux.html") %}
 
 {% set select = "revisions" %}
 {% block sharebar_title %}
@@ -27,7 +27,7 @@
 {% block after_sharebar %}
 {{ actions() }}
 <div id="revision-data">
-    {% include 'html/notebook/worksheet.html' %}
+    {% include theme("html/notebook/worksheet.html") %}
 </div>
 {{ actions() }}
 <!--<script type="text/javascript">
