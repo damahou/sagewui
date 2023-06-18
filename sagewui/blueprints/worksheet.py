@@ -10,6 +10,7 @@ import time
 from html import escape
 from collections import defaultdict
 from functools import wraps
+from pathlib import Path
 
 from flask import Blueprint
 from flask import make_response
@@ -1578,18 +1579,22 @@ def worksheet_download(worksheet, title):
 
 
 def unconditional_download(worksheet, title):
-    filename = tmp_filename() + '.sws'
-
-    if title.endswith('.sws'):
-        title = title[:-4]
+    filename = Path(tmp_filename()).with_suffix('.sws')
+    titlepath = Path(title)
+    if titlepath.suffix == '.sws':
+        title = titlepath.stem
+        download_name = str(titlepath)
+    else:
+        download_name = '{}.sws'.format(titlepath)
 
     try:
         # XXX: Accessing the hard disk.
-        g.notebook.export_wst(worksheet.filename, filename, title)
+        g.notebook.export_wst(worksheet.filename, str(filename), title)
     except KeyError:
         return message_template(_('No such worksheet.'))
 
-    return send_file(filename, mimetype='application/sage')
+    return send_file(
+        filename, mimetype='application/sage', download_name=download_name)
 
 
 @worksheet_command('restart_sage')
