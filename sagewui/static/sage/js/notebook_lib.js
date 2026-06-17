@@ -1789,7 +1789,7 @@ function rename_worksheet() {
     been renamed.
     */
     var callback = function (new_worksheet_name) {
-        var title = $('#worksheet_title'), set_name;
+        var title = $('#worksheet-title a.worksheet-title'), set_name;
         if (new_worksheet_name.length >= 30) {
             set_name = new_worksheet_name.slice(0, 30) + ' ...';
         } else {
