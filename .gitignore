@@ -21,9 +21,9 @@ MANIFEST
 PKG-INFO
 release_notes.txt
 /sass/src/.sass-cache
-/sagenb/data/jmol
-/sagenb.egg-info
-sagenb/data/jsmath/fonts
+/sagewui/data/jmol
+/sagewui.egg-info
+sagewui/data/jsmath/fonts
 /setup.cfg
 .ropeproject
 /tmp
