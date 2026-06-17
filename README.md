@@ -60,8 +60,8 @@ Previously to the instructions below, install a recent version of
    ```bash
    git clone https://github.com/damahou/sagewui $INSTALLDIR/sagewui
    cd "$INSTALLDIR/sagewui"
-   git branch release origin/release
-   git checkout release
+   git branch release origin/py3only
+   git checkout py3only
    ```
 
 1. Activate the python virtual environment
@@ -70,32 +70,20 @@ Previously to the instructions below, install a recent version of
    . "$INSTALLDIR/python/bin/activate"
    ```
 
-1. Populate de virtual environment
+1. Install sagewui in your virtual environment
 
    ```bash
-   pip install twisted flask flask-autoindex flask-babel flask-themes2 future pexpect docutils jsmin pyopenssl service_identity appdirs
-   ```
-
-1. SageWui related stuff
-
-   ```bash
-   cp -a "$INSTALLDIR/sagewui/sagewui" "$INSTALLDIR/sagewui/sagewui_kernels" "$INSTALLDIR/sagewui/smtpsend.py" "$INSTALLDIR"/python/lib/python*/site-packages
-   ln -s "$INSTALLDIR"/python/lib/python*/site-packages/sagewui/run.py "$INSTALLDIR/python/bin/sagewui"
+   pip install $INSTALLDIR/sagewui
    ```
 
 1. Test the installation
 
    ```bash
-   sagewui
+   python -m sagewui
    ```
 
-To run sagewui from a fresh command line shell write
-
-```bash
-cd /path/where/you/installed/sagewui
-. python/bin/activate
-sagewui
-```
+1. Optional: Modify and copy the bash script `$INSTALLDIR/sagewui/util/sagewui`
+   to a directory in your PATH.
 
 ### Standalone development mode
 
@@ -123,32 +111,17 @@ sagewui
    . "$INSTALLDIR/python/bin/activate"
    ```
 
-1. Populate de virtual environment
+1. Install sagewui in your virtual environment
 
    ```bash
-   pip install twisted flask flask-autoindex flask-babel flask-themes2 future pexpect docutils jsmin pyopenssl service_identity appdirs
-   ```
-
-1. SageWui related stuff
-
-   ```bash
-   ln -s "$INSTALLDIR/sagewui/sagewui" "$INSTALLDIR/sagewui/sagewui_kernels" "$INSTALLDIR/sagewui/smtpsend.py" "$INSTALLDIR"/python/lib/python*/site-packages
-   ln -s "$INSTALLDIR"/python/lib/python*/site-packages/sagewui/run.py "$INSTALLDIR/python/bin/sagewui"
+   pip install -e $INSTALLDIR/sagewui
    ```
 
 1. Test the installation
 
    ```bash
-   sagewui
+   python -m sagewui --debug
    ```
-
-1. Run sagewui from a fresh command line shell in debug mode
-
-    ```bash
-    cd /path/where/you/installed/sagewui
-    . python/bin/activate
-    sagewui --debug
-    ```
 
 1. Edit code in $INSTALLDIR/sagewui. every time you change python code, the
    application is reloaded.
